@@ -14,7 +14,7 @@
          <children>
             <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" onMouseClicked="#onBackButtonClick" onMouseEntered="#onBackButtonEnter" onMouseExited="#onBackButtonExit" preserveRatio="true">
                <image>
-                  <Image url="@images/common/back_arrow.png" />
+                  <Image url="@../images/common/back_arrow.png" />
                </image></ImageView>
             <Label fx:id="aboutUsTitle" alignment="CENTER" contentDisplay="CENTER" text="Label" translateY="20"/>
          </children>

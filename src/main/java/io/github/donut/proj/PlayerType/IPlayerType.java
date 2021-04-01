@@ -2,6 +2,7 @@ package io.github.donut.proj.PlayerType;
 
 import io.github.donut.proj.common.Board;
 import io.github.donut.proj.common.Token;
+import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
 import java.util.Objects;
 

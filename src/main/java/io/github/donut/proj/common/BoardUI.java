@@ -114,9 +114,21 @@ public class BoardUI extends GridPane implements ISubject, IObserver {
      */
     public BoardUI() {
         try {
-            xImage = new Image(getClass().getResourceAsStream("../images/common/X_white.png"));
-            oImage = new Image(getClass().getResourceAsStream("../images/common/O_white.png"));
-            emptyImage = new Image(getClass().getResourceAsStream("../images/common/Empty.png"));
+            xImage = new Image(Objects.requireNonNull(
+                    getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/common/X_white.png")
+            ));
+            oImage = new Image(Objects.requireNonNull(
+                    getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/common/O_white.png")
+            ));
+            emptyImage = new Image(Objects.requireNonNull(
+                    getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/common/Empty.png")
+            ));
         } catch(Exception e) {
             Logger.log(e);
         }

@@ -11,7 +11,7 @@
          <top>
             <HBox prefHeight="47.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" onMouseClicked="#onBackButtonClick" onMouseEntered="#onBackButtonEnter" onMouseExited="#onBackButtonExit" preserveRatio="true">
-                  <Image url="@images/common/back_arrow.png" />
+                  <Image url="@../images/common/back_arrow.png" />
                </ImageView>
             </HBox>
          </top>

@@ -14,14 +14,14 @@
    <center>
       <VBox alignment="CENTER" prefHeight="290.0" prefWidth="450.0" spacing="25.0" BorderPane.alignment="CENTER">
          <ImageView fx:id="singlePlayerButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onSinglePlayerButtonClick" onMouseEntered="#onSinglePlayerButtonHover" onMouseExited="#onSinglePlayerButtonExit" pickOnBounds="true" preserveRatio="true" translateY="40.0">
-            <Image url="@images/theme_2/singleplayer_button.png" />
+            <Image url="@../images/theme_2/singleplayer_button.png" />
          </ImageView>
          <ImageView fx:id="multiPlayerButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onMultiPlayerButtonClick" onMouseEntered="#onMultiPlayerButtonHover" onMouseExited="#onMultiPlayerButtonExit" pickOnBounds="true" preserveRatio="true" translateY="40.0">
-            <Image url="@images/theme_2/multiplayer_button.png" />
+            <Image url="@../images/theme_2/multiplayer_button.png" />
          </ImageView>
          <ImageView fx:id="aboutUsRect" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onAboutButtonClicked" onMouseEntered="#onAboutRectEnter" onMouseExited="#onAboutRectExit" pickOnBounds="true" preserveRatio="true" translateY="40.0">
             <image>
-               <Image url="@images/theme_2/about_button.png" />
+               <Image url="@../images/theme_2/about_button.png" />
             </image>
          </ImageView>
       </VBox>

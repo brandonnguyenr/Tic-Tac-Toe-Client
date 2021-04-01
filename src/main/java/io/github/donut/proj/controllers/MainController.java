@@ -5,12 +5,12 @@ import io.github.donut.proj.listener.ISubject;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -21,20 +21,14 @@ public class MainController implements Initializable, ISubject {
     @FXML
     public BorderPane mainMenuPane;
 
-//    @FXML
-//    private ImageView aboutButton;      //corner button
-
     @FXML
-    private ImageView aboutUsRect;      //rectangle button
+    private ImageView aboutUsRect;
 
     @FXML
     private ImageView singlePlayerButton;
 
     @FXML
     private ImageView multiPlayerButton;
-
-    @FXML
-    private Scene aboutUsScene;
 
     private final String theme = "theme_2";
 
@@ -88,7 +82,11 @@ public class MainController implements Initializable, ISubject {
      * @author Grant Goldsworth
      */
     public void onSinglePlayerButtonHover(/*MouseEvent mouseEvent*/) {
-        singlePlayerButton.setImage(new Image(getClass().getResourceAsStream("../images/" + theme + "/singleplayer_button_hover.png")));
+        singlePlayerButton.setImage(new Image(Objects.requireNonNull(
+                getClass().
+                getClassLoader().
+                getResourceAsStream("io/github/donut/proj/images/" + theme + "/singleplayer_button_hover.png"))
+        ));
     }
 
     /**
@@ -97,7 +95,11 @@ public class MainController implements Initializable, ISubject {
      * @author Grant Goldsworth
      */
     public void onSinglePlayerButtonExit(/*MouseEvent mouseEvent*/) {
-        singlePlayerButton.setImage(new Image(getClass().getResourceAsStream("../images/" + theme + "/singleplayer_button.png")));
+        singlePlayerButton.setImage(new Image(Objects.requireNonNull(
+                getClass().
+                getClassLoader().
+                getResourceAsStream("io/github/donut/proj/images/" + theme + "/singleplayer_button.png"))
+        ));
     }
 
     /**
@@ -117,7 +119,11 @@ public class MainController implements Initializable, ISubject {
      * @author Grant Goldsworth
      */
     public void onMultiPlayerButtonHover(/*MouseEvent mouseEvent*/) {
-        multiPlayerButton.setImage(new Image(getClass().getResourceAsStream("../images/" + theme + "/multiplayer_button_hover.png")));
+        multiPlayerButton.setImage(new Image(Objects.requireNonNull(
+                getClass().
+                getClassLoader().
+                getResourceAsStream("io/github/donut/proj/images/" + theme + "/multiplayer_button_hover.png"))
+        ));
     }
 
 
@@ -127,7 +133,11 @@ public class MainController implements Initializable, ISubject {
      * @author Grant Goldsworth
      */
     public void onMultiPlayerButtonExit(/*MouseEvent mouseEvent*/) {
-        multiPlayerButton.setImage(new Image(getClass().getResourceAsStream("../images/" + theme + "/multiplayer_button.png")));
+        multiPlayerButton.setImage(new Image(Objects.requireNonNull(
+                getClass().
+                getClassLoader().
+                getResourceAsStream("io/github/donut/proj/images/" + theme + "/multiplayer_button.png"))
+        ));
     }
 
     /**
@@ -140,31 +150,17 @@ public class MainController implements Initializable, ISubject {
         EventManager.notify(this, aboutUs);
     }
 
-//    /**
-//     * Handles mouse hover event on the about us image "button", changing
-//     * the button icon to the hovered icon status.
-//     * @author Utsav Parajuli
-//     */
-//    public void onAboutButtonEnter(/*MouseEvent mouseEvent*/) {
-//        aboutButton.setImage(new Image(getClass().getResourceAsStream("../images/" + theme + "/about_button_square_hover.png")));
-//    }
-//
-//    /**
-//     * Handles mouse hover exit event on the about us image "button", changing the
-//     * button icon to the normal status.
-//     * @author Utsav Parajuli
-//     */
-//    public void onAboutButtonExit(MouseEvent mouseEvent) {
-//        aboutButton.setImage(new Image(getClass().getResourceAsStream("../images/" + theme + "/about_button_square.png")));
-//    }
-
     /**
      * Handles mouse hover event on the about us image "button", changing
      * the button icon to the hovered icon status.
      * @author Utsav Parajuli
      */
     public void onAboutRectEnter(/*MouseEvent mouseEvent*/) {
-        aboutUsRect.setImage(new Image(getClass().getResourceAsStream("../images/" + theme + "/about_button_hover.png")));
+        aboutUsRect.setImage(new Image(Objects.requireNonNull(
+                getClass().
+                getClassLoader().
+                getResourceAsStream("io/github/donut/proj/images/" + theme + "/about_button_hover.png"))
+        ));
 
     }
 
@@ -174,7 +170,11 @@ public class MainController implements Initializable, ISubject {
      * @author Utsav Parajuli
      */
     public void onAboutRectExit(/*MouseEvent mouseEvent*/) {
-        aboutUsRect.setImage(new Image(getClass().getResourceAsStream("../images/" + theme + "/about_button.png")));
+        aboutUsRect.setImage(new Image(Objects.requireNonNull(
+                getClass().
+                getClassLoader().
+                getResourceAsStream("io/github/donut/proj/images/" + theme + "/about_button.png"))
+        ));
 
     }
 }

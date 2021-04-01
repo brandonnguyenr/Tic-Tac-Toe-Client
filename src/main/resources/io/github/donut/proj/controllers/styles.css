@@ -1,3 +1,7 @@
+@font-face {
+    src: url('/io/github/donut/proj/fonts/Chalkduster.ttf');
+}
+
 .label {
     -fx-text-fill: khaki;
     -fx-font-size: 30px;
@@ -26,10 +30,19 @@
     -fx-background-position: center center;
 }
 
+#singlePlayerTitle, #multiplayerTitle {
+    -fx-text-fill: #f0e68c;
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+    -fx-min-width: 600;
+    -fx-min-height: 35;
+}
+
 #title {
-    -fx-text-fill: khaki;
-    -fx-font-family: Chalkduster;
-    -fx-font-size: 30px;
+    -fx-text-fill: #f0e68c;
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 25px;
     -fx-alignment: center;
     -fx-min-width: 600;
     -fx-min-height: 35;
@@ -37,7 +50,7 @@
 
 #aboutUsTitle {
     -fx-text-fill: khaki;
-    -fx-font-family: Chalkduster;
+    -fx-font-family: "Chalkduster";
     -fx-font-size: 40px;
     -fx-alignment: center;
     -fx-min-width: 600;
@@ -45,14 +58,14 @@
 }
 
 #githubLink {
-    -fx-font-family: Chalkduster;
+    -fx-font-family: "Chalkduster";
     -fx-font-size: 18px;
     -fx-text-fill: #42a9eb;
     -fx-alignment: bottom-center;
 }
 
 #info {
-    -fx-font-family: Chalkduster;
+    -fx-font-family: "Chalkduster";
     -fx-font-size: 19px;
     -fx-alignment: center;
     -fx-text-fill: white;
@@ -67,16 +80,12 @@
     -fx-min-width: 60;
     -fx-max-width: 200;
     -fx-font-size: 20px;
-    -fx-font-family: Chalkduster;
+    -fx-font-family: "Chalkduster";
 }
-/*#entryButton {*/
-/*    -fx-alignment: center;*/
-/*    -fx-background-color: black;*/
-/*    -fx-text-fill: khaki;*/
-/*    -fx-font-size: 20;*/
-/*    -fx-font-family: Chalkduster;*/
-/*}*/
 
+#player1Label {
+    -fx-font-family: "Chalkduster";
+}
 #boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
@@ -84,22 +93,23 @@
 
 #difficultyLevelBar, #tokenBar {
     -fx-background-color: transparent;
+    -fx-font-family: "Chalkduster";
 }
 
 #difficultyLevelTitle, #tokenSelectorTitle {
-    -fx-font-family: Chalkduster;
+    -fx-font-family: "Chalkduster";
     -fx-font-size: 16;
 }
 
 #tokenO, #tokenX, #easyMode, #hardMode,
 #tokenXP1, #tokenOP1, #tokenXP2, #tokenOP2 {
-    -fx-font-family: Chalkduster;
+    -fx-font-family: "Chalkduster";
     -fx-font-size: 13;
     -fx-text-fill: #75a2e1;
 }
 
 #contributors, #copyright {
-    -fx-font-family: Chalkduster;
+    -fx-font-family: "Chalkduster";
     -fx-font-size: 13;
     -fx-text-fill: #75a2e1;
 }

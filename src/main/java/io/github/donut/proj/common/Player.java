@@ -10,7 +10,8 @@ import io.github.donut.proj.listener.ISubject;
 import java.util.Objects;
 
 /**
- * Player is a data-only class that holds the data pertaining to a player.
+ * Player is a data-only class that holds the data pertaining to a player (Name, Token, etc.)
+ * @author Joey Campbell
  */
 public class Player implements ISubject, IObserver {
 
@@ -67,12 +68,14 @@ public class Player implements ISubject, IObserver {
 
     /**
      * Constructs a Player object with no arguments.
+     * @author Joey Campbell
      */
     public Player() { }
 
     /**
      * Constructs a Player object with a set player name.
      * @param playerName The name of the player
+     * @author Joey Campbell
      */
     public Player(String playerName) {
         this(playerName, X, new Human());
@@ -82,11 +85,20 @@ public class Player implements ISubject, IObserver {
      * Constructs a Player object with a set player name and player token ['X', 'O'].
      * @param playerName The name of the player
      * @param playerToken The token of the player ['X', 'O']
+     * @author Joey Campbell
      */
     public Player(String playerName, Token playerToken) {
         this(playerName, playerToken, new Human());
     }
 
+    /**
+     * Constructs a Player object with a set player name, player token ['X', 'O'], and an IPlayerType object
+     * @param playerName The name of the player
+     * @param playerToken The token of the player ['X', 'O']
+     * @param playerType an instance of an IPlayerType interface object
+     * @author Joey Campbell
+     * @author Kord Boniadi
+     */
     public Player(String playerName, Token playerToken, IPlayerType playerType) {
         this.playerName = playerName;
         this.playerToken = playerToken;
@@ -95,12 +107,14 @@ public class Player implements ISubject, IObserver {
     /**
      * Gets the player's name.
      * @return A String holding the player's name
+     * @author Joey Campbell
      */
     public String getPlayerName() { return playerName; }
 
     /**
      * Gets the player's token.
      * @return A char holding the player's token
+     * @author Joey Campbell
      */
     public Token getPlayerToken() { return playerToken; }
 
@@ -111,15 +125,22 @@ public class Player implements ISubject, IObserver {
     /**
      * Sets the player's name.
      * @param playerName A String holding the player's token.
+     * @author Joey Campbell
      */
     public void setPlayerName(String playerName) { this.playerName = playerName; }
 
     /**
      * Sets the player's token.
      * @param playerToken A char holding the player's token.
+     * @author Joey Campbell
      */
     public void setPlayerToken(Token playerToken) { this.playerToken = playerToken; }
 
+    /**
+     * Set's the player's IPlayerType
+     * @param playerType an instance of an IPlayerType object
+     * @author Kord Boniadi
+     */
     public void setPlayerType(IPlayerType playerType) {
         if (this.playerType != null)
             EventManager.unregister(this.playerType, this);
@@ -131,9 +152,15 @@ public class Player implements ISubject, IObserver {
         }
     }
 
+    /**
+     * Update's the state of the Board object with the player's move
+     * @param board the current state of the board
+     * @author Kord Boniadi
+     */
     public void makeMove(Board board) {
         playerType.makeMove(board, playerToken);
     }
+
     /**
      * Checks the equality of two Player objects.
      * @param o The Player that is being checked for equality

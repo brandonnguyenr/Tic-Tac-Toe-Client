@@ -6,26 +6,27 @@ import io.github.donut.proj.utils.Logger;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.awt.*;
 import java.net.URI;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
  * Class that handles the About Us page UI
  *
  * @author Utsav Parajuli
- * @version 0.1
+ * @version 0.2
  */
 public class AboutUsController implements Initializable, ISubject {
 
@@ -34,9 +35,6 @@ public class AboutUsController implements Initializable, ISubject {
 
     @FXML
     private ImageView backButton;
-
-    @FXML
-    private BorderPane aboutUsPage;
 
     @FXML
     private Hyperlink githubLink;
@@ -50,8 +48,16 @@ public class AboutUsController implements Initializable, ISubject {
     @FXML
     private Label info;
 
-    private final Image backButtonIdle = new Image(getClass().getResourceAsStream("../images/common/back_arrow.png"));
-    private final Image backButtonHover = new Image(getClass().getResourceAsStream("../images/common/back_arrow_hover.png"));
+    private final Image backButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
+    ));
+    private final Image backButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
+    ));
 
     /**
      * Called to initialize a controller after its root element has been
@@ -96,9 +102,7 @@ public class AboutUsController implements Initializable, ISubject {
         });
         contributors.setText( "Kord Boniadi, Brandon Nguyen, Grant Goldsworth, Utsav Parajuli, Joey Campbell, Christopher Bassar");
         copyright.setText("Copyright \u00a9 2021 Donut");
-
-
-
+        copyright.setPadding(new Insets(0, 0, 20, 0));
     }
 
     /**

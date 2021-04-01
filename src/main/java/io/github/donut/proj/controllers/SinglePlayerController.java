@@ -1,7 +1,5 @@
 package io.github.donut.proj.controllers;
 
-import static io.github.donut.proj.common.Token.*;
-
 import io.github.donut.proj.PlayerType.Human;
 import io.github.donut.proj.PlayerType.IPlayerType;
 import io.github.donut.proj.PlayerType.NPCEasyMode;
@@ -24,11 +22,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
+
+import static io.github.donut.proj.common.Token.O;
+import static io.github.donut.proj.common.Token.X;
 
 /**
  * Intermediate Screen controller class where the player can enter their name
@@ -36,6 +37,9 @@ import java.util.ResourceBundle;
  * @version 0.3
  */
 public class SinglePlayerController implements Initializable, ISubject {
+
+    @FXML
+    public Label singlePlayerTitle;
 
     @FXML
     public Label title;
@@ -48,9 +52,6 @@ public class SinglePlayerController implements Initializable, ISubject {
 
     @FXML
     private ImageView backButton;
-
-    @FXML
-    private BorderPane intermediatePage;
 
     @FXML
     private Label difficultyLevelTitle;
@@ -70,11 +71,27 @@ public class SinglePlayerController implements Initializable, ISubject {
     @FXML
     private RadioButton hardMode;
 
-    private final Image backButtonIdle = new Image(getClass().getResourceAsStream("../images/common/back_arrow.png"));
-    private final Image backButtonHover = new Image(getClass().getResourceAsStream("../images/common/back_arrow_hover.png"));
+    private final Image backButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
+    ));
+    private final Image backButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
+    ));
 
-    private final Image startButtonIdle = new Image(getClass().getResourceAsStream("../images/theme_2/start_button.png"));
-    private final Image startButtonHover = new Image(getClass().getResourceAsStream("../images/theme_2/start_button_hover.png"));
+    private final Image startButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/theme_2/start_button.png")
+    ));
+    private final Image startButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/theme_2/start_button_hover.png")
+    ));
 
     /**
      * Called to initialize a controller after its root element has been
@@ -87,15 +104,19 @@ public class SinglePlayerController implements Initializable, ISubject {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        //title screen
+        singlePlayerTitle.setText("Single Player Mode");
+        singlePlayerTitle.setAlignment(Pos.TOP_CENTER);
+
         //setting the name entry title
         title.setText("Please Enter Your Name");
-        title.setAlignment(Pos.TOP_CENTER);
+        title.setAlignment(Pos.CENTER);
 
         //name entry box
         nameEntry.setAlignment(Pos.CENTER);
 
-        //TODO: Setting the number of characters the player can use as a name; Here I put
-        //      4 so when you go to enter you can't enter anymore after 4 characters
+        //max number of characters user can enter
         nameEntry.setMaxLength(5);
 
         //start button
@@ -180,8 +201,8 @@ public class SinglePlayerController implements Initializable, ISubject {
 
         // TODO make an actual selection
         GameController game = new GameController(
-                new Player(userName, userToken, new Human()),
-                new Player(cpuLevel, cpuToken, artificialBrain));
+                new Player(userName + " (" + userToken + ")", userToken, new Human()),
+                new Player(cpuLevel + " (" + cpuToken + ")", cpuToken, artificialBrain));
 
         EventManager.notify(this, game);
         EventManager.removeAllObserver(this);

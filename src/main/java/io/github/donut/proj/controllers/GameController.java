@@ -38,6 +38,11 @@ public class GameController implements ISubject, IObserver {
 
     }
 
+    /**
+     * Container for data to be sent out to IObservers subscribed to this class
+     * @see EventManager#notify(ISubject, Object)
+     * @author Kord Boniadi
+     */
     public static class Results {
         private final Player winner;
 
@@ -133,7 +138,7 @@ public class GameController implements ISubject, IObserver {
     }
 
     /**
-     * @return bard instance
+     * @return board instance
      * @author Kord Boniadi
      * @author Brandon Nguyen
      */
@@ -165,6 +170,11 @@ public class GameController implements ISubject, IObserver {
         return swap;
     }
 
+    /**
+     * makes initial connections needed for the start
+     * of a game
+     * @author Kord Boniadi
+     */
     public void startGame() {
         EventManager.register(player1, this);
         EventManager.register(player2, this);
@@ -174,10 +184,21 @@ public class GameController implements ISubject, IObserver {
         swap.makeMove(this.board);
     }
 
+    /**
+     * checks for gameOver state
+     * @return true or false
+     * @author Brandon Nguyen
+     */
     public boolean gameOver() {
         return board.isBoardFull() || hasWon(board) == X || hasWon(board) == O;
     }
 
+    /**
+     * check if a win state was achieved
+     * @param board state of board
+     * @return winning Token
+     * @author Brandon Nguyen
+     */
     public Token hasWon(Board board) {
         Token[][] boardArr = board.getUnderlyingBoard();
 
@@ -223,6 +244,14 @@ public class GameController implements ISubject, IObserver {
         return BLANK;
     }
 
+    /**
+     * Checks who has won if any
+     * @param board current board state
+     * @param player1 instance
+     * @param player2 instance
+     * @return winning Player instance
+     * @author Brandon Nguyen
+     */
     public Player whoWon(Board board, Player player1, Player player2) {
         if (hasWon(board) == player1.getPlayerToken())
             return player1;

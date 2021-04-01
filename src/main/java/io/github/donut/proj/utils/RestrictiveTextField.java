@@ -25,7 +25,7 @@ public class RestrictiveTextField extends TextField {
     private final StringProperty  restrict = new SimpleStringProperty(this, "restrict");
 
     public RestrictiveTextField() {
-        textProperty().addListener(new ChangeListener<String>() {
+        textProperty().addListener(new ChangeListener<>() {
             private boolean ignore;
 
             @Override

@@ -10,7 +10,7 @@ import java.util.Random;
 
 /**
  * @author utsavparajuli
- * @version 3.0
+ * @version 0.2
  *
  * This class will implement the PlayerType interface as an easy difficulty. The logic in making the move for the PlayerType
  * is based on just finding an empty spot.
@@ -53,14 +53,6 @@ public class NPCEasyMode implements IPlayerType {
 
             if (boardAr[y][x] == BLANK)
                 valid = true;
-            //checks if the board is not empty
-//            if (boardAr[y][x] != BLANK) {
-//                // TODO Remove debugging code
-//                System.out.println("That spot is taken already - try again!\n");
-//            }
-//            else {
-//                valid = true;
-//            }
 
         } while (!valid);
 

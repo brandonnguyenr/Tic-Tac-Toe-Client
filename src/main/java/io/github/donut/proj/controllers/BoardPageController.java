@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -61,8 +62,16 @@ public class BoardPageController implements Initializable, IObserver, ISubject {
 
     private final BoardUI board;
     private final GameController game;
-    private final Image backButtonIdle = new Image(getClass().getResourceAsStream("../images/common/back_arrow.png"));
-    private final Image backButtonHover = new Image(getClass().getResourceAsStream("../images/common/back_arrow_hover.png"));
+    private final Image backButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
+    ));
+    private final Image backButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
+    ));
 
     /**
      * Constructor
@@ -97,7 +106,6 @@ public class BoardPageController implements Initializable, IObserver, ISubject {
 
         borderPane.setOnKeyReleased(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                System.out.println("keyPressed");
                 EventSounds.getInstance().playButtonSound4();
                 EventManager.notify(this, new BoardPageController.Finished());
             }
@@ -180,8 +188,8 @@ public class BoardPageController implements Initializable, IObserver, ISubject {
             timeline.setCycleCount(Animation.INDEFINITE);
             timeline.play();
 
-            String result = (temp.getWinner() != null) ? temp.getWinner().getPlayerName() + "(" +
-                    temp.getWinner().getPlayerToken() + ")" +  " won!!!" : "It's a Draw";
+            String result = (temp.getWinner() != null) ? temp.getWinner().getPlayerName() +
+                    " won!!!" : "It's a Draw";
 
             winnerLabel.setText(result);
             borderPane.requestFocus();

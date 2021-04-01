@@ -17,10 +17,10 @@
          <children>
             <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" onMouseClicked="#onBackButtonClick" onMouseEntered="#onBackButtonEnter" onMouseExited="#onBackButtonExit" preserveRatio="true">
                <image>
-                  <Image url="@images/common/back_arrow.png" />
+                  <Image url="@../images/common/back_arrow.png" />
                </image>
             </ImageView>
-            <Label fx:id="title" alignment="TOP_CENTER" text="Multiplayer Mode" />
+            <Label fx:id="multiplayerTitle" alignment="TOP_CENTER" text="Multiplayer Mode" />
          </children></HBox>
    </top>
    <center>
@@ -44,7 +44,7 @@
             </HBox>
             <ImageView fx:id="startButton" fitHeight="98.0" fitWidth="218.0" onMouseClicked="#onStartButtonClick" onMouseEntered="#onStartButtonEnter" onMouseExited="#onStartButtonExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/theme_2/start_button.png" />
+                  <Image url="@../images/theme_2/start_button.png" />
                </image></ImageView>
          </children>
       </VBox>

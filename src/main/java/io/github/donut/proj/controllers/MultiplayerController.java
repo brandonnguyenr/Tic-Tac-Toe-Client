@@ -22,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -77,10 +78,26 @@ public class MultiplayerController implements Initializable, ISubject {
     private Token tokenP1;
     private Token tokenP2;
 
-    private final Image backButtonIdle = new Image(getClass().getResourceAsStream("../images/common/back_arrow.png"));
-    private final Image backButtonHover = new Image(getClass().getResourceAsStream("../images/common/back_arrow_hover.png"));
-    private final Image startButtonIdle = new Image(getClass().getResourceAsStream("../images/theme_2/start_button.png"));
-    private final Image startButtonHover = new Image(getClass().getResourceAsStream("../images/theme_2/start_button_hover.png"));
+    private final Image backButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
+    ));
+    private final Image backButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
+    ));
+    private final Image startButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/theme_2/start_button.png")
+    ));
+    private final Image startButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+            getClassLoader().
+            getResourceAsStream("io/github/donut/proj/images/theme_2/start_button_hover.png")
+    ));
 
     /**
      * Initializes a MultiplayerController object after its root element has been
@@ -97,6 +114,13 @@ public class MultiplayerController implements Initializable, ISubject {
         // Allows the toggling between both player's X/O toggles
         ToggleGroup tokenGroup1 = new ToggleGroup();
         ToggleGroup tokenGroup2 = new ToggleGroup();
+
+        // Makes it so that the radio buttons cannot be
+        //   changed by arrow keys
+        tokenXP1.setFocusTraversable(false);
+        tokenOP1.setFocusTraversable(false);
+        tokenXP2.setFocusTraversable(false);
+        tokenOP2.setFocusTraversable(false);
 
         tokenXP1.setToggleGroup(tokenGroup1);
         tokenOP1.setToggleGroup(tokenGroup1);
@@ -202,8 +226,8 @@ public class MultiplayerController implements Initializable, ISubject {
         }
 
         GameController game = new GameController(
-                new Player(player1Name, tokenP1),
-                new Player(player2Name, tokenP2));
+                new Player(player1Name + " (" + tokenP1 + ")", tokenP1),
+                new Player(player2Name + " (" + tokenP2 + ")", tokenP2));
 
         EventManager.notify(this, game);
         EventManager.removeAllObserver(this);

@@ -63,12 +63,12 @@ public class StartController implements Initializable {
         if (keyEvent.getCode().equals(KeyCode.Z)) {
             EventSounds.getInstance().playButtonSound4();
             Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("../menuPage.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
 
             EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
 
             Scene mainScene = new Scene(root);
-            mainScene.getStylesheets().add((getClass().getResource("../styles.css")).toExternalForm());
+            mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
 
             ((AppController) window.getUserData()).mainScene = mainScene;
 
@@ -76,8 +76,6 @@ public class StartController implements Initializable {
             window.setTitle("Donut Tic Tac Toe");
             window.setScene(mainScene);
             window.setResizable(false);
-            window.show();
-
         }
     }
 }

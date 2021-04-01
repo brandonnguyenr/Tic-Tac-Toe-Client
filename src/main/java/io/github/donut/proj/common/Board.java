@@ -40,7 +40,6 @@ public class Board {
         if ((col > BOARD_COLUMNS || row > BOARD_ROWS) || ( col < 0 || row < 0))
             throw new IllegalArgumentException(String.format("invalid xy position --> (%d, %d):" +
                     "valid bounds are (%d, %d]", col, row, 0, BOARD_ROWS));
-        // grant flipped these
         board[row][col] = c;
     }
 

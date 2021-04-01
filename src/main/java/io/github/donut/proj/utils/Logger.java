@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @see LogManager
  */
 public final class Logger {
-
+    private static boolean production = false;
     private static final int DEFAULT_DEPTH = 4;
     private static java.util.logging.Logger appLogger = java.util.logging.Logger.getLogger("Unknown");
     private static String appName = "Unknown";
@@ -84,6 +84,9 @@ public final class Logger {
             } catch (SecurityException | IOException e) {
                 Logger.log(e);
             }
+            return;
+        } else if (relativePath.equalsIgnoreCase("production")) {
+            production = true;
             return;
         }
 
@@ -185,6 +188,8 @@ public final class Logger {
             initialized = true;
             appLogger.log(Level.WARNING, "Logger was not initialized please do so before using.\n\n");
 //            Logger.log(Level.WARNING, "Logger was not initialized please do so before using.");
+        } else if (production) {
+            return;
         }
         if (lvl.intValue() < appLogger.getLevel().intValue())
             return;

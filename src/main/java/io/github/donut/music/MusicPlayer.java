@@ -1,12 +1,16 @@
 package io.github.donut.music;
 
 import io.github.donut.proj.utils.Logger;
+import io.github.donut.proj.utils.Resources;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +25,8 @@ public final class MusicPlayer {
     private ChangeListener<Duration> progressChangeListener;
     private final ProgressBar progress = new ProgressBar();
     private final List<String> SUPPORTED_FILE_TYPES = Arrays.asList(".mp3", ".wav");
-    private final String musicDirPath = "src/main/resources/io/github/donut/music/";
+    private final String musicDirPath = "io/github/donut/music/";
+    private String[] resourceList;
 
     /**
      * @return one instance of MusicPlayer
@@ -37,20 +42,27 @@ public final class MusicPlayer {
      * @author Kord Boniadi
      */
     private MusicPlayer() {
-        final File dir = new File(musicDirPath);
+        final File dir = new File(Objects.requireNonNull(getClass().getClassLoader().getResource(musicDirPath)).getPath());
         if (!dir.exists() && dir.isDirectory()) {
             Logger.log("Cannot find audio source directory: {0}", dir);
             return;
         }
 
+        try {
+            resourceList = Resources.getResourceListing(MusicPlayer.class, musicDirPath);
+        } catch (UnsupportedOperationException | URISyntaxException | IOException e) {
+            Logger.log(e);
+        }
+
         final List<MediaPlayer> players = new LinkedList<>();
-        for (String file : Objects.requireNonNull(dir.list((dir1, name) -> {
+        for (String file : resourceList) {
             for (String ext : SUPPORTED_FILE_TYPES) {
-                if (name.endsWith(ext))
-                    return true;
+                if (file.endsWith(ext)) {
+                    players.add(createPlayer(file));
+                    break;
+                }
             }
-            return false;
-        }))) players.add(createPlayer(dir + "/" + file));
+        }
 
         if (players.isEmpty()) {
             Logger.log("no audio found in {0}", dir);
@@ -79,7 +91,7 @@ public final class MusicPlayer {
      * @author Kord Boniadi
      */
     private MediaPlayer createPlayer(String filePath) {
-        final MediaPlayer player = new MediaPlayer(new Media(new File(filePath).toURI().toString()));
+        final MediaPlayer player = new MediaPlayer(new Media(getClass().getResource(filePath).toString()));
         player.setVolume(0.2);
         player.setOnError(() -> Logger.log("Media error occurred: {0}", player.getError()));
         return player;

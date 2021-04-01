@@ -1,4 +1,5 @@
 plugins {
+    id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.9'
 }
@@ -23,6 +24,21 @@ javafx {
 
 test {
     useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        output.setResourcesDir(java.outputDir)
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'io.github.donut.Launcher'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 mainClassName = 'io.github.donut.proj.Main'
