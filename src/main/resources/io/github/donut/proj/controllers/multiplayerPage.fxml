@@ -26,15 +26,15 @@
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" translateY="-20" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label id="player1Label" fx:id="player1Name" alignment="TOP_CENTER" text="Enter P1: " />
                   <RestrictiveTextField fx:id="nameEntryMP1" onKeyPressed="#onNameEntered" />
-                  <RadioButton fx:id="tokenXP1" mnemonicParsing="false" onMouseClicked="#onToggleClick1" text="X" translateX="10.0" />
-                  <RadioButton fx:id="tokenOP1" mnemonicParsing="false" onMouseClicked="#onToggleClick1" text="O" translateX="20.0" />
+                  <RadioButton fx:id="tokenXP1" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onToggleClick1" text="X" translateX="10.0" />
+                  <RadioButton fx:id="tokenOP1" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onToggleClick1" text="O" translateX="20.0" />
                </children>
             </HBox>
-            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="800.0">
+            <HBox alignment="CENTER" translateY="-20" prefHeight="100.0" prefWidth="800.0">
                <children>
                   <Label id="player1Label" fx:id="player1Name1" text="Enter P2: " />
                   <RestrictiveTextField fx:id="nameEntryMP2" onKeyPressed="#onNameEntered" />
@@ -42,7 +42,7 @@
                   <RadioButton fx:id="tokenOP2" mnemonicParsing="false" onMouseClicked="#onToggleClick2" text="O" translateX="20.0" />
                </children>
             </HBox>
-            <ImageView fx:id="startButton" fitHeight="98.0" fitWidth="218.0" onMouseClicked="#onStartButtonClick" onMouseEntered="#onStartButtonEnter" onMouseExited="#onStartButtonExit" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="startButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onStartButtonClick" onMouseEntered="#onStartButtonEnter" onMouseExited="#onStartButtonExit" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/theme_2/start_button.png" />
                </image></ImageView>
