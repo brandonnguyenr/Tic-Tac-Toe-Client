@@ -43,7 +43,7 @@
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 25px;
-    -fx-alignment: center;
+    -fx-alignment: top-center;
     -fx-min-width: 600;
     -fx-min-height: 35;
 }
@@ -70,7 +70,6 @@
     -fx-alignment: center;
     -fx-text-fill: white;
 }
-
 #loginTitle {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 25px;
@@ -99,7 +98,21 @@
     -fx-font-size: 20px;
     -fx-text-fill: red;
 }
-#nameEntry, #nameEntryMP1, #nameEntryMP2 {
+
+#nameEntry {
+    -fx-background-color: black;
+    -fx-text-fill: #75a2e1;
+    -fx-alignment: bottom-center;
+    -fx-min-height: 50;
+    -fx-max-height: 50;
+    -fx-min-width: 60;
+    -fx-max-width: 150;
+    -fx-font-size: 20px;
+    -fx-font-family: "Chalkduster";
+}
+
+#nameEntryMP1, #nameEntryMP2 {
+>>>>>>> brought in changes for the updated singleplayer page/style.css page
     -fx-background-color: black;
     -fx-text-fill: #75a2e1;
     -fx-alignment: center;
@@ -125,14 +138,15 @@
 }
 
 #difficultyLevelTitle, #tokenSelectorTitle {
+    -fx-alignment: center;
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 16;
+    -fx-font-size: 18;
 }
 
 #tokenO, #tokenX, #easyMode, #hardMode,
 #tokenXP1, #tokenOP1, #tokenXP2, #tokenOP2 {
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 13;
+    -fx-font-size: 13.5;
     -fx-text-fill: #75a2e1;
 }
 
