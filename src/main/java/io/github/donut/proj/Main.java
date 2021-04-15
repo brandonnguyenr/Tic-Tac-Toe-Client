@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+        System.out.println(GsonWrapper.toJson(MoveData.of("1", 1, 2, "X")));
         new AppController(stage).startApp();
     }
 
