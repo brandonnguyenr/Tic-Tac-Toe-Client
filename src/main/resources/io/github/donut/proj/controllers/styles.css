@@ -78,7 +78,7 @@
 
 #usernameLabel, #passwordLabel, #firstNameLabel, #passwordLabel1, #passwordLabel2, #lastNameLabel {
     -fx-font-family: Chalkduster;
-    -fx-font-size: 24;
+    -fx-font-size: 20;
 }
 
 #usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2 {
@@ -94,6 +94,19 @@
     -fx-font-family: "Chalkduster";
 }
 
+#registrationMessage {
+    -fx-font-family: "Chalkduster";
+    -fx-alignment: center;
+    -fx-text-fill: #37c637;
+    -fx-font-size: 15px;
+    -fx-min-width: 600;
+    -fx-min-height: 40;
+}
+#firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 15;
+    -fx-text-fill: red;
+}
 #errorMessage {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20px;
