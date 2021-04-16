@@ -17,7 +17,7 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" translateY="40.0">
                <children>
                   <Label fx:id="usernameLabel" text="Label" />
-                  <TextField fx:id="usernameEntry" alignment="CENTER" pickOnBounds="false" />
+                  <TextField fx:id="usernameEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" pickOnBounds="false" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" translateY="5.0">

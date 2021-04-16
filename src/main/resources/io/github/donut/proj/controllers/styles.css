@@ -43,7 +43,7 @@
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 25px;
-    -fx-alignment: top-center;
+    -fx-alignment: center;
     -fx-min-width: 600;
     -fx-min-height: 35;
 }
@@ -70,12 +70,13 @@
     -fx-alignment: center;
     -fx-text-fill: white;
 }
+
 #loginTitle {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 25px;
 }
 
-#username, #password {
+#usernameLabel, #passwordLabel {
     -fx-font-family: Chalkduster;
     -fx-font-size: 24;
 }
@@ -98,21 +99,7 @@
     -fx-font-size: 20px;
     -fx-text-fill: red;
 }
-
-#nameEntry {
-    -fx-background-color: black;
-    -fx-text-fill: #75a2e1;
-    -fx-alignment: bottom-center;
-    -fx-min-height: 50;
-    -fx-max-height: 50;
-    -fx-min-width: 60;
-    -fx-max-width: 150;
-    -fx-font-size: 20px;
-    -fx-font-family: "Chalkduster";
-}
-
-#nameEntryMP1, #nameEntryMP2 {
->>>>>>> brought in changes for the updated singleplayer page/style.css page
+#nameEntry, #nameEntryMP1, #nameEntryMP2 {
     -fx-background-color: black;
     -fx-text-fill: #75a2e1;
     -fx-alignment: center;
@@ -127,7 +114,7 @@
 #player1Label {
     -fx-font-family: "Chalkduster";
 }
-#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage {
+#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }
@@ -138,15 +125,14 @@
 }
 
 #difficultyLevelTitle, #tokenSelectorTitle {
-    -fx-alignment: center;
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 18;
+    -fx-font-size: 16;
 }
 
 #tokenO, #tokenX, #easyMode, #hardMode,
 #tokenXP1, #tokenOP1, #tokenXP2, #tokenOP2 {
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 13.5;
+    -fx-font-size: 13;
     -fx-text-fill: #75a2e1;
 }
 

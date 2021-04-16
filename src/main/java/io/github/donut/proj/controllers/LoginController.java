@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -79,7 +80,6 @@ public class LoginController implements Initializable, ISubject {
     }
 
     public void onLoginClicked (MouseEvent actionEvent) throws IOException {
-
         username = usernameEntry.getText();
         password = passwordEntry.getText();
 
@@ -114,13 +114,76 @@ public class LoginController implements Initializable, ISubject {
 
     }
 
-    public void onGuestLoginClicked(MouseEvent mouseEvent) {
+    public void onEnterPressed(KeyEvent keyEvent) throws IOException {
+
+        if(keyEvent.getCode() == KeyCode.ENTER) {
+            username = usernameEntry.getText();
+            password = passwordEntry.getText();
+
+            if (username.equals("admin") && password.equals("donut")) {
+                Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+
+                Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+
+                EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+
+                Scene mainScene = new Scene(root);
+                mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+
+                ((AppController) window.getUserData()).mainScene = mainScene;
+
+                // set the title of the stage
+                window.setTitle("Donut Tic Tac Toe");
+                window.setScene(mainScene);
+                window.setResizable(false);
+            }
+            else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()) {
+                usernameEntry.setStyle("-fx-border-color: red");
+                passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+                errorMessage.setText("Incorrect username/password. Try again!");
+            }
+            else {
+                usernameEntry.setStyle("-fx-border-color: red");
+                passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+                errorMessage.setText("Incorrect username/password. Try again!");
+            }
+        }
     }
 
-    public void onCreateAccountClicked(MouseEvent mouseEvent) {
+    public void onGuestLoginClicked(MouseEvent actionEvent) throws IOException {
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+
+        EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+
+        Scene mainScene = new Scene(root);
+        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+
+        ((AppController) window.getUserData()).mainScene = mainScene;
+
+        // set the title of the stage
+        window.setTitle("Donut Tic Tac Toe");
+        window.setScene(mainScene);
+        window.setResizable(false);
     }
 
-    public void onEnterPressed(KeyEvent keyEvent) {
+    public void onCreateAccountClicked(MouseEvent actionEvent) throws IOException {
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        Parent root = FXMLLoader.load(getClass().getResource("createAccountPage.fxml"));
+
+        EventManager.register(CreateAccountController.getInstance(), (AppController) window.getUserData());
+
+        Scene mainScene = new Scene(root);
+        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+
+        ((AppController) window.getUserData()).mainScene = mainScene;
+
+        // set the title of the stage
+        window.setTitle("Donut Tic Tac Toe");
+        window.setScene(mainScene);
+        window.setResizable(false);
     }
 
     public void onResetClicked(MouseEvent mouseEvent) {
