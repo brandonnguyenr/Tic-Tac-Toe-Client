@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,14 +42,18 @@ public class CreateAccountController implements Initializable, ISubject {
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
     ));
+
     public BorderPane createAccountPage;
-    public HBox firstName;
     public Label firstNameLabel;
     public TextField firstNameEntry;
     public Label lastNameLabel;
     public TextField lastNameEntry;
-    public HBox username;
     public Label usernameLabel;
+    public TextField usernameEntry;
+    public Label passwordLabel1;
+    public PasswordField passwordEntry1;
+    public Label passwordLabel2;
+    public PasswordField passwordEntry2;
 
     /**
      * @return instance of Main screen controller

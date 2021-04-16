@@ -34,14 +34,14 @@
 
             <HBox fx:id="password1" prefHeight="50.0" prefWidth="200.0" />
              <children>
-                 <Label fx:id="passwordLabel" text="Label" />
-                 <PasswordField fx:id="passwordEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" />
+                 <Label fx:id="passwordLabel1" text="Label" />
+                 <PasswordField fx:id="passwordEntry1" alignment="CENTER" onKeyPressed="#onEnterPressed" />
              </children>
 
             <HBox fx:id="password2" prefHeight="50.0" prefWidth="200.0" />
              <children>
-                 <Label fx:id="passwordLabel" text="Label" />
-                 <PasswordField fx:id="passwordEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" />
+                 <Label fx:id="passwordLabel2" text="Label" />
+                 <PasswordField fx:id="passwordEntry2" alignment="CENTER" onKeyPressed="#onEnterPressed" />
              </children>
          </children>
       </VBox>
