@@ -2,15 +2,16 @@ package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -22,11 +23,6 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable, ISubject {
 
-    @FXML
-    public Label test;
-
-    @FXML
-    public Button testButton;
     public BorderPane loginPage;
 
     /*
@@ -37,6 +33,15 @@ public class LoginController implements Initializable, ISubject {
      *  Controller myController = loader.getController();
      *********************************************************************/
     private static LoginController instance;
+
+    public Label loginTitle;
+    public Label username;
+    public TextField usernameEntry;
+    public Label password;
+    public PasswordField passwordEntry;
+    public ImageView loginButton;
+    public ImageView createAccountButton;
+    public ImageView guest;
 
     /**
      * @return instance of Main screen controller
@@ -61,10 +66,12 @@ public class LoginController implements Initializable, ISubject {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        test.setText("TESTING LOGIN PAGE");
+        loginTitle.setText("WELCOME BACK!! Please Login");
+        username.setText("Username: ");
+        password.setText("Password: ");
     }
 
-    public void onLoginClicked (ActionEvent actionEvent) throws IOException {
+    public void onLoginClicked (MouseEvent actionEvent) throws IOException {
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
@@ -81,5 +88,14 @@ public class LoginController implements Initializable, ISubject {
         window.setScene(mainScene);
         window.setResizable(false);
 
+    }
+
+    public void onGuestLoginClicked(MouseEvent mouseEvent) {
+    }
+
+    public void onCreateAccountClicked(MouseEvent mouseEvent) {
+    }
+
+    public void onEnterPressed(KeyEvent keyEvent) {
     }
 }
