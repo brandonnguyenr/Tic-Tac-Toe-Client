@@ -43,6 +43,7 @@ public class LoginController implements Initializable, ISubject {
     public ImageView loginButton;
     public ImageView createAccountButton;
     public ImageView guest;
+    public Label errorMessage;
 
 
     private String username;
@@ -100,6 +101,8 @@ public class LoginController implements Initializable, ISubject {
         else {
             usernameEntry.setStyle("-fx-border-color: red");
             passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+            errorMessage.setText("Incorrect username/password. Try again!");
+
         }
 
     }

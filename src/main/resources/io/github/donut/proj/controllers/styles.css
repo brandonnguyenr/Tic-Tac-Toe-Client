@@ -94,6 +94,11 @@
     -fx-font-family: "Chalkduster";
 }
 
+#errorMessage {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 20px;
+    -fx-text-fill: red;
+}
 #nameEntry, #nameEntryMP1, #nameEntryMP2 {
     -fx-background-color: black;
     -fx-text-fill: #75a2e1;

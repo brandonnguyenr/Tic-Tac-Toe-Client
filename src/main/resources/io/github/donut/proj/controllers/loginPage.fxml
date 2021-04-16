@@ -14,37 +14,38 @@
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="loginTitle" text="Label" />
+            <Label fx:id="errorMessage" translateY="40.0" />
             <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label fx:id="usernameLabel" text="Label" />
                   <TextField fx:id="usernameEntry" alignment="CENTER" />
                </children>
             </HBox>
-            <HBox alignment="BOTTOM_CENTER"  prefHeight="100.0" prefWidth="200.0" translateY="-30">
+            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" translateY="-30">
                <children>
                   <Label fx:id="passwordLabel" text="Label" />
                   <PasswordField fx:id="passwordEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" />
                </children>
             </HBox>
-            <ImageView fx:id="loginButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onLoginClicked" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/icons/login.png" />
-               </image>
-            </ImageView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="createAccountButton" fitHeight="54.0" fitWidth="54.0" translateX="-10" onMouseClicked="#onCreateAccountClicked" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="loginButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onLoginClicked" pickOnBounds="true" preserveRatio="true" translateX="-20.0">
+                     <image>
+                        <Image url="@../images/icons/login.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="createAccountButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onCreateAccountClicked" pickOnBounds="true" preserveRatio="true" translateX="20.0">
                      <image>
                         <Image url="@../images/icons/createAccount.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="guest" fitHeight="54.0" fitWidth="54.0" translateX="20" onMouseClicked="#onGuestLoginClicked" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/icons/guest.png" />
-                     </image>
-                  </ImageView>
                </children>
             </HBox>
+            <ImageView fx:id="guest" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onGuestLoginClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/icons/guest.png" />
+               </image>
+            </ImageView>
          </children>
       </VBox>
    </center>
