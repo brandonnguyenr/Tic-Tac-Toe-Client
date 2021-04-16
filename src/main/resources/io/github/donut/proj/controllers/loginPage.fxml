@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,39 +9,42 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.PasswordField?>
 <BorderPane fx:id="loginPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.donut.proj.controllers.LoginController">
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="loginTitle" text="Label" />
-            <HBox prefHeight="100.0" prefWidth="200.0" alignment="BOTTOM_CENTER">
+            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="username" text="Label" />
-                  <TextField fx:id="usernameEntry" />
+                  <Label fx:id="usernameLabel" text="Label" />
+                  <TextField fx:id="usernameEntry" alignment="CENTER" />
                </children>
             </HBox>
-            <HBox layoutX="10.0" layoutY="27.0" prefHeight="100.0" prefWidth="200.0" alignment="BOTTOM_CENTER">
+            <HBox alignment="BOTTOM_CENTER"  prefHeight="100.0" prefWidth="200.0" translateY="-30">
                <children>
-                  <Label fx:id="password" text="Label" />
-                  <PasswordField fx:id="passwordEntry" onKeyPressed="#onEnterPressed" />
+                  <Label fx:id="passwordLabel" text="Label" />
+                  <PasswordField fx:id="passwordEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" />
                </children>
             </HBox>
-            <ImageView fx:id="loginButton" fitHeight="74.0" fitWidth="99.0" onMouseClicked="#onLoginClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="loginButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onLoginClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/icons/login.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="createAccountButton" fitHeight="74.0" fitWidth="99.0" onMouseClicked="#onCreateAccountClicked" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/icons/createAccount.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="guest" fitHeight="74.0" fitWidth="99.0" onMouseClicked="#onGuestLoginClicked" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/icons/guest.png" />
-               </image>
-            </ImageView>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="createAccountButton" fitHeight="54.0" fitWidth="54.0" translateX="-10" onMouseClicked="#onCreateAccountClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons/createAccount.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="guest" fitHeight="54.0" fitWidth="54.0" translateX="20" onMouseClicked="#onGuestLoginClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons/guest.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </center>

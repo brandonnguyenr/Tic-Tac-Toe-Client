@@ -35,14 +35,17 @@ public class LoginController implements Initializable, ISubject {
     private static LoginController instance;
 
     public Label loginTitle;
-    public Label username;
+    public Label usernameLabel;
     public TextField usernameEntry;
-    public Label password;
+    public Label passwordLabel;
     public PasswordField passwordEntry;
     public ImageView loginButton;
     public ImageView createAccountButton;
     public ImageView guest;
 
+
+    private String username;
+    private String password;
     /**
      * @return instance of Main screen controller
      */
@@ -67,8 +70,10 @@ public class LoginController implements Initializable, ISubject {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loginTitle.setText("WELCOME BACK!! Please Login");
-        username.setText("Username: ");
-        password.setText("Password: ");
+        usernameLabel.setText("Username: ");
+        passwordLabel.setText("Password: ");
+
+        username = usernameEntry.getText()
     }
 
     public void onLoginClicked (MouseEvent actionEvent) throws IOException {
