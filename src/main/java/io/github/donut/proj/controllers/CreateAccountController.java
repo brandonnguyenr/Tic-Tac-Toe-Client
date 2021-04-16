@@ -60,6 +60,18 @@ public class CreateAccountController implements Initializable, ISubject {
     public Label passwordLabel2;
     public PasswordField passwordEntry2;
 
+    @FXML
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        createAccountTitle.setText("CREATE YOUR ACCOUNT");
+
+        firstNameLabel.setText("First Name: ");
+        lastNameLabel.setText ("Last Name:  ");
+        usernameLabel.setText ("Username:   ");
+        passwordLabel1.setText("Password:   ");
+        passwordLabel2.setText("Confirm:    ");
+
+    }
     /**
      * @return instance of Main screen controller
      */
@@ -72,20 +84,6 @@ public class CreateAccountController implements Initializable, ISubject {
      */
     public CreateAccountController() {
         instance = this;
-    }
-
-    @FXML
-    /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     /**
