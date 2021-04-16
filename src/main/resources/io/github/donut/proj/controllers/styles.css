@@ -86,7 +86,7 @@
 #player1Label {
     -fx-font-family: "Chalkduster";
 }
-#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage {
+#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }

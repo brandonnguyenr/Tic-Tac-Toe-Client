@@ -53,6 +53,22 @@ public class AppController implements IObserver {
         Logger.log("program started..");
     }
 
+    public void createLoginPage(LoginController obj) {
+        EventManager.register(obj, this);
+
+        //loads the fxml file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
+
+        //setting the controller
+        loader.setController(obj);
+        try {
+            Scene loginPageScene = new Scene(loader.load());
+            loginPageScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            mainStage.setScene(loginPageScene);
+        } catch (IOException e) {
+            Logger.log(e);
+        }
+    }
     /**
      * AboutPage factory method
      * @param obj instance of Controller with initial params
@@ -184,5 +200,7 @@ public class AppController implements IObserver {
             createBoardPage((GameController) eventType);
         else if (eventType instanceof BoardPageController.Finished)     // checking for Menu page creation
             creatMenuPage();
+        else if (eventType instanceof LoginController)
+                createLoginPage((LoginController) eventType);
     }
 }

@@ -63,9 +63,9 @@ public class StartController implements Initializable {
         if (keyEvent.getCode().equals(KeyCode.Z)) {
             EventSounds.getInstance().playButtonSound4();
             Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("loginPage.fxml"));
 
-            EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+            EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
 
             Scene mainScene = new Scene(root);
             mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
