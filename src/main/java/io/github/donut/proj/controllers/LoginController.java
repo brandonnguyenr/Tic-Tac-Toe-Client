@@ -2,6 +2,7 @@ package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.utils.RestrictiveTextField;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -44,6 +45,7 @@ public class LoginController implements Initializable, ISubject {
     public ImageView createAccountButton;
     public ImageView guest;
     public Label errorMessage;
+    public ImageView resetButton;
 
 
     private String username;
@@ -98,11 +100,16 @@ public class LoginController implements Initializable, ISubject {
             window.setScene(mainScene);
             window.setResizable(false);
         }
+        else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()){
+            usernameEntry.setStyle("-fx-border-color: red");
+            passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+            errorMessage.setText("Incorrect username/password. Try again!");
+        }
+
         else {
             usernameEntry.setStyle("-fx-border-color: red");
             passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
             errorMessage.setText("Incorrect username/password. Try again!");
-
         }
 
     }
@@ -114,5 +121,13 @@ public class LoginController implements Initializable, ISubject {
     }
 
     public void onEnterPressed(KeyEvent keyEvent) {
+    }
+
+    public void onResetClicked(MouseEvent mouseEvent) {
+        errorMessage.setText("");
+        usernameEntry.setStyle("-fx-border-color: khaki");
+        usernameEntry.setText("");
+        passwordEntry.setStyle("-fx-border-color: khaki");
+        passwordEntry.setText("");
     }
 }

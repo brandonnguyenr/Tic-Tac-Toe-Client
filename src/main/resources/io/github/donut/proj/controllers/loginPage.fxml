@@ -14,19 +14,19 @@
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="loginTitle" text="Label" />
-            <Label fx:id="errorMessage" translateY="40.0" />
-            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" translateY="40.0">
                <children>
                   <Label fx:id="usernameLabel" text="Label" />
-                  <TextField fx:id="usernameEntry" alignment="CENTER" />
+                  <TextField fx:id="usernameEntry" alignment="CENTER" pickOnBounds="false" />
                </children>
             </HBox>
-            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" translateY="-30">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" translateY="5.0">
                <children>
                   <Label fx:id="passwordLabel" text="Label" />
                   <PasswordField fx:id="passwordEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" />
                </children>
             </HBox>
+            <Label fx:id="errorMessage" translateY="-10.0" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fx:id="loginButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onLoginClicked" pickOnBounds="true" preserveRatio="true" translateX="-20.0">
@@ -34,9 +34,14 @@
                         <Image url="@../images/icons/login.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="createAccountButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onCreateAccountClicked" pickOnBounds="true" preserveRatio="true" translateX="20.0">
+                  <ImageView fx:id="createAccountButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onCreateAccountClicked" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/icons/createAccount.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resetButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onResetClicked" pickOnBounds="true" preserveRatio="true" translateX="20.0">
+                     <image>
+                        <Image url="@../images/icons/reset.png" />
                      </image>
                   </ImageView>
                </children>
