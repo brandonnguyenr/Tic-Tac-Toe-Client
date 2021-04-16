@@ -30,10 +30,10 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 20px;
+    -fx-font-size: 25px;
     -fx-alignment: center;
     -fx-min-width: 600;
     -fx-min-height: 35;
@@ -76,12 +76,12 @@
     -fx-font-size: 25px;
 }
 
-#usernameLabel, #passwordLabel {
+#usernameLabel, #passwordLabel, #firstNameLabel, #passwordLabel1, #passwordLabel2, #lastNameLabel {
     -fx-font-family: Chalkduster;
     -fx-font-size: 24;
 }
 
-#usernameEntry, #passwordEntry {
+#usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2 {
     -fx-background-color: black;
     -fx-border-color: khaki;
     -fx-text-fill: white;

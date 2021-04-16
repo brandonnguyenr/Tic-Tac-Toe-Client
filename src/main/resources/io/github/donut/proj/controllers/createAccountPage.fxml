@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.PasswordField?>
 <BorderPane fx:id="createAccountPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.donut.proj.controllers.CreateAccountController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-             <HBox fx:id="firstName" prefHeight="50.0" prefWidth="200.0" />
-              <children>
-                 <Label fx:id="firstNameLabel" text="Label" />
-                 <TextField fx:id="firstNameEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" pickOnBounds="false" />
-              </children>
+             <HBox fx:id="firstName" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+               <children>
+                   <Label fx:id="firstNameLabel" text="Label" />
+                   <TextField fx:id="firstNameEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" pickOnBounds="false" />
+               </children> </HBox>
 
-             <HBox fx:id="lastName" prefHeight="50.0" prefWidth="200.0" />
+             <HBox fx:id="lastName" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
               <children>
                  <Label fx:id="lastNameLabel" text="Label" />
                  <TextField fx:id="lastNameEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" pickOnBounds="false" />
-              </children>
+              </children> </HBox>
 
-            <HBox fx:id="username" prefHeight="50.0" prefWidth="200.0" />
+            <HBox fx:id="username" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
              <children>
                  <Label fx:id="usernameLabel" text="Label" />
                  <TextField fx:id="usernameEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" pickOnBounds="false" />
              </children>
+            </HBox>
 
-            <HBox fx:id="password1" prefHeight="50.0" prefWidth="200.0" />
+            <HBox fx:id="password1" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
              <children>
                  <Label fx:id="passwordLabel1" text="Label" />
                  <PasswordField fx:id="passwordEntry1" alignment="CENTER" onKeyPressed="#onEnterPressed" />
              </children>
+            </HBox>
 
-            <HBox fx:id="password2" prefHeight="50.0" prefWidth="200.0" />
+            <HBox fx:id="password2" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
              <children>
                  <Label fx:id="passwordLabel2" text="Label" />
                  <PasswordField fx:id="passwordEntry2" alignment="CENTER" onKeyPressed="#onEnterPressed" />
              </children>
-         </children>
-      </VBox>
+            </HBox>
+
+         </VBox>
    </center>
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -58,4 +59,11 @@
          </children>
       </HBox>
    </top>
+   <bottom>
+      <ImageView fitHeight="56.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" translateY="-9.0" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../images/icons/createAccount.png" />
+         </image>
+      </ImageView>
+   </bottom>
 </BorderPane>

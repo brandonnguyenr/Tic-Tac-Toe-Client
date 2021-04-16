@@ -44,14 +44,19 @@ public class CreateAccountController implements Initializable, ISubject {
     ));
 
     public BorderPane createAccountPage;
+
     public Label firstNameLabel;
     public TextField firstNameEntry;
+
     public Label lastNameLabel;
     public TextField lastNameEntry;
+
     public Label usernameLabel;
     public TextField usernameEntry;
+
     public Label passwordLabel1;
     public PasswordField passwordEntry1;
+
     public Label passwordLabel2;
     public PasswordField passwordEntry2;
 
