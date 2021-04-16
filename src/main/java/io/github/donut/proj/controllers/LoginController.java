@@ -2,6 +2,7 @@ package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -72,26 +73,34 @@ public class LoginController implements Initializable, ISubject {
         loginTitle.setText("WELCOME BACK!! Please Login");
         usernameLabel.setText("Username: ");
         passwordLabel.setText("Password: ");
-
-        username = usernameEntry.getText()
     }
 
     public void onLoginClicked (MouseEvent actionEvent) throws IOException {
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-        Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+        username = usernameEntry.getText();
+        password = passwordEntry.getText();
 
-        EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+        if (username.equals("admin") && password.equals("donut")) {
+            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-        Scene mainScene = new Scene(root);
-        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
 
-        ((AppController) window.getUserData()).mainScene = mainScene;
+            EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
 
-        // set the title of the stage
-        window.setTitle("Donut Tic Tac Toe");
-        window.setScene(mainScene);
-        window.setResizable(false);
+            Scene mainScene = new Scene(root);
+            mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+
+            ((AppController) window.getUserData()).mainScene = mainScene;
+
+            // set the title of the stage
+            window.setTitle("Donut Tic Tac Toe");
+            window.setScene(mainScene);
+            window.setResizable(false);
+        }
+        else {
+            usernameEntry.setStyle("-fx-border-color: red");
+            passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+        }
 
     }
 
