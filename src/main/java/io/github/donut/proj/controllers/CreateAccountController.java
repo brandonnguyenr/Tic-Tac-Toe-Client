@@ -67,6 +67,20 @@ public class CreateAccountController implements Initializable, ISubject {
     public Label registrationMessage;
     public ImageView createAccountButton;
 
+    private final Image createAccountButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/create_account_button.png")
+    ));
+
+    private final Image createAccountButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/create_account_button_hover.png")
+    ));
+    public Label emptyMessage;
+    public Label passwordMessage;
+
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -146,9 +160,9 @@ public class CreateAccountController implements Initializable, ISubject {
                     (passwordEntry2.getText().trim().isEmpty())) {
 
                 //displaying error message
-                registrationMessage.setStyle("-fx-text-fill: red");
+                passwordMessage.setText("");
                 registrationMessage.setText("");
-                registrationMessage.setText("One or more fields empty!");
+                emptyMessage.setText("One or more fields empty!");
 
                 if(firstNameEntry.getText().trim().isEmpty())
                     firstNameEntry.setStyle("-fx-border-color: red");
@@ -192,8 +206,9 @@ public class CreateAccountController implements Initializable, ISubject {
 
             if (!(passwordEntry1.getText().equals(passwordEntry2.getText()))) {
                 passwordEntry2.setStyle("-fx-border-color: red");
+                emptyMessage.setText("");
                 registrationMessage.setText("");
-                registrationMessage.setText("* Please enter matching passwords.");
+                passwordMessage.setText("* Please enter matching passwords.");
             }
 
             if ((passwordEntry1.getText().equals(passwordEntry2.getText())) &&
@@ -201,20 +216,101 @@ public class CreateAccountController implements Initializable, ISubject {
                     !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
                     !(passwordEntry2.getText().trim().isEmpty())) {
 
-                registrationMessage.setText("");
-                registrationMessage.setStyle("-fx-text-fill: #37c637");
+                emptyMessage.setText("");
+                passwordMessage.setText("");
                 registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+                firstNameEntry.clear();
+                lastNameEntry.clear();
+                usernameEntry.clear();
+                passwordEntry1.clear();
+                passwordEntry2.clear();
             }
         }
 
     }
 
-    public void onCreateAccountClick(MouseEvent mouseEvent) {
-    }
-
     public void onCreateAccountEnter(MouseEvent mouseEvent) {
+        createAccountButton.setImage(createAccountButtonHover);
     }
 
     public void onCreateAccountExit(MouseEvent mouseEvent) {
+        createAccountButton.setImage(createAccountButtonIdle);
     }
+
+    public void onCreateAccountClick (MouseEvent actionEvent) {
+
+        //checking if mouse was clciked
+
+        if ((firstNameEntry.getText().trim().isEmpty()) || (lastNameEntry.getText().trim().isEmpty()) ||
+                (usernameEntry.getText().trim().isEmpty()) || (passwordEntry1.getText().trim().isEmpty()) ||
+                (passwordEntry2.getText().trim().isEmpty())) {
+
+            //displaying error message
+            passwordMessage.setText("");
+            registrationMessage.setText("");
+            emptyMessage.setText("One or more fields empty!");
+
+            if(firstNameEntry.getText().trim().isEmpty())
+                firstNameEntry.setStyle("-fx-border-color: red");
+
+            if (lastNameEntry.getText().trim().isEmpty())
+                lastNameEntry.setStyle("-fx-border-color: red");
+
+            if (usernameEntry.getText().trim().isEmpty())
+                usernameEntry.setStyle("-fx-border-color: red");
+
+            if (passwordEntry1.getText().trim().isEmpty())
+                passwordEntry1.setStyle("-fx-border-color: red");
+
+            if (passwordEntry2.getText().trim().isEmpty())
+                passwordEntry2.setStyle("-fx-border-color: red");
+        }
+
+        if (!(firstNameEntry.getText().trim().isEmpty()) || !(lastNameEntry.getText().trim().isEmpty()) ||
+                !(usernameEntry.getText().trim().isEmpty()) || !(passwordEntry1.getText().trim().isEmpty()) ||
+                !(passwordEntry2.getText().trim().isEmpty())) {
+
+//                //displaying error message
+//                registrationMessage.setStyle("-fx-text-fill: red");
+//                registrationMessage.setText("One or more fields empty!");
+
+            if (!(firstNameEntry.getText().trim().isEmpty()))
+                firstNameEntry.setStyle("-fx-border-color: khaki");
+
+            if (!(lastNameEntry.getText().trim().isEmpty()))
+                lastNameEntry.setStyle("-fx-border-color: khaki");
+
+            if (!(usernameEntry.getText().trim().isEmpty()))
+                usernameEntry.setStyle("-fx-border-color: khaki");
+
+            if (!(passwordEntry1.getText().trim().isEmpty()))
+                passwordEntry1.setStyle("-fx-border-color: khaki");
+
+            if (!(passwordEntry2.getText().trim().isEmpty()))
+                passwordEntry2.setStyle("-fx-border-color: khaki");
+        }
+
+        if (!(passwordEntry1.getText().equals(passwordEntry2.getText()))) {
+            passwordEntry2.setStyle("-fx-border-color: red");
+            emptyMessage.setText("");
+            registrationMessage.setText("");
+            passwordMessage.setText("* Please enter matching passwords.");
+        }
+
+        if ((passwordEntry1.getText().equals(passwordEntry2.getText())) &&
+                !(firstNameEntry.getText().trim().isEmpty()) && !(lastNameEntry.getText().trim().isEmpty()) &&
+                !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
+                !(passwordEntry2.getText().trim().isEmpty())) {
+
+            emptyMessage.setText("");
+            passwordMessage.setText("");
+            registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+            firstNameEntry.clear();
+            lastNameEntry.clear();
+            usernameEntry.clear();
+            passwordEntry1.clear();
+            passwordEntry2.clear();
+        }
+    }
+
 }

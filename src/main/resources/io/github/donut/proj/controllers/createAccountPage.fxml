@@ -12,6 +12,13 @@
 <BorderPane fx:id="createAccountPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.donut.proj.controllers.CreateAccountController">
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" translateY="-20.0" BorderPane.alignment="CENTER">
+         <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0">
+            <children>
+               <Label fx:id="registrationMessage" alignment="CENTER" contentDisplay="CENTER" />
+               <Label fx:id="passwordMessage" alignment="CENTER" contentDisplay="CENTER" />
+               <Label fx:id="emptyMessage" alignment="CENTER" contentDisplay="CENTER" />
+            </children>
+         </HBox>
              <HBox fx:id="firstName" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                <children>
                    <Label fx:id="firstNameLabel" text="Label" />
@@ -49,12 +56,11 @@
                <Image url="@../images/icons/create_account_button.png" />
             </image>
          </ImageView>
-         <Label fx:id="registrationMessage" alignment="CENTER" contentDisplay="CENTER" />
 
          </VBox>
    </center>
    <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="60.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" onMouseClicked="#onBackButtonClick" onMouseEntered="#onBackButtonEnter" onMouseExited="#onBackButtonExit" preserveRatio="true">
                <image>

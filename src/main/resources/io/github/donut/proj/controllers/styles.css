@@ -93,14 +93,18 @@
     -fx-font-size: 15px;
     -fx-font-family: "Chalkduster";
 }
+#emptyMessage, #passwordMessage {
+    -fx-font-family: "Chalkduster";
+    -fx-alignment: center;
+    -fx-text-fill: red;
+    -fx-font-size: 15px;
+}
 
 #registrationMessage {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
     -fx-text-fill: #37c637;
     -fx-font-size: 15px;
-    -fx-min-width: 600;
-    -fx-min-height: 40;
 }
 #firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
     -fx-font-family: "Chalkduster";
