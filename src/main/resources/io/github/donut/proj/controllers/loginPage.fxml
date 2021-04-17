@@ -18,39 +18,45 @@
                <children>
                   <Label fx:id="usernameLabel" text="Label" />
                   <TextField fx:id="usernameEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" pickOnBounds="false" />
+                  <ImageView fx:id="resetButton1" disable="true" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onResetClicked" onMouseEntered="#onResetEnter" onMouseExited="#onResetExit" pickOnBounds="true" preserveRatio="true" translateX="10.0" visible="false">
+                     <image>
+                        <Image url="@../images/icons/reset_button.png" />
+                     </image>
+                  </ImageView>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" translateY="5.0">
                <children>
                   <Label fx:id="passwordLabel" text="Label" />
                   <PasswordField fx:id="passwordEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" />
+                  <ImageView fx:id="resetButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onResetClicked" onMouseEntered="#onResetEnter" onMouseExited="#onResetExit" pickOnBounds="true" preserveRatio="true" translateX="10.0">
+                     <image>
+                        <Image url="@../images/icons/reset_button.png" />
+                     </image>
+                  </ImageView>
                </children>
             </HBox>
             <Label fx:id="errorMessage" translateY="-10.0" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="loginButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onLoginClicked" pickOnBounds="true" preserveRatio="true" translateX="-20.0">
+                  <ImageView fx:id="loginButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onLoginClicked" onMouseEntered="#onLoginButtonEnter" onMouseExited="#onLoginButtonExit" pickOnBounds="true" preserveRatio="true" translateX="-20.0">
                      <image>
-                        <Image url="@../images/icons/login.png" />
+                        <Image url="@../images/icons/login_button.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="createAccountButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onCreateAccountClicked" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="createAccountButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onCreateAccountClicked" onMouseEntered="#onCreateAccountEnter" onMouseExited="#onCreateAccountExit" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/icons/createAccount.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="resetButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onResetClicked" pickOnBounds="true" preserveRatio="true" translateX="20.0">
-                     <image>
-                        <Image url="@../images/icons/reset.png" />
+                        <Image url="@../images/icons/create_account_button.png" />
                      </image>
                   </ImageView>
                </children>
             </HBox>
-            <ImageView fx:id="guest" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onGuestLoginClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="guestButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onGuestLoginClicked" onMouseEntered="#onGuestButtonEnter" onMouseExited="#onGuestButtonExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/icons/guest.png" />
+                  <Image url="@../images/icons/account_button.png" />
                </image>
             </ImageView>
+            <Label fx:id="guestLabel" text="Label" />
          </children>
       </VBox>
    </center>

@@ -65,6 +65,7 @@ public class CreateAccountController implements Initializable, ISubject {
     public Label password1Error;
     public Label password2Error;
     public Label registrationMessage;
+    public ImageView createAccountButton;
 
     @FXML
     @Override
@@ -206,5 +207,14 @@ public class CreateAccountController implements Initializable, ISubject {
             }
         }
 
+    }
+
+    public void onCreateAccountClick(MouseEvent mouseEvent) {
+    }
+
+    public void onCreateAccountEnter(MouseEvent mouseEvent) {
+    }
+
+    public void onCreateAccountExit(MouseEvent mouseEvent) {
     }
 }

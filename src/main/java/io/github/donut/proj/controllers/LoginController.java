@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -44,9 +46,10 @@ public class LoginController implements Initializable, ISubject {
     public PasswordField passwordEntry;
     public ImageView loginButton;
     public ImageView createAccountButton;
-    public ImageView guest;
+    public ImageView guestButton;
     public Label errorMessage;
     public ImageView resetButton;
+    public Label guestLabel;
 
 
     private String username;
@@ -64,6 +67,54 @@ public class LoginController implements Initializable, ISubject {
     public LoginController() {
         instance = this;
     }
+
+    private final Image loginButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/login_button.png")
+    ));
+
+    private final Image loginButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/login_button_hover.png")
+    ));
+
+    private final Image createAccountButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/create_account_button.png")
+    ));
+
+    private final Image createAccountButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/create_account_button_hover.png")
+    ));
+
+    private final Image resetButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/reset_button.png")
+    ));
+
+    private final Image resetButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/reset_button_hover.png")
+    ));
+
+    private final Image guestButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/account_button.png")
+    ));
+
+    private final Image guestButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/account_button_hover.png")
+    ));
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -77,6 +128,7 @@ public class LoginController implements Initializable, ISubject {
         loginTitle.setText("WELCOME BACK!! Please Login");
         usernameLabel.setText("Username: ");
         passwordLabel.setText("Password: ");
+        guestLabel.setText("Press to Login as Guest");
     }
 
     public void onLoginClicked (MouseEvent actionEvent) throws IOException {
@@ -192,5 +244,37 @@ public class LoginController implements Initializable, ISubject {
         usernameEntry.setText("");
         passwordEntry.setStyle("-fx-border-color: khaki");
         passwordEntry.setText("");
+    }
+
+    public void onLoginButtonEnter(MouseEvent mouseEvent) {
+        loginButton.setImage(loginButtonHover);
+    }
+
+    public void onLoginButtonExit(MouseEvent mouseEvent) {
+        loginButton.setImage(loginButtonIdle);
+    }
+
+    public void onCreateAccountEnter(MouseEvent mouseEvent) {
+        createAccountButton.setImage(createAccountButtonHover);
+    }
+
+    public void onCreateAccountExit(MouseEvent mouseEvent) {
+        createAccountButton.setImage(createAccountButtonIdle);
+    }
+
+    public void onResetEnter(MouseEvent mouseEvent) {
+        resetButton.setImage(resetButtonHover);
+    }
+
+    public void onResetExit(MouseEvent mouseEvent) {
+        resetButton.setImage(resetButtonIdle);
+    }
+
+    public void onGuestButtonEnter(MouseEvent mouseEvent) {
+        guestButton.setImage(guestButtonHover);
+    }
+
+    public void onGuestButtonExit(MouseEvent mouseEvent) {
+        guestButton.setImage(guestButtonIdle);
     }
 }

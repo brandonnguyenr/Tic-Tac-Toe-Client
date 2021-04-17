@@ -76,7 +76,7 @@
     -fx-font-size: 25px;
 }
 
-#usernameLabel, #passwordLabel, #firstNameLabel, #passwordLabel1, #passwordLabel2, #lastNameLabel {
+#usernameLabel, #passwordLabel, #firstNameLabel, #passwordLabel1, #passwordLabel2, #lastNameLabel, #guestLabel {
     -fx-font-family: Chalkduster;
     -fx-font-size: 20;
 }

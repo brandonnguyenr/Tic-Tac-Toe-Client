@@ -44,6 +44,11 @@
                  <PasswordField fx:id="passwordEntry2" alignment="CENTER" onKeyPressed="#onEnterPressed" />
              </children>
             </HBox>
+         <ImageView fx:id="createAccountButton" fitHeight="56.0" fitWidth="75.0" onMouseClicked="#onCreateAccountClick" onMouseEntered="#onCreateAccountEnter" onMouseExited="#onCreateAccountExit" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/icons/create_account_button.png" />
+            </image>
+         </ImageView>
          <Label fx:id="registrationMessage" alignment="CENTER" contentDisplay="CENTER" />
 
          </VBox>
@@ -60,11 +65,4 @@
          </children>
       </HBox>
    </top>
-   <bottom>
-      <ImageView fitHeight="56.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" translateY="-9.0" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@../images/icons/createAccount.png" />
-         </image>
-      </ImageView>
-   </bottom>
 </BorderPane>
