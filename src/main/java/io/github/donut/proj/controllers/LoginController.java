@@ -2,8 +2,6 @@ package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
-import io.github.donut.proj.utils.RestrictiveTextField;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -25,37 +23,36 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-
+/**
+ * Class that handles the Login Page
+ * @author  : Utsav Parajuli
+ * @version : 0.1
+ */
 public class LoginController implements Initializable, ISubject {
+
+    private static LoginController instance;
 
     public BorderPane loginPage;
 
-    /*
-     *  // By pass the need for this:
-     *  FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
-     *  Parent root = loader.load();
-     *
-     *  Controller myController = loader.getController();
-     *********************************************************************/
-    private static LoginController instance;
-
     public Label loginTitle;
     public Label usernameLabel;
-    public TextField usernameEntry;
     public Label passwordLabel;
-    public PasswordField passwordEntry;
+    public Label errorMessage;
+    public Label guestLabel;
+
+    public TextField usernameEntry;
     public ImageView loginButton;
     public ImageView createAccountButton;
     public ImageView guestButton;
-    public Label errorMessage;
     public ImageView resetButton;
-    public Label guestLabel;
 
+    public PasswordField passwordEntry;
 
     private String username;
     private String password;
+
     /**
-     * @return instance of Main screen controller
+     * @return instance of Login screen controller
      */
     public static LoginController getInstance() {
         return instance;
@@ -68,53 +65,62 @@ public class LoginController implements Initializable, ISubject {
         instance = this;
     }
 
+    //login button idle
     private final Image loginButtonIdle = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/login_button.png")
     ));
 
+    //login button hover
     private final Image loginButtonHover = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/login_button_hover.png")
     ));
 
+    //create account button idle
     private final Image createAccountButtonIdle = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/create_account_button.png")
     ));
 
+    //create account button hover
     private final Image createAccountButtonHover = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/create_account_button_hover.png")
     ));
 
+    //reset button idle
     private final Image resetButtonIdle = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/reset_button.png")
     ));
 
+    //reset button hover
     private final Image resetButtonHover = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/reset_button_hover.png")
     ));
 
+    //guest button idle
     private final Image guestButtonIdle = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/account_button.png")
     ));
 
+    //guest button hover
     private final Image guestButtonHover = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/account_button_hover.png")
     ));
+
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -131,10 +137,19 @@ public class LoginController implements Initializable, ISubject {
         guestLabel.setText("Press to Login as Guest");
     }
 
+    /**
+     * Method that will log you in when the login button is pressed
+     * @param actionEvent mouse click
+     * @throws IOException Exception
+     * @author Utsav Parajuli
+     */
     public void onLoginClicked (MouseEvent actionEvent) throws IOException {
+        //gets the username and password
         username = usernameEntry.getText();
         password = passwordEntry.getText();
 
+        //TODO: for future check with the database
+        //if the username and password match then allow the user to login
         if (username.equals("admin") && password.equals("donut")) {
             Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
@@ -152,26 +167,36 @@ public class LoginController implements Initializable, ISubject {
             window.setScene(mainScene);
             window.setResizable(false);
         }
+        //if the fields are empty
         else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()){
             usernameEntry.setStyle("-fx-border-color: red");
             passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
             errorMessage.setText("Incorrect username/password. Try again!");
         }
-
+        //if the above methods don't pass then incorrect/username password was entered
         else {
             usernameEntry.setStyle("-fx-border-color: red");
             passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
             errorMessage.setText("Incorrect username/password. Try again!");
         }
-
     }
 
+    /**
+     * Method that will log you in when the enter key is pressed
+     * @param keyEvent Enter key pressed
+     * @throws IOException Exception
+     * @author Utsav Parajuli
+     */
     public void onEnterPressed(KeyEvent keyEvent) throws IOException {
 
+        //if the key pressed was an enter then process the code inside
         if(keyEvent.getCode() == KeyCode.ENTER) {
+            //gets the username and password
             username = usernameEntry.getText();
             password = passwordEntry.getText();
 
+            //TODO: for future check with the database
+            //if the username and password match then allow the user to login
             if (username.equals("admin") && password.equals("donut")) {
                 Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
 
@@ -189,11 +214,13 @@ public class LoginController implements Initializable, ISubject {
                 window.setScene(mainScene);
                 window.setResizable(false);
             }
-            else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()) {
+            //if the fields are empty
+            else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()){
                 usernameEntry.setStyle("-fx-border-color: red");
                 passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
                 errorMessage.setText("Incorrect username/password. Try again!");
             }
+            //if the above methods don't pass then incorrect/username password was entered
             else {
                 usernameEntry.setStyle("-fx-border-color: red");
                 passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
@@ -202,6 +229,13 @@ public class LoginController implements Initializable, ISubject {
         }
     }
 
+    /**
+     * This method will take you to the main menu page without logging in. This if for
+     * guest login
+     * @param actionEvent: mouse click
+     * @throws IOException: Exception
+     * @author Utsav Parajuli
+     */
     public void onGuestLoginClicked(MouseEvent actionEvent) throws IOException {
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
@@ -220,6 +254,12 @@ public class LoginController implements Initializable, ISubject {
         window.setResizable(false);
     }
 
+    /**
+     * Handles the event for create account button pressed. Directs user to create Account page
+     * @param actionEvent: mouse click
+     * @throws IOException: Exception
+     * @author Utsav Parajuli
+     */
     public void onCreateAccountClicked(MouseEvent actionEvent) throws IOException {
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
@@ -238,6 +278,11 @@ public class LoginController implements Initializable, ISubject {
         window.setResizable(false);
     }
 
+    /**
+     * This method will reset the text fields and error message for new entry to be entered.
+     * @param mouseEvent: mouse click
+     * @author Utsav Parajuli
+     */
     public void onResetClicked(MouseEvent mouseEvent) {
         errorMessage.setText("");
         usernameEntry.setStyle("-fx-border-color: khaki");
@@ -246,34 +291,74 @@ public class LoginController implements Initializable, ISubject {
         passwordEntry.setText("");
     }
 
+    /**
+     * Event handler for login enter
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
     public void onLoginButtonEnter(MouseEvent mouseEvent) {
         loginButton.setImage(loginButtonHover);
     }
 
+    /**
+     * Event handler for login exit
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
     public void onLoginButtonExit(MouseEvent mouseEvent) {
         loginButton.setImage(loginButtonIdle);
     }
 
+    /**
+     * Event handler for create account enter
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
     public void onCreateAccountEnter(MouseEvent mouseEvent) {
         createAccountButton.setImage(createAccountButtonHover);
     }
 
+    /**
+     * Event handler for create account exit
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
     public void onCreateAccountExit(MouseEvent mouseEvent) {
         createAccountButton.setImage(createAccountButtonIdle);
     }
 
+    /**
+     * Event handler for reset enter
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
     public void onResetEnter(MouseEvent mouseEvent) {
         resetButton.setImage(resetButtonHover);
     }
 
+    /**
+     * Event handler for reset exit
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
     public void onResetExit(MouseEvent mouseEvent) {
         resetButton.setImage(resetButtonIdle);
     }
 
+    /**
+     * Event handler for guest button enter
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
     public void onGuestButtonEnter(MouseEvent mouseEvent) {
         guestButton.setImage(guestButtonHover);
     }
 
+    /**
+     * Event handler for guest button exit
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
     public void onGuestButtonExit(MouseEvent mouseEvent) {
         guestButton.setImage(guestButtonIdle);
     }

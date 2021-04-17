@@ -53,6 +53,11 @@ public class AppController implements IObserver {
         Logger.log("program started..");
     }
 
+    /**
+     * LoginPage factory method
+     * @param obj instance of Controller with initial params
+     * @author Utsav Parajuli
+     */
     public void createLoginPage(LoginController obj) {
         EventManager.register(obj, this);
 
@@ -200,7 +205,7 @@ public class AppController implements IObserver {
             createBoardPage((GameController) eventType);
         else if (eventType instanceof BoardPageController.Finished)     // checking for Menu page creation
             creatMenuPage();
-        else if (eventType instanceof LoginController)
+        else if (eventType instanceof LoginController)                  // checking for Login page creation
                 createLoginPage((LoginController) eventType);
     }
 }
