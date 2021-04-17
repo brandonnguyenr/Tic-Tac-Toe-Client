@@ -2,6 +2,7 @@ package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.utils.Logger;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -155,76 +157,7 @@ public class CreateAccountController implements Initializable, ISubject {
 
         //checking if keycode was enter
         if(keyEvent.getCode() == KeyCode.ENTER) {
-            if ((firstNameEntry.getText().trim().isEmpty()) || (lastNameEntry.getText().trim().isEmpty()) ||
-                    (usernameEntry.getText().trim().isEmpty()) || (passwordEntry1.getText().trim().isEmpty()) ||
-                    (passwordEntry2.getText().trim().isEmpty())) {
-
-                //displaying error message
-                passwordMessage.setText("");
-                registrationMessage.setText("");
-                emptyMessage.setText("One or more fields empty!");
-
-                if(firstNameEntry.getText().trim().isEmpty())
-                    firstNameEntry.setStyle("-fx-border-color: red");
-
-                if (lastNameEntry.getText().trim().isEmpty())
-                    lastNameEntry.setStyle("-fx-border-color: red");
-
-                if (usernameEntry.getText().trim().isEmpty())
-                    usernameEntry.setStyle("-fx-border-color: red");
-
-                if (passwordEntry1.getText().trim().isEmpty())
-                    passwordEntry1.setStyle("-fx-border-color: red");
-
-                if (passwordEntry2.getText().trim().isEmpty())
-                    passwordEntry2.setStyle("-fx-border-color: red");
-            }
-
-            if (!(firstNameEntry.getText().trim().isEmpty()) || !(lastNameEntry.getText().trim().isEmpty()) ||
-                    !(usernameEntry.getText().trim().isEmpty()) || !(passwordEntry1.getText().trim().isEmpty()) ||
-                    !(passwordEntry2.getText().trim().isEmpty())) {
-
-//                //displaying error message
-//                registrationMessage.setStyle("-fx-text-fill: red");
-//                registrationMessage.setText("One or more fields empty!");
-
-                if (!(firstNameEntry.getText().trim().isEmpty()))
-                    firstNameEntry.setStyle("-fx-border-color: khaki");
-
-                if (!(lastNameEntry.getText().trim().isEmpty()))
-                    lastNameEntry.setStyle("-fx-border-color: khaki");
-
-                if (!(usernameEntry.getText().trim().isEmpty()))
-                    usernameEntry.setStyle("-fx-border-color: khaki");
-
-                if (!(passwordEntry1.getText().trim().isEmpty()))
-                    passwordEntry1.setStyle("-fx-border-color: khaki");
-
-                if (!(passwordEntry2.getText().trim().isEmpty()))
-                    passwordEntry2.setStyle("-fx-border-color: khaki");
-            }
-
-            if (!(passwordEntry1.getText().equals(passwordEntry2.getText()))) {
-                passwordEntry2.setStyle("-fx-border-color: red");
-                emptyMessage.setText("");
-                registrationMessage.setText("");
-                passwordMessage.setText("* Please enter matching passwords.");
-            }
-
-            if ((passwordEntry1.getText().equals(passwordEntry2.getText())) &&
-                    !(firstNameEntry.getText().trim().isEmpty()) && !(lastNameEntry.getText().trim().isEmpty()) &&
-                    !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
-                    !(passwordEntry2.getText().trim().isEmpty())) {
-
-                emptyMessage.setText("");
-                passwordMessage.setText("");
-                registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
-                firstNameEntry.clear();
-                lastNameEntry.clear();
-                usernameEntry.clear();
-                passwordEntry1.clear();
-                passwordEntry2.clear();
-            }
+            createAccount();
         }
 
     }
@@ -239,8 +172,11 @@ public class CreateAccountController implements Initializable, ISubject {
 
     public void onCreateAccountClick (MouseEvent actionEvent) {
 
-        //checking if mouse was clciked
+        //checking if mouse was clicked
+        createAccount();
+    }
 
+    private void createAccount() {
         if ((firstNameEntry.getText().trim().isEmpty()) || (lastNameEntry.getText().trim().isEmpty()) ||
                 (usernameEntry.getText().trim().isEmpty()) || (passwordEntry1.getText().trim().isEmpty()) ||
                 (passwordEntry2.getText().trim().isEmpty())) {
@@ -305,12 +241,78 @@ public class CreateAccountController implements Initializable, ISubject {
             emptyMessage.setText("");
             passwordMessage.setText("");
             registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+
+            PlayerInfo newPlayer = new PlayerInfo(firstNameEntry.getText(), lastNameEntry.getText(),
+                                                    usernameEntry.getText(), passwordEntry1.getText());
             firstNameEntry.clear();
             lastNameEntry.clear();
             usernameEntry.clear();
             passwordEntry1.clear();
             passwordEntry2.clear();
+
+            System.out.println(newPlayer.toString());
         }
     }
 
+    static class PlayerInfo {
+        private final String firstName;
+        private final String lastName;
+        private final String username;
+        private final String password;
+
+        public PlayerInfo(String firstName, String lastName, String username, String password) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.username = username;
+            this.password = password;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PlayerInfo that = (PlayerInfo) o;
+            return Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getFirstName(), getLastName(), getUsername(), getPassword());
+        }
+
+        /**
+         * Returns a string representation of the object. In general, the
+         * {@code toString} method returns a string that
+         * "textually represents" this object. The result should
+         * be a concise but informative representation that is easy for a
+         * person to read.
+         *
+         * @return a string representation of the object.
+         */
+        @Override
+        public String toString() {
+            return "PlayerInfo{" +
+                    "firstName='" + firstName + '\'' +
+                    ", lastName='" + lastName + '\'' +
+                    ", username='" + username + '\'' +
+                    ", password='" + password + '\'' +
+                    '}';
+        }
+    }
 }
