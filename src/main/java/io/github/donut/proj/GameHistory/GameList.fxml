@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.stage.*?>
+
+<Stage xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GameHistory.Controller">
+   <scene>
+      <Scene>
+         <BorderPane prefHeight="574.0" prefWidth="785.0">
+            <center>
+                <AnchorPane prefHeight="502.0" prefWidth="559.0">
+                  <children>
+                     <TableView prefHeight="362.0" prefWidth="559.0">
+                       <columns>
+                         <TableColumn prefWidth="75.0" text="Player" />
+                         <TableColumn prefWidth="75.0" text="GameID" />
+                           <TableColumn prefWidth="75.0" text="Start Time" />
+                           <TableColumn prefWidth="75.0" text="End Time" />
+                           <TableColumn prefWidth="75.0" text="Wins" />
+                           <TableColumn prefWidth="75.0" text="Losses" />
+                           <TableColumn prefWidth="75.0" text="Draws" />
+                       </columns>
+                     </TableView>
+                  </children>
+               </AnchorPane>
+            </center>
+            <bottom>
+               <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            </bottom>
+            <top>
+               <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                 <buttons>
+                   <Button minWidth="60.0" mnemonicParsing="false" prefHeight="25.0" text="Move Log" />
+                     <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Player Sort" />
+                     <Button mnemonicParsing="false" text="Game Sort" />
+                     <Button mnemonicParsing="false" text="Start Time Sort" />
+                     <Button mnemonicParsing="false" text="Win Sort" />
+                   <Button mnemonicParsing="false" text="Loss Sort" />
+                     <Button mnemonicParsing="false" text="Tie Sort" />
+                 </buttons>
+               </ButtonBar>
+            </top>
+            <right>
+               <TitledPane animated="false" prefHeight="197.0" prefWidth="145.0" text="Statistics" BorderPane.alignment="CENTER">
+                 <content>
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                           <ListView layoutX="14.0" layoutY="8.0" prefHeight="200.0" prefWidth="200.0" />
+                        </children>
+                     </AnchorPane>
+                 </content>
+               </TitledPane>
+            </right>
+            <left>
+               <TitledPane animated="false" prefHeight="183.0" prefWidth="114.0" text="Move Log" BorderPane.alignment="CENTER">
+                 <content>
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                           <ListView layoutY="-10.0" prefHeight="200.0" prefWidth="200.0" />
+                        </children>
+                     </AnchorPane>
+                 </content>
+               </TitledPane>
+            </left>
+         </BorderPane>
+      </Scene>
+   </scene>
+</Stage>
