@@ -128,29 +128,14 @@ public class LobbyController implements Initializable, ISubject {
 //        lobbyPage.setContent(lobbyVbox);
 
         ArrayList<String> playerList = new ArrayList<>();
-        playerList.add("utsav vs joey");
-        playerList.add("kord vs grant");
-        playerList.add("chris vs brandon");
-        playerList.add("gang vs no");
-        playerList.add("oh vs bro");
-        playerList.add("hell vs no");
-        playerList.add("god vs damn");
-        playerList.add("kord vs grant");
-        playerList.add("chris vs brandon");
-        playerList.add("utsav vs joey");
-        playerList.add("kord vs grant");
-        playerList.add("chris vs brandon");
-        playerList.add("utsav vs joey");
-        playerList.add("kord vs grant");
-        playerList.add("chris vs brandon");
-        playerList.add("utsav vs joey");
-        playerList.add("kord vs grant");
-        playerList.add("chris vs brandon");
 
-        for (int i = 0; i < playerList.size(); i++) {
+        for (int j = 0; j < 50; j++) {
+            playerList.add("Currently Under Development!");
+        }
 
-            Label name = new Label(playerList.get(i));
-            name.setStyle("-fx-font-family: \"Chalkduster\"");
+        for (String s : playerList) {
+            Label name = new Label(s);
+            name.setStyle("-fx-text-fill: rgba(255,255,255,0.69)");
             name.setStyle("-fx-font-size: 12");
 
             ImageView joinGame = new ImageView(joinGamePic);
