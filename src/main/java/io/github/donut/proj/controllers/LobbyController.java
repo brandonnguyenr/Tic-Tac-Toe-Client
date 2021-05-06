@@ -42,14 +42,6 @@ public class LobbyController implements Initializable, ISubject {
     @FXML
     public Label title;
 
-    @FXML
-    public Label player1Name;
-
-    @FXML
-    public RestrictiveTextField nameEntryMP1;
-
-    @FXML
-    public RestrictiveTextField nameEntryMP2;
 
     // Using Utsav's RestrictiveTextField makes it so you cannot
     //   access SceneBuilder. Incase you need to access sceneBuilder for
@@ -64,7 +56,7 @@ public class LobbyController implements Initializable, ISubject {
 //    public TextField nameEntryMP2;
 
     @FXML
-    public ImageView startButton;
+    public ImageView createLobbyButton;
 
     @FXML
     public ScrollPane lobbyPage;
@@ -85,15 +77,15 @@ public class LobbyController implements Initializable, ISubject {
             getClassLoader().
             getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
     ));
-    private final Image startButtonIdle = new Image(Objects.requireNonNull(
+    private final Image createLobbyButtonIdle = new Image(Objects.requireNonNull(
             getClass().
             getClassLoader().
-            getResourceAsStream("io/github/donut/proj/images/theme_2/start_button.png")
+            getResourceAsStream("io/github/donut/proj/images/icons/create_lobby_button.png")
     ));
-    private final Image startButtonHover = new Image(Objects.requireNonNull(
+    private final Image createLobbyButtonHover = new Image(Objects.requireNonNull(
             getClass().
             getClassLoader().
-            getResourceAsStream("io/github/donut/proj/images/theme_2/start_button_hover.png")
+            getResourceAsStream("io/github/donut/proj/images/icons/create_lobby_button_hover.png")
     ));
 
     private final Image lobbyBackground = new Image(Objects.requireNonNull(
@@ -125,6 +117,7 @@ public class LobbyController implements Initializable, ISubject {
 
         lobbyPage.setId("lobbyPage");
 
+        createLobbyButton.setId("createLobbyButton");
 //        lobbyPage.setContent(lobbyViewBg);
 //        lobbyPage.setContent(vboxLobby);
 
@@ -183,7 +176,7 @@ public class LobbyController implements Initializable, ISubject {
      * @author Utsav Parajuli
      * @author Joey Campbell
      */
-    public void onStartButtonClick(MouseEvent actionEvent) {
+    public void onCreateLobbyButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
 //        GameController game = new GameController(
 //                new Player(player1Name + " (" + tokenP1 + ")", tokenP1),
@@ -233,8 +226,8 @@ public class LobbyController implements Initializable, ISubject {
      *
      * @author Utsav Parajuli
      */
-    public void onStartButtonEnter() {
-        startButton.setImage(startButtonHover);
+    public void onCreateLobbyButtonEnter() {
+        createLobbyButton.setImage(createLobbyButtonHover);
     }
 
     /**
@@ -242,7 +235,7 @@ public class LobbyController implements Initializable, ISubject {
      *
      * @author Utsav Parajuli
      */
-    public void onStartButtonExit() {
-        startButton.setImage(startButtonIdle);
+    public void onCreateLobbyButtonExit() {
+        createLobbyButton.setImage(createLobbyButtonIdle);
     }
 }

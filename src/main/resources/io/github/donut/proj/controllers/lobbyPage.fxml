@@ -23,46 +23,14 @@
          </children></HBox>
    </top>
    <bottom>
-      <ImageView fx:id="startButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onStartButtonClick" onMouseEntered="#onStartButtonEnter" onMouseExited="#onStartButtonExit" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="createLobbyButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onCreateLobbyButtonClick" onMouseEntered="#onCreateLobbyButtonEnter" onMouseExited="#onCreateLobbyButtonExit" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@../images/theme_2/start_button.png" />
+            <Image url="@../images/icons/create_lobby_button.png" />
          </image>
       </ImageView>
    </bottom>
    <center>
-      <ScrollPane fx:id="lobbyPage" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <!--            <VBox fx:id="vboxLobby">-->
-         <!--               <children>-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--                  <Label text="Label" />-->
-         <!--               </children>-->
-         <!--            </VBox>-->
-         <!--         </content>-->
+      <ScrollPane fx:id="lobbyPage" prefHeight="200.0" prefWidth="200.0" translateY="-10" BorderPane.alignment="CENTER">
       </ScrollPane>
    </center>
 </BorderPane>

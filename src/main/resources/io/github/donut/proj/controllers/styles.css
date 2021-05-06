@@ -9,9 +9,33 @@
 
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
-    -fx-background-image: null;
 }
 
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 5em;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
+}
 
 #winnerLabel {
     -fx-font-size: 64px;
@@ -94,7 +118,9 @@
 
 
 #lobbyPage {
-    -fx-background-image: url("../images/theme_1/gradient_bluegreen.png");
+    -fx-background-color: transparent;
+    -fx-border-color: khaki;
+    /*-fx-background-image: url("../images/theme_1/gradient_bluegreen.png");*/
 }
 
 #usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2 {
