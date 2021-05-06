@@ -20,11 +20,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -64,10 +67,13 @@ public class LobbyController implements Initializable, ISubject {
     public ImageView startButton;
 
     @FXML
-    public ScrollPane lobbyView;
+    public ScrollPane lobbyPage;
 
     @FXML
     private ImageView backButton;
+
+    @FXML
+    private VBox vboxLobby;
 
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
@@ -96,7 +102,15 @@ public class LobbyController implements Initializable, ISubject {
                     getResourceAsStream("io/github/donut/proj/images/theme_1/gradient_bluegreen.png")
     ));
 
+    private final Image joinGamePic = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/join_game.png")
+    ));
+
     ImageView lobbyViewBg = new ImageView(lobbyBackground);
+
+
     /**
      * Initializes a LobbyController object after its root element has been
      * completely processed.
@@ -109,14 +123,55 @@ public class LobbyController implements Initializable, ISubject {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //lobbyView.setContent(lobbyViewBg);
+        lobbyPage.setId("lobbyPage");
+
+//        lobbyPage.setContent(lobbyViewBg);
+//        lobbyPage.setContent(vboxLobby);
+
+        //TODO: Will need to get the list of rooms (empty or full) and display
+
+        VBox lobbyVbox = new VBox();
+
+//        lobbyPage.setContent(lobbyVbox);
+
+        ArrayList<String> playerList = new ArrayList<>();
+        playerList.add("utsav vs joey");
+        playerList.add("kord vs grant");
+        playerList.add("chris vs brandon");
+        playerList.add("gang vs no");
+        playerList.add("oh vs bro");
+        playerList.add("hell vs no");
+        playerList.add("god vs damn");
+        playerList.add("kord vs grant");
+        playerList.add("chris vs brandon");
+        playerList.add("utsav vs joey");
+        playerList.add("kord vs grant");
+        playerList.add("chris vs brandon");
+        playerList.add("utsav vs joey");
+        playerList.add("kord vs grant");
+        playerList.add("chris vs brandon");
+        playerList.add("utsav vs joey");
+        playerList.add("kord vs grant");
+        playerList.add("chris vs brandon");
+
+        for (int i = 0; i < playerList.size(); i++) {
+
+            Label name = new Label(playerList.get(i));
+            name.setStyle("-fx-font-family: \"Chalkduster\"");
+            name.setStyle("-fx-font-size: 12");
+
+            ImageView joinGame = new ImageView(joinGamePic);
+            joinGame.setFitHeight(20);
+            joinGame.setFitWidth(20);
 
 
-        //lobbyView.setId("lobbyPage");
-        // Makes it so that the radio buttons cannot be
-        //   changed by arrow keys
+            HBox game = new HBox(30, joinGame, name);
 
-        // Uses the RestrictiveTextField to limit names to 5 characters
+            lobbyVbox.setSpacing(10);
+            lobbyVbox.getChildren().add(game);
+        }
+
+        lobbyPage.setContent(lobbyVbox);
     }
 
 
@@ -136,6 +191,8 @@ public class LobbyController implements Initializable, ISubject {
 //
 //        EventManager.notify(this, game);
 //        EventManager.removeAllObserver(this);
+
+
     }
 
     /**
