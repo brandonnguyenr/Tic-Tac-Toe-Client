@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
  * @author Joey Campbell
  * @version 0.1
  */
-public class MultiplayerController implements Initializable, ISubject {
+public class LobbyController implements Initializable, ISubject {
 
     @FXML
     public Label title;
@@ -50,7 +50,7 @@ public class MultiplayerController implements Initializable, ISubject {
 
     // Using Utsav's RestrictiveTextField makes it so you cannot
     //   access SceneBuilder. Incase you need to access sceneBuilder for
-    //   the multiplayerPage.fxml, uncomment the TextField Objects below
+    //   the lobbyPage.fxml, uncomment the TextField Objects below
     //   and commment the RestrictiveTextFields above. Adjust the fxml also
     //   by switching the RestrictiveTextFields to TextFields.
 
@@ -98,7 +98,7 @@ public class MultiplayerController implements Initializable, ISubject {
 
     ImageView lobbyViewBg = new ImageView(lobbyBackground);
     /**
-     * Initializes a MultiplayerController object after its root element has been
+     * Initializes a LobbyController object after its root element has been
      * completely processed.
      *
      * @param location  The location used to resolve relative paths for the root object, or

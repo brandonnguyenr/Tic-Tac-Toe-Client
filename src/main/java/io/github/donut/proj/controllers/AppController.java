@@ -98,6 +98,7 @@ public class AppController implements IObserver {
             createAccountPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(createAccountPageScene);
         } catch (IOException e) {
+            System.out.println("9");
             Logger.log(e);
         }
     }
@@ -171,23 +172,24 @@ public class AppController implements IObserver {
     }
 
     /**
-     * MultiPlayerPage factory method
+     * LobbyPage factory method
      * @param obj instance of Controller with initial params
      * @author Kord Boniadi
+     * @author Utsav Parajuli
      * @author Joey Campbell
      */
-    public void createMultiPlayerPage(MultiplayerController obj) {
+    public void createLobbyPage(LobbyController obj) {
         EventManager.register(obj, this);
 
         //loads the fxml file
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("multiplayerPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("lobbyPage.fxml"));
 
         //setting the controller
         loader.setController(obj);
         try {
-            Scene multiplayerScene = new Scene(loader.load());
-            multiplayerScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
-            mainStage.setScene(multiplayerScene);
+            Scene lobbyScene = new Scene(loader.load());
+            lobbyScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
+            mainStage.setScene(lobbyScene);
         } catch (IOException e) {
             Logger.log(e);
         }
@@ -249,17 +251,19 @@ public class AppController implements IObserver {
             createAboutPage((AboutUsController) eventType);
         else if (eventType instanceof SinglePlayerController)           // checking for Single player page creation
             createSinglePlayerPage((SinglePlayerController) eventType);
-        else if (eventType instanceof MultiplayerController)            // checking for Multi player page creation
-            createMultiPlayerPage((MultiplayerController) eventType);
+        else if (eventType instanceof LobbyController)                  // checking for Multi player page creation
+            createLobbyPage((LobbyController) eventType);
         else if (eventType instanceof GameController)                   // checking for Board page creation
             createBoardPage((GameController) eventType);
         else if (eventType instanceof BoardPageController.Finished)     // checking for Menu page creation
             recreateMenuPage();
         else if (eventType instanceof LoginController)                  // checking for Login page creation
             createLoginPage((LoginController) eventType);
-        else if (eventType instanceof CreateAccountController)
+        else if (eventType instanceof CreateAccountController) {       // checking for Create Account page creation
+            System.out.println("6");
             createCreateAccountPage((CreateAccountController) eventType);
-        else if (eventType instanceof MainController)
+        }
+        else if (eventType instanceof MainController)                   // checking for Main Menu page creation
             createMenuPage((MainController) eventType);
     }
 }

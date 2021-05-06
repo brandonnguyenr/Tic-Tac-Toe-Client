@@ -2,6 +2,7 @@ package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.utils.RestrictiveTextField;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -23,7 +24,7 @@ import java.util.ResourceBundle;
 /**
  * Class that handles the CreateAccount page
  * @author  : Utsav Parajuli
- * @version : 0.1
+ * @version : 0.2
  */
 public class CreateAccountController implements Initializable, ISubject {
 
@@ -41,7 +42,7 @@ public class CreateAccountController implements Initializable, ISubject {
     public ImageView  createAccountButton;
 
     public BorderPane createAccountPage;
-    public TextField  firstNameEntry;
+    public TextField firstNameEntry;
     public TextField  lastNameEntry;
     public TextField  usernameEntry;
 
@@ -116,26 +117,13 @@ public class CreateAccountController implements Initializable, ISubject {
      * @author Utsav Parajuli
      */
     public void onBackButtonClick(MouseEvent actionEvent) throws IOException {
-
-//        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-//        Parent root = FXMLLoader.load(getClass().getResource("loginPage.fxml"));
-//
-//        EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
-//
-//        Scene mainScene = new Scene(root);
-//        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
-//
-//        ((AppController) window.getUserData()).mainScene = mainScene;
-//
-//        // set the title of the stage
-//        window.setTitle("Donut Tic Tac Toe");
-//        window.setScene(mainScene);
-//        window.setResizable(false);
-
+        //Removes all observers to free up memory
         EventManager.removeAllObserver(this);
 
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
+        //Registers the instance of login controller and notifies the event manager from which the
+        //method in AppController is called
         EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
         EventManager.notify(LoginController.getInstance(), LoginController.getInstance());
     }

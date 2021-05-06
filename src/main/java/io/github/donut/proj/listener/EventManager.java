@@ -66,6 +66,7 @@ public final class EventManager {
         DataValidation.ensureObjectNotNull("ISubject", subj);
 
         Set<IObserver> observersReference = eventMap.get(subj);
+        System.out.println("4");
         if (observersReference != null)
             observersReference.forEach(k -> k.update(obj));
     }

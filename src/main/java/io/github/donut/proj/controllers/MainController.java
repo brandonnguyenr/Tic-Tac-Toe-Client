@@ -109,7 +109,7 @@ public class MainController implements Initializable, ISubject {
      */
     public void onMultiPlayerButtonClick(/*MouseEvent mouseEvent*/) {
         EventSounds.getInstance().playButtonSound4();
-        MultiplayerController multiplayer = new MultiplayerController();
+        LobbyController multiplayer = new LobbyController();
         EventManager.notify(this, multiplayer);
     }
 
