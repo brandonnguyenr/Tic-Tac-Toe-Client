@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  */
 public class LoginController implements Initializable, ISubject {
 
-    private static LoginController instance;
+    private static LoginController instance = new LoginController();
 
     public BorderPane loginPage;
 
@@ -151,21 +151,29 @@ public class LoginController implements Initializable, ISubject {
         //TODO: for future check with the database
         //if the username and password match then allow the user to login
         if (username.equals("admin") && password.equals("donut")) {
-            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+//            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+//
+//            Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+//
+//            EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+//
+//            Scene mainScene = new Scene(root);
+//            mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+//
+//            ((AppController) window.getUserData()).mainScene = mainScene;
+//
+//            // set the title of the stage
+//            window.setTitle("Donut Tic Tac Toe");
+//            window.setScene(mainScene);
+//            window.setResizable(false);
 
-            Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
             EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
 
-            Scene mainScene = new Scene(root);
-            mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            EventManager.notify(MainController.getInstance(), MainController.getInstance());
 
-            ((AppController) window.getUserData()).mainScene = mainScene;
-
-            // set the title of the stage
-            window.setTitle("Donut Tic Tac Toe");
-            window.setScene(mainScene);
-            window.setResizable(false);
+            EventManager.removeAllObserver(this);
         }
         //if the fields are empty
         else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()){
@@ -198,30 +206,38 @@ public class LoginController implements Initializable, ISubject {
             //TODO: for future check with the database
             //if the username and password match then allow the user to login
             if (username.equals("admin") && password.equals("donut")) {
-                Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+//                Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+//
+//                Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+//
+//                EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+//
+//                Scene mainScene = new Scene(root);
+//                mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+//
+//                ((AppController) window.getUserData()).mainScene = mainScene;
+//
+//                // set the title of the stage
+//                window.setTitle("Donut Tic Tac Toe");
+//                window.setScene(mainScene);
+//                window.setResizable(false);
 
-                Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+                Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
 
                 EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
 
-                Scene mainScene = new Scene(root);
-                mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+                EventManager.notify(MainController.getInstance(), MainController.getInstance());
 
-                ((AppController) window.getUserData()).mainScene = mainScene;
+                EventManager.removeAllObserver(this);
 
-                // set the title of the stage
-                window.setTitle("Donut Tic Tac Toe");
-                window.setScene(mainScene);
-                window.setResizable(false);
-            }
-            //if the fields are empty
-            else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()){
+
+            } else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()) {
+                //if the fields are empty
                 usernameEntry.setStyle("-fx-border-color: red");
                 passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
                 errorMessage.setText("Incorrect username/password. Try again!");
-            }
-            //if the above methods don't pass then incorrect/username password was entered
-            else {
+
+            } else {    //if the above methods don't pass then incorrect/username password was entered
                 usernameEntry.setStyle("-fx-border-color: red");
                 passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
                 errorMessage.setText("Incorrect username/password. Try again!");
@@ -237,21 +253,30 @@ public class LoginController implements Initializable, ISubject {
      * @author Utsav Parajuli
      */
     public void onGuestLoginClicked(MouseEvent actionEvent) throws IOException {
+//        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+//
+//        Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
+//
+//        EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+//
+//        Scene mainScene = new Scene(root);
+//        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+//
+//        ((AppController) window.getUserData()).mainScene = mainScene;
+//
+//        // set the title of the stage
+//        window.setTitle("Donut Tic Tac Toe");
+//        window.setScene(mainScene);
+//        window.setResizable(false);
+//
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
 
         EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
 
-        Scene mainScene = new Scene(root);
-        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+        EventManager.notify(MainController.getInstance(), MainController.getInstance());
 
-        ((AppController) window.getUserData()).mainScene = mainScene;
-
-        // set the title of the stage
-        window.setTitle("Donut Tic Tac Toe");
-        window.setScene(mainScene);
-        window.setResizable(false);
+//        EventManager.notify(this, new MainController());
+        EventManager.removeAllObserver(this);
     }
 
     /**
@@ -261,21 +286,23 @@ public class LoginController implements Initializable, ISubject {
      * @author Utsav Parajuli
      */
     public void onCreateAccountClicked(MouseEvent actionEvent) throws IOException {
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        Parent root = FXMLLoader.load(getClass().getResource("createAccountPage.fxml"));
-
-        EventManager.register(CreateAccountController.getInstance(), (AppController) window.getUserData());
-
-        Scene mainScene = new Scene(root);
-        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
-
-        ((AppController) window.getUserData()).mainScene = mainScene;
-
-        // set the title of the stage
-        window.setTitle("Donut Tic Tac Toe");
-        window.setScene(mainScene);
-        window.setResizable(false);
+//        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+//
+//        Parent root = FXMLLoader.load(getClass().getResource("createAccountPage.fxml"));
+//
+//        EventManager.register(CreateAccountController.getInstance(), (AppController) window.getUserData());
+//
+//        Scene mainScene = new Scene(root);
+//        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+//
+//        ((AppController) window.getUserData()).mainScene = mainScene;
+//
+//        // set the title of the stage
+//        window.setTitle("Donut Tic Tac Toe");
+//        window.setScene(mainScene);
+//        window.setResizable(false);
+        EventManager.notify(this, new CreateAccountController());
+        EventManager.removeAllObserver(this);
     }
 
     /**

@@ -2,11 +2,8 @@ package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -52,7 +49,7 @@ public class CreateAccountController implements Initializable, ISubject {
     public PasswordField passwordEntry2;
 
     //creates an instance of the controller
-    private static CreateAccountController instance;
+    private static CreateAccountController instance = new CreateAccountController();
 
     //back button idle image
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
@@ -120,20 +117,27 @@ public class CreateAccountController implements Initializable, ISubject {
      */
     public void onBackButtonClick(MouseEvent actionEvent) throws IOException {
 
+//        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+//        Parent root = FXMLLoader.load(getClass().getResource("loginPage.fxml"));
+//
+//        EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
+//
+//        Scene mainScene = new Scene(root);
+//        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+//
+//        ((AppController) window.getUserData()).mainScene = mainScene;
+//
+//        // set the title of the stage
+//        window.setTitle("Donut Tic Tac Toe");
+//        window.setScene(mainScene);
+//        window.setResizable(false);
+
+        EventManager.removeAllObserver(this);
+
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("loginPage.fxml"));
 
         EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
-
-        Scene mainScene = new Scene(root);
-        mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
-
-        ((AppController) window.getUserData()).mainScene = mainScene;
-
-        // set the title of the stage
-        window.setTitle("Donut Tic Tac Toe");
-        window.setScene(mainScene);
-        window.setResizable(false);
+        EventManager.notify(LoginController.getInstance(), LoginController.getInstance());
     }
 
     /**
@@ -290,7 +294,7 @@ public class CreateAccountController implements Initializable, ISubject {
             passwordEntry2.clear();
 
             //TEST
-            System.out.println(newPlayer.toString());
+            System.out.println(newPlayer);
         }
     }
 

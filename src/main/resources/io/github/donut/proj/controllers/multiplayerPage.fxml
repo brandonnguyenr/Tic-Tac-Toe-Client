@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import io.github.donut.proj.utils.RestrictiveTextField?>
+<!--<?import io.github.donut.proj.utils.RestrictiveTextField?>-->
 
 <BorderPane fx:id="multiplayerPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
@@ -20,33 +19,51 @@
                   <Image url="@../images/common/back_arrow.png" />
                </image>
             </ImageView>
-            <Label fx:id="multiplayerTitle" alignment="TOP_CENTER" text="Multiplayer Mode" />
+            <Label fx:id="multiplayerTitle" alignment="TOP_CENTER" text="Multiplayer" />
          </children></HBox>
    </top>
+   <bottom>
+      <ImageView fx:id="startButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onStartButtonClick" onMouseEntered="#onStartButtonEnter" onMouseExited="#onStartButtonExit" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../images/theme_2/start_button.png" />
+         </image>
+      </ImageView>
+   </bottom>
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" translateY="-20" prefHeight="100.0" prefWidth="200.0">
+      <ScrollPane fx:id="lobbyPage" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="vboxLobby">
                <children>
-                  <Label id="player1Label" fx:id="player1Name" alignment="TOP_CENTER" text="Enter P1: " />
-                  <RestrictiveTextField fx:id="nameEntryMP1" onKeyPressed="#onNameEntered" />
-                  <RadioButton fx:id="tokenXP1" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onToggleClick1" text="X" translateX="10.0" />
-                  <RadioButton fx:id="tokenOP1" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onToggleClick1" text="O" translateX="20.0" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
+                  <Label text="Label" />
                </children>
-            </HBox>
-            <HBox alignment="CENTER" translateY="-20" prefHeight="100.0" prefWidth="800.0">
-               <children>
-                  <Label id="player1Label" fx:id="player1Name1" text="Enter P2: " />
-                  <RestrictiveTextField fx:id="nameEntryMP2" onKeyPressed="#onNameEntered" />
-                  <RadioButton fx:id="tokenXP2" mnemonicParsing="false" onMouseClicked="#onToggleClick2" text="X" translateX="10.0" />
-                  <RadioButton fx:id="tokenOP2" mnemonicParsing="false" onMouseClicked="#onToggleClick2" text="O" translateX="20.0" />
-               </children>
-            </HBox>
-            <ImageView fx:id="startButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onStartButtonClick" onMouseEntered="#onStartButtonEnter" onMouseExited="#onStartButtonExit" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/theme_2/start_button.png" />
-               </image></ImageView>
-         </children>
-      </VBox>
+            </VBox>
+         </content>
+      </ScrollPane>
    </center>
 </BorderPane>

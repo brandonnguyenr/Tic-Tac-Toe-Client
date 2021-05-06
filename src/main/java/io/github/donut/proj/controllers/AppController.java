@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Central Hub where all classes interact with
@@ -33,16 +34,23 @@ public class AppController implements IObserver {
     }
 
     /**
+     * Sets the main scene for the main menu page as we use this scene as a cache for back buttons
+     * @param scene : the main menu scene
+     */
+    public void setMainScene(Scene scene) {
+        this.mainScene = scene;
+    }
+    /**
      * Initializes starting page for app
      * @throws IOException failure to initialize *.fxml loader files
      * @author Kord Boniadi
      */
     public void startApp() throws IOException {
         MusicPlayer.getInstance();
-        Parent root = FXMLLoader.load(getClass().getResource("startPage.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("startPage.fxml")));
 
         Scene start = new Scene(root);
-        start.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+        start.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
         mainStage.setUserData(this);
         root.requestFocus();
         // set the title of the stage
@@ -59,8 +67,7 @@ public class AppController implements IObserver {
      * @author Utsav Parajuli
      */
     public void createLoginPage(LoginController obj) {
-        EventManager.register(obj, this);
-
+        //EventManager.register(obj, this);
         //loads the fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
 
@@ -68,12 +75,55 @@ public class AppController implements IObserver {
         loader.setController(obj);
         try {
             Scene loginPageScene = new Scene(loader.load());
-            loginPageScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            loginPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(loginPageScene);
         } catch (IOException e) {
             Logger.log(e);
         }
     }
+
+    /**
+     * CreateAccount factory method
+     * @param obj instance of Controller with initial params
+     * @author Utsav Parajuli
+     */
+    public void createCreateAccountPage(CreateAccountController obj) {
+        //loads the fxml file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("createAccountPage.fxml"));
+
+        //setting the controller
+        loader.setController(obj);
+        try {
+            Scene createAccountPageScene = new Scene(loader.load());
+            createAccountPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
+            mainStage.setScene(createAccountPageScene);
+        } catch (IOException e) {
+            Logger.log(e);
+        }
+    }
+
+    /**
+     * Create Menu Page factory method
+     * @param obj instance of Controller with initial params
+     * @author Utsav Parajuli
+     */
+    public void createMenuPage(MainController obj) {
+        //loads the fxml file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("menuPage.fxml"));
+
+        //setting the controller
+        loader.setController(obj);
+        try {
+            Scene menuPageScene = new Scene(loader.load());
+            menuPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
+
+            setMainScene(menuPageScene);
+            mainStage.setScene(menuPageScene);
+        } catch (IOException e) {
+            Logger.log(e);
+        }
+    }
+
     /**
      * AboutPage factory method
      * @param obj instance of Controller with initial params
@@ -90,7 +140,7 @@ public class AppController implements IObserver {
         loader.setController(obj);
         try {
             Scene aboutUsScene = new Scene(loader.load());
-            aboutUsScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            aboutUsScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(aboutUsScene);
         } catch (IOException e) {
             Logger.log(e);
@@ -113,7 +163,7 @@ public class AppController implements IObserver {
         loader.setController(obj);
         try {
             Scene singlePlayerScene = new Scene(loader.load());
-            singlePlayerScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            singlePlayerScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(singlePlayerScene);
         } catch (IOException e) {
             Logger.log(e);
@@ -136,7 +186,7 @@ public class AppController implements IObserver {
         loader.setController(obj);
         try {
             Scene multiplayerScene = new Scene(loader.load());
-            multiplayerScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            multiplayerScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(multiplayerScene);
         } catch (IOException e) {
             Logger.log(e);
@@ -156,7 +206,7 @@ public class AppController implements IObserver {
         loader.setController(controller);
         try {
             Scene boardScene = new Scene(loader.load());
-            boardScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            boardScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(boardScene);
         } catch (IOException e) {
             Logger.log(e);
@@ -181,7 +231,7 @@ public class AppController implements IObserver {
      * MenuPage factory method
      * @author Kord Boniadi
      */
-    public void creatMenuPage() {
+    public void recreateMenuPage() {
         EventManager.cleanup();
         mainStage.setScene(mainScene);
         EventManager.register(MainController.getInstance(), this);
@@ -204,8 +254,12 @@ public class AppController implements IObserver {
         else if (eventType instanceof GameController)                   // checking for Board page creation
             createBoardPage((GameController) eventType);
         else if (eventType instanceof BoardPageController.Finished)     // checking for Menu page creation
-            creatMenuPage();
+            recreateMenuPage();
         else if (eventType instanceof LoginController)                  // checking for Login page creation
-                createLoginPage((LoginController) eventType);
+            createLoginPage((LoginController) eventType);
+        else if (eventType instanceof CreateAccountController)
+            createCreateAccountPage((CreateAccountController) eventType);
+        else if (eventType instanceof MainController)
+            createMenuPage((MainController) eventType);
     }
 }

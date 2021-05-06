@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,6 +22,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -61,22 +64,10 @@ public class MultiplayerController implements Initializable, ISubject {
     public ImageView startButton;
 
     @FXML
+    public ScrollPane lobbyView;
+
+    @FXML
     private ImageView backButton;
-
-    @FXML
-    public RadioButton tokenXP1;
-
-    @FXML
-    public RadioButton tokenOP1;
-
-    @FXML
-    public RadioButton tokenXP2;
-
-    @FXML
-    public RadioButton tokenOP2;
-
-    private Token tokenP1;
-    private Token tokenP2;
 
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
@@ -99,6 +90,13 @@ public class MultiplayerController implements Initializable, ISubject {
             getResourceAsStream("io/github/donut/proj/images/theme_2/start_button_hover.png")
     ));
 
+    private final Image lobbyBackground = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/theme_1/gradient_bluegreen.png")
+    ));
+
+    ImageView lobbyViewBg = new ImageView(lobbyBackground);
     /**
      * Initializes a MultiplayerController object after its root element has been
      * completely processed.
@@ -111,84 +109,17 @@ public class MultiplayerController implements Initializable, ISubject {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Allows the toggling between both player's X/O toggles
-        ToggleGroup tokenGroup1 = new ToggleGroup();
-        ToggleGroup tokenGroup2 = new ToggleGroup();
+        //lobbyView.setContent(lobbyViewBg);
 
+
+        //lobbyView.setId("lobbyPage");
         // Makes it so that the radio buttons cannot be
         //   changed by arrow keys
-        tokenXP1.setFocusTraversable(false);
-        tokenOP1.setFocusTraversable(false);
-        tokenXP2.setFocusTraversable(false);
-        tokenOP2.setFocusTraversable(false);
-
-        tokenXP1.setToggleGroup(tokenGroup1);
-        tokenOP1.setToggleGroup(tokenGroup1);
-        tokenXP1.setSelected(true);
-
-        tokenXP2.setToggleGroup(tokenGroup2);
-        tokenOP2.setToggleGroup(tokenGroup2);
-        tokenOP2.setSelected(true);
-
-        tokenP1 = X;
-        tokenP2 = O;
 
         // Uses the RestrictiveTextField to limit names to 5 characters
-        nameEntryMP1.setMaxLength(5);
-        nameEntryMP2.setMaxLength(5);
-
-    }
-
-    /**
-     * Allows the user to click enter instead of start once their names are
-     * entered into the text fields
-     * @param keyEvent The key being pressed
-     * @author Utsav Parajuli
-     */
-    public void onNameEntered(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            startGame();
-        }
-    }
-
-    /**
-     * Toggles the P2 radio buttons when a P1 radio button is clicked
-     * i.e. it ensures that players have different tokens
-     * @param actionEvent The mouse click on the radio button
-     * @author Joey Campbell
-     */
-    public void onToggleClick1 (MouseEvent actionEvent) {
-        if (tokenXP1.isSelected()) {
-            tokenOP2.setSelected(true);
-            tokenP1 = X;
-            tokenP2 = O;
-        }
-        else {
-            tokenXP2.setSelected(true);
-            tokenP1 = O;
-            tokenP2 = X;
-        }
     }
 
 
-    /**
-     * Toggles the P1 radio buttons when a P2 radio button is clicked
-     * i.e. it ensures that players have different tokens
-     * @param actionEvent The mouse click on the radio button
-     * @author Joey Campbell
-     */
-    public void onToggleClick2 (MouseEvent actionEvent) {
-        if (tokenXP2.isSelected()) {
-            tokenOP1.setSelected(true);
-            tokenP2 = X;
-            tokenP1 = O;
-        }
-        else {
-            tokenXP1.setSelected(true);
-            tokenP2 = O;
-            tokenP1 = X;
-        }
-    }
 
     /**
      * This method will start the game when the start button is clicked
@@ -199,38 +130,12 @@ public class MultiplayerController implements Initializable, ISubject {
      */
     public void onStartButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
-        startGame();
-    }
-
-    /**
-     * Sets each player's name/token and instantiates a game object with
-     * the two players
-     * @author Joey Campbell
-     */
-    private void startGame() {
-        String player1Name;
-        String player2Name;
-
-        if (nameEntryMP1.getText().isEmpty()) {
-            player1Name = "P1";
-        }
-        else {
-            player1Name = nameEntryMP1.getText();
-        }
-
-        if (nameEntryMP2.getText().isEmpty()) {
-            player2Name = "P2";
-        }
-        else {
-            player2Name = nameEntryMP2.getText();
-        }
-
-        GameController game = new GameController(
-                new Player(player1Name + " (" + tokenP1 + ")", tokenP1),
-                new Player(player2Name + " (" + tokenP2 + ")", tokenP2));
-
-        EventManager.notify(this, game);
-        EventManager.removeAllObserver(this);
+//        GameController game = new GameController(
+//                new Player(player1Name + " (" + tokenP1 + ")", tokenP1),
+//                new Player(player2Name + " (" + tokenP2 + ")", tokenP2));
+//
+//        EventManager.notify(this, game);
+//        EventManager.removeAllObserver(this);
     }
 
     /**

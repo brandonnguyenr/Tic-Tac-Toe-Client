@@ -81,6 +81,14 @@
     -fx-font-size: 20;
 }
 
+#vboxLobby {
+    -fx-border-color: red;
+    -fx-background-color: transparent;
+}
+#lobbyPage{
+    -fx-border-color: green;
+    -fx-background-color: red;
+}
 #usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2 {
     -fx-background-color: black;
     -fx-border-color: khaki;

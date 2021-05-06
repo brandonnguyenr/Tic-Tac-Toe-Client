@@ -94,7 +94,7 @@ public final class MusicPlayer {
         final MediaPlayer player = new MediaPlayer(new Media(getClass().getResource(filePath).toString()));
 
         //TODO: change the volume back to 0.2
-        player.setVolume(0.2);
+        player.setVolume(0.0);
         player.setOnError(() -> Logger.log("Media error occurred: {0}", player.getError()));
         return player;
     }

@@ -39,7 +39,7 @@ public class MainController implements Initializable, ISubject {
      *
      *  Controller myController = loader.getController();
      *********************************************************************/
-    private static MainController instance;
+    private static MainController instance = new MainController();
 
     /**
      * @return instance of Main screen controller
