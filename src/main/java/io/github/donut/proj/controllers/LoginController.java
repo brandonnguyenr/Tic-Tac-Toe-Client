@@ -94,14 +94,14 @@ public class LoginController implements Initializable, ISubject {
     private final Image resetButtonIdle = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/icons/reset_button.png")
+                    getResourceAsStream("io/github/donut/proj/images/icons/reset_button2.png")
     ));
 
     //reset button hover
     private final Image resetButtonHover = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/icons/reset_button_hover.png")
+                    getResourceAsStream("io/github/donut/proj/images/icons/reset_button_hover2.png")
     ));
 
     //guest button idle

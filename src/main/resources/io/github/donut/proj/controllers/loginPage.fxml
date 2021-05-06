@@ -31,7 +31,7 @@
                   <PasswordField fx:id="passwordEntry" alignment="CENTER" onKeyPressed="#onEnterPressed" />
                   <ImageView fx:id="resetButton" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#onResetClicked" onMouseEntered="#onResetEnter" onMouseExited="#onResetExit" pickOnBounds="true" preserveRatio="true" translateX="10.0">
                      <image>
-                        <Image url="@../images/icons/reset_button.png" />
+                        <Image url="@../images/icons/reset_button2.png" />
                      </image>
                   </ImageView>
                </children>

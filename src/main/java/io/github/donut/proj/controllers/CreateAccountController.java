@@ -39,7 +39,7 @@ public class CreateAccountController implements Initializable, ISubject {
     public Label passwordMessage;
 
     public ImageView  backButton;
-    public ImageView  createAccountButton;
+    public ImageView  signUpButton;
 
     public BorderPane createAccountPage;
     public TextField firstNameEntry;
@@ -67,17 +67,17 @@ public class CreateAccountController implements Initializable, ISubject {
     ));
 
     //create account button idle
-    private final Image createAccountButtonIdle = new Image(Objects.requireNonNull(
+    private final Image signUpButtonIdle = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/icons/create_account_button.png")
+                    getResourceAsStream("io/github/donut/proj/images/icons/signup.png")
     ));
 
     //create account button hover
-    private final Image createAccountButtonHover = new Image(Objects.requireNonNull(
+    private final Image signUpButtonHover = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/icons/create_account_button_hover.png")
+                    getResourceAsStream("io/github/donut/proj/images/icons/signup_hover.png")
     ));
 
 
@@ -166,8 +166,8 @@ public class CreateAccountController implements Initializable, ISubject {
      *
      * @author Utsav Parajuli
      */
-    public void onCreateAccountEnter(MouseEvent mouseEvent) {
-        createAccountButton.setImage(createAccountButtonHover);
+    public void onSignUpEnter(MouseEvent mouseEvent) {
+        signUpButton.setImage(signUpButtonHover);
     }
 
     /**
@@ -175,8 +175,8 @@ public class CreateAccountController implements Initializable, ISubject {
      * @param mouseEvent: mouse event
      * @author Utsav Parajuli
      */
-    public void onCreateAccountExit(MouseEvent mouseEvent) {
-        createAccountButton.setImage(createAccountButtonIdle);
+    public void onSignUpExit(MouseEvent mouseEvent) {
+        signUpButton.setImage(signUpButtonIdle);
     }
 
     /**
@@ -185,7 +185,7 @@ public class CreateAccountController implements Initializable, ISubject {
      * @param actionEvent on click
      * @author Utsav Parajuli
      */
-    public void onCreateAccountClick (MouseEvent actionEvent) {
+    public void onSignUpClick (MouseEvent actionEvent) {
         //if mouse was clicked
         createAccount();
     }
