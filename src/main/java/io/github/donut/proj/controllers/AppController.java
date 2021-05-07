@@ -1,7 +1,10 @@
 package io.github.donut.proj.controllers;
 
+import io.github.API.MessagingAPI;
+import io.github.coreutils.proj.messages.Channels;
 import io.github.donut.music.MusicPlayer;
 import io.github.donut.proj.PlayerType.Human;
+import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
@@ -21,6 +24,8 @@ import java.util.Objects;
 public class AppController implements IObserver {
     private final Stage mainStage;
     public Scene mainScene;
+    private MessagingAPI api;
+    private AuthorizationCallback ac;
 
     /**
      * Constructor
@@ -31,9 +36,31 @@ public class AppController implements IObserver {
 //        Logger.init("io/github/donut/proj/configs/logging.properties");
         Logger.init("production");
         this.mainStage = stage;
+
+        try {
+            //creating instance of API
+            api = new MessagingAPI();
+            ac = new AuthorizationCallback();
+
+            api.subscribe()
+                    .channels(Channels.AUTHOR_VALIDATE.toString(),
+                              Channels.AUTHOR_CREATE.toString(),
+                              Channels.PRIVATE + api.getUuid())
+                    .execute();
+
+            api.addEventListener(ac, Channels.AUTHOR_VALIDATE.toString(), Channels.AUTHOR_CREATE.toString(),
+                                 Channels.PRIVATE + api.getUuid());
+        } catch (IOException e) {
+            api.free();
+            e.printStackTrace();
+        }
     }
 
-    /**
+    public MessagingAPI getApi() {
+        return api;
+    }
+
+        /**
      * Sets the main scene for the main menu page as we use this scene as a cache for back buttons
      * @param scene : the main menu scene
      */
@@ -260,7 +287,6 @@ public class AppController implements IObserver {
         else if (eventType instanceof LoginController)                  // checking for Login page creation
             createLoginPage((LoginController) eventType);
         else if (eventType instanceof CreateAccountController) {       // checking for Create Account page creation
-            System.out.println("6");
             createCreateAccountPage((CreateAccountController) eventType);
         }
         else if (eventType instanceof MainController)                   // checking for Main Menu page creation

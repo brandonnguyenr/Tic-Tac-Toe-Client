@@ -1,6 +1,11 @@
 package io.github.donut.proj.controllers;
 
+import io.github.API.MessagingAPI;
+import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.LoginData;
+import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.listener.EventManager;
+import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.utils.RestrictiveTextField;
 import javafx.fxml.Initializable;
@@ -26,7 +31,7 @@ import java.util.ResourceBundle;
  * @author  : Utsav Parajuli
  * @version : 0.2
  */
-public class CreateAccountController implements Initializable, ISubject {
+public class CreateAccountController implements Initializable, ISubject, IObserver {
 
     public Label createAccountTitle;
     public Label firstNameLabel;
@@ -38,16 +43,21 @@ public class CreateAccountController implements Initializable, ISubject {
     public Label emptyMessage;
     public Label passwordMessage;
 
-    public ImageView  backButton;
-    public ImageView  signUpButton;
+    public ImageView backButton;
+    public ImageView signUpButton;
 
     public BorderPane createAccountPage;
     public TextField firstNameEntry;
-    public TextField  lastNameEntry;
-    public TextField  usernameEntry;
+    public TextField lastNameEntry;
+    public TextField usernameEntry;
 
     public PasswordField passwordEntry1;
     public PasswordField passwordEntry2;
+
+    private AuthorizationCallback.ReplyMessage messageList = new AuthorizationCallback.ReplyMessage();
+
+    private AppController appController;
+    private MessagingAPI api;
 
     //creates an instance of the controller
     private static CreateAccountController instance = new CreateAccountController();
@@ -90,8 +100,8 @@ public class CreateAccountController implements Initializable, ISubject {
         createAccountTitle.setText("CREATE YOUR ACCOUNT");
 
         firstNameLabel.setText("First Name  ");
-        lastNameLabel.setText ("Last Name   ");
-        usernameLabel.setText ("Username    ");
+        lastNameLabel.setText("Last Name   ");
+        usernameLabel.setText("Username    ");
         passwordLabel1.setText("Password    ");
         passwordLabel2.setText("Confirm     \nPassword");
     }
@@ -151,10 +161,13 @@ public class CreateAccountController implements Initializable, ISubject {
      *
      * @param keyEvent: the ENTER key pressed
      */
-    public void onEnterPressed(KeyEvent keyEvent) {
+    public void onEnterPressed(KeyEvent keyEvent) throws IOException, InterruptedException {
 
         //checking if keycode was enter
-        if(keyEvent.getCode() == KeyCode.ENTER) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+
+            appController = (AppController) window.getUserData();
             createAccount();
         }
     }
@@ -162,8 +175,8 @@ public class CreateAccountController implements Initializable, ISubject {
 
     /**
      * Event handler for create account button hover
-     * @param mouseEvent mouse event
      *
+     * @param mouseEvent mouse event
      * @author Utsav Parajuli
      */
     public void onSignUpEnter(MouseEvent mouseEvent) {
@@ -172,6 +185,7 @@ public class CreateAccountController implements Initializable, ISubject {
 
     /**
      * Event handler for create account exit
+     *
      * @param mouseEvent: mouse event
      * @author Utsav Parajuli
      */
@@ -185,8 +199,12 @@ public class CreateAccountController implements Initializable, ISubject {
      * @param actionEvent on click
      * @author Utsav Parajuli
      */
-    public void onSignUpClick (MouseEvent actionEvent) {
+    public void onSignUpClick(MouseEvent actionEvent) throws IOException, InterruptedException {
         //if mouse was clicked
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        appController = (AppController) window.getUserData();
+
         createAccount();
     }
 
@@ -196,13 +214,13 @@ public class CreateAccountController implements Initializable, ISubject {
      *
      * @author Utsav Parajuli
      */
-    private void createAccount() {
+    private void createAccount() throws IOException, InterruptedException {
 
         //This conditional statement executes if there are any empty field in the signup page and will display to
         //the user that some fields are empty
-        if  ((firstNameEntry.getText().trim().isEmpty()) || (lastNameEntry.getText().trim().isEmpty())  ||
-             (usernameEntry.getText().trim().isEmpty())  || (passwordEntry1.getText().trim().isEmpty()) ||
-             (passwordEntry2.getText().trim().isEmpty())) {
+        if ((firstNameEntry.getText().trim().isEmpty()) || (lastNameEntry.getText().trim().isEmpty()) ||
+                (usernameEntry.getText().trim().isEmpty()) || (passwordEntry1.getText().trim().isEmpty()) ||
+                (passwordEntry2.getText().trim().isEmpty())) {
 
             //displaying error message
             passwordMessage.setText("");
@@ -211,7 +229,7 @@ public class CreateAccountController implements Initializable, ISubject {
 
             //These conditional statements will check which fields are empty
             //Empty fields will be highlighted red
-            if(firstNameEntry.getText().trim().isEmpty())
+            if (firstNameEntry.getText().trim().isEmpty())
                 firstNameEntry.setStyle("-fx-border-color: red");
 
             if (lastNameEntry.getText().trim().isEmpty())
@@ -229,9 +247,9 @@ public class CreateAccountController implements Initializable, ISubject {
 
         //This conditional statement will check if any of the entries are filled. If the entries are filled
         //the text box will be highlighted back to normal
-        if  (!(firstNameEntry.getText().trim().isEmpty()) || !(lastNameEntry.getText().trim().isEmpty())  ||
-             !(usernameEntry.getText().trim().isEmpty())  || !(passwordEntry1.getText().trim().isEmpty()) ||
-             !(passwordEntry2.getText().trim().isEmpty())) {
+        if (!(firstNameEntry.getText().trim().isEmpty()) || !(lastNameEntry.getText().trim().isEmpty()) ||
+                !(usernameEntry.getText().trim().isEmpty()) || !(passwordEntry1.getText().trim().isEmpty()) ||
+                !(passwordEntry2.getText().trim().isEmpty())) {
 
             //checks if the fields are filled and will change the border back to normal
             if (!(firstNameEntry.getText().trim().isEmpty()))
@@ -260,120 +278,72 @@ public class CreateAccountController implements Initializable, ISubject {
 
         //This condition will check if all the fields are entered and the passwords match
         if ((passwordEntry1.getText().equals(passwordEntry2.getText())) &&
-             !(firstNameEntry.getText().trim().isEmpty()) && !(lastNameEntry.getText().trim().isEmpty())  &&
-             !(usernameEntry.getText().trim().isEmpty())  && !(passwordEntry1.getText().trim().isEmpty()) &&
-             !(passwordEntry2.getText().trim().isEmpty())) {
+                !(firstNameEntry.getText().trim().isEmpty()) && !(lastNameEntry.getText().trim().isEmpty()) &&
+                !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
+                !(passwordEntry2.getText().trim().isEmpty())) {
 
-            //displays the success message
-            emptyMessage.setText("");
-            passwordMessage.setText("");
-            registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
 
-            //TODO: from here send this message to the database and register the user. Made a PlayerInfo class that has
-            // all of the users info
-            PlayerInfo newPlayer = new PlayerInfo(firstNameEntry.getText(), lastNameEntry.getText(),
-                                                  usernameEntry.getText(), passwordEntry1.getText());
+//            MessagingAPI api = new MessagingAPI();
+//
+//            api.subscribe()
+//                    .channels(Channels.PRIVATE + api.getUuid())
+//                    .execute();
+//
+//            api.addEventListener(new AuthorizationCallback(), Channels.PRIVATE + api.getUuid());
+//
+//            api.publish()
+//                    .message(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
+//                            lastNameEntry.getText(), passwordEntry1.getText()))
+//                    .channel(Channels.AUTHOR_CREATE.toString())
+//                    .execute();
 
-            //clears the entry
-            firstNameEntry.clear();
-            lastNameEntry.clear();
-            usernameEntry.clear();
-            passwordEntry1.clear();
-            passwordEntry2.clear();
 
-            //TEST
-            System.out.println(newPlayer);
+            api = appController.getApi();
+            api.publish()
+                    .message(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
+                            lastNameEntry.getText(), passwordEntry1.getText()))
+                    .channel(Channels.AUTHOR_CREATE.toString())
+                    .execute();
+
+            System.out.println("1");
+
+                System.out.println(messageList.isAccountCreation());
+                if (messageList.isAccountCreation()) {
+                    System.out.println("2");
+                    emptyMessage.setText("");
+                    passwordMessage.setText("");
+                    registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+
+                    //TODO: from here send this message to the database and register the user. Made a PlayerInfo class that has
+                    // all of the users info
+
+                    //clears the entry
+                } else {
+                    registrationMessage.setText("");
+                    passwordMessage.setText("");
+                    emptyMessage.setText("USER ALREADY EXISTS");
+
+                    //clears the entry
+                }
+                firstNameEntry.clear();
+                lastNameEntry.clear();
+                usernameEntry.clear();
+                passwordEntry1.clear();
+                passwordEntry2.clear();
+            }
         }
-    }
+            //displays the success message
+
 
     /**
-     * This class will include all of the info of the user that registered. Can be used as a data packet to send to
-     * database
-     * @author Utsav Parajuli
+     * New info is received through this method. Object decoding is needed
+     *
+     * @param eventType General Object type
+     * @author Kord Boniadi
      */
-    static class PlayerInfo {
-        private final String firstName;
-        private final String lastName;
-        private final String username;
-        private final String password;
-
-        /**
-         * Constructor
-         * @param firstName: first name
-         * @param lastName: last name
-         * @param username: username
-         * @param password: password
-         */
-        public PlayerInfo(String firstName, String lastName, String username, String password) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.username = username;
-            this.password = password;
-        }
-
-        /**
-         * Returns firstname
-         * @return firstname
-         */
-        public String getFirstName() {
-            return firstName;
-        }
-
-        /**
-         * Returns last name
-         * @return last name
-         */
-        public String getLastName() {
-            return lastName;
-        }
-
-        /**
-         * Returns username
-         * @return username
-         */
-        public String getUsername() {
-            return username;
-        }
-
-        /**
-         * Returns password
-         * @return password
-         */
-        public String getPassword() {
-            return password;
-        }
-
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            PlayerInfo that = (PlayerInfo) o;
-            return Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(getFirstName(), getLastName(), getUsername(), getPassword());
-        }
-
-        /**
-         * Returns a string representation of the object. In general, the
-         * {@code toString} method returns a string that
-         * "textually represents" this object. The result should
-         * be a concise but informative representation that is easy for a
-         * person to read.
-         *
-         * @return a string representation of the object.
-         */
-        @Override
-        public String toString() {
-            return "PlayerInfo{" +
-                    "firstName='" + firstName + '\'' +
-                    ", lastName='" + lastName + '\'' +
-                    ", username='" + username + '\'' +
-                    ", password='" + password + '\'' +
-                    '}';
-        }
+    @Override
+    public void update(Object eventType) {
+        if (eventType instanceof AuthorizationCallback.ReplyMessage)
+            messageList = (AuthorizationCallback.ReplyMessage) eventType;
     }
 }

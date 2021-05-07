@@ -1,5 +1,9 @@
 package io.github.donut.proj.controllers;
 
+import io.github.API.MessagingAPI;
+import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.LoginData;
+import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import javafx.fxml.Initializable;
@@ -28,6 +32,8 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable, ISubject {
 
     private static LoginController instance = new LoginController();
+
+    private static boolean status = false;
 
     public BorderPane loginPage;
 
@@ -184,10 +190,23 @@ public class LoginController implements Initializable, ISubject {
             //gets the username and password
             username = usernameEntry.getText();
             password = passwordEntry.getText();
+//
+//            MessagingAPI api = new MessagingAPI();
+//
+//            api.subscribe()
+//                    .channels(Channels.PRIVATE + api.getUuid())
+//                    .execute();
+//
+//            api.addEventListener(new AuthorizationCallback(), Channels.PRIVATE + api.getUuid());
+//
+//            api.publish()
+//                    .message(new LoginData(username,null, null, password))
+//                    .channel(Channels.AUTHOR_VALIDATE.toString())
+//                    .execute();
 
             //TODO: for future check with the database
             //if the username and password match then allow the user to login
-            if (username.equals("admin") && password.equals("donut")) {
+            if (status) {
 
                 Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
 
@@ -220,7 +239,10 @@ public class LoginController implements Initializable, ISubject {
      */
     public void onGuestLoginClicked(MouseEvent actionEvent) throws IOException {
 
+
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+//        AppController appC = (AppController) window.getUserData();
 
         EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
 

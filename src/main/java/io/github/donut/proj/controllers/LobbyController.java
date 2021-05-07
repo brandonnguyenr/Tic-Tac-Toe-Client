@@ -42,19 +42,6 @@ public class LobbyController implements Initializable, ISubject {
     @FXML
     public Label title;
 
-
-    // Using Utsav's RestrictiveTextField makes it so you cannot
-    //   access SceneBuilder. Incase you need to access sceneBuilder for
-    //   the lobbyPage.fxml, uncomment the TextField Objects below
-    //   and commment the RestrictiveTextFields above. Adjust the fxml also
-    //   by switching the RestrictiveTextFields to TextFields.
-
-//    @FXML
-//    public TextField nameEntryMP1;
-//
-//    @FXML
-//    public TextField nameEntryMP2;
-
     @FXML
     public ImageView createLobbyButton;
 

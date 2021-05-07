@@ -71,6 +71,8 @@ public class StartController implements Initializable, ISubject {
             EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
 
             EventManager.notify(LoginController.getInstance(), LoginController.getInstance());
+
+
         }
     }
 }
