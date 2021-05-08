@@ -7,8 +7,8 @@ import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
-import io.github.donut.proj.utils.Logger;
 import io.github.donut.sounds.EventSounds;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -53,10 +53,11 @@ public class LoginController implements Initializable, ISubject, IObserver {
 
     public PasswordField passwordEntry;
 
-    private AuthorizationCallback.ReplyMessage messageList;
+    private AuthorizationCallback.LoginMessage messageList;
 
     private AppController appController;
     private MessagingAPI api;
+    private Stage windowUpdate;
 
     /**
      * @return instance of Login screen controller
@@ -153,8 +154,16 @@ public class LoginController implements Initializable, ISubject, IObserver {
         EventSounds.getInstance().playButtonSound4();
         //gets the username and password
 
+        if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()) {
+            //if the fields are empty
+            usernameEntry.setStyle("-fx-border-color: red");
+            passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+            errorMessage.setText("Username/Password fields needed");
+        }
 
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        windowUpdate = window;
 
         appController = (AppController) window.getUserData();
 
@@ -164,33 +173,6 @@ public class LoginController implements Initializable, ISubject, IObserver {
                 .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
                 .channel(Channels.AUTHOR_VALIDATE.toString())
                 .execute();
-
-//        System.out.println(Thread.currentThread().toString());
-//        Thread.yield();
-
-        //TODO: for future check with the database
-
-
-        //if the username and password match then allow the user to login
-        if (messageList.isLoginValidation()) {
-            EventManager.register(MainController.getInstance(), appController);
-
-            EventManager.notify(MainController.getInstance(), MainController.getInstance());
-
-            EventManager.removeAllObserver(this);
-        }
-        //if the fields are empty
-        else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()){
-            usernameEntry.setStyle("-fx-border-color: red");
-            passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-            errorMessage.setText("Incorrect username/password. Try again!");
-        }
-        //if the above methods don't pass then incorrect/username password was entered
-        else {
-            usernameEntry.setStyle("-fx-border-color: red");
-            passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-            errorMessage.setText("Incorrect username/password. Try again!");
-        }
     }
 
     /**
@@ -207,36 +189,26 @@ public class LoginController implements Initializable, ISubject, IObserver {
 
             EventSounds.getInstance().playButtonSound4();
 
+            if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()) {
+                //if the fields are empty
+                usernameEntry.setStyle("-fx-border-color: red");
+                passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+                errorMessage.setText("Username/Password fields needed");
+            }
+
             Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+
+            windowUpdate = window;
 
             appController = (AppController) window.getUserData();
 
             api = appController.getApi();
 
+            System.out.println("1");
             api.publish()
                     .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
                     .channel(Channels.AUTHOR_VALIDATE.toString())
                     .execute();
-            //TODO: for future check with the database
-            //if the username and password match then allow the user to login
-            if (messageList.isLoginValidation()) {
-                EventManager.register(MainController.getInstance(), appController);
-
-                EventManager.notify(MainController.getInstance(), MainController.getInstance());
-
-                EventManager.removeAllObserver(this);
-
-            } else if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()) {
-                //if the fields are empty
-                usernameEntry.setStyle("-fx-border-color: red");
-                passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-                errorMessage.setText("Incorrect username/password. Try again!");
-
-            } else {    //if the above methods don't pass then incorrect/username password was entered
-                usernameEntry.setStyle("-fx-border-color: red");
-                passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-                errorMessage.setText("Incorrect username/password. Try again!");
-            }
         }
     }
 
@@ -244,16 +216,13 @@ public class LoginController implements Initializable, ISubject, IObserver {
      * This method will take you to the main menu page without logging in. This if for
      * guest login
      * @param actionEvent: mouse click
-     * @throws IOException: Exception
      * @author Utsav Parajuli
      */
-    public void onGuestLoginClicked(MouseEvent actionEvent) throws IOException {
+    public void onGuestLoginClicked(MouseEvent actionEvent) {
 
         EventSounds.getInstance().playButtonSound4();
 
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-//        AppController appC = (AppController) window.getUserData();
 
         EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
 
@@ -265,15 +234,14 @@ public class LoginController implements Initializable, ISubject, IObserver {
     /**
      * Handles the event for create account button pressed. Directs user to create Account page
      * @param actionEvent: mouse click
-     * @throws IOException: Exception
      * @author Utsav Parajuli
      */
-    public void onCreateAccountClicked(MouseEvent actionEvent) throws IOException {
+    public void onCreateAccountClicked(MouseEvent actionEvent) {
 
         EventSounds.getInstance().playButtonSound4();
-        Logger.log("BRO");
-        System.out.println(((Node)actionEvent.getSource()).getScene().getWindow());
+
         EventManager.notify(this, CreateAccountController.getInstance());
+
         EventManager.removeAllObserver(this);
 
     }
@@ -373,7 +341,26 @@ public class LoginController implements Initializable, ISubject, IObserver {
 
     @Override
     public void update(Object eventType) {
-        if (eventType instanceof AuthorizationCallback.ReplyMessage)
-            messageList = (AuthorizationCallback.ReplyMessage) eventType;
+        if (eventType instanceof AuthorizationCallback.LoginMessage) {
+            messageList = (AuthorizationCallback.LoginMessage) eventType;
+
+            Platform.runLater(()-> {
+                //if the username and password match then allow the user to login
+                if (messageList.isLoginValidation()) {
+                    EventManager.register(MainController.getInstance(), (AppController) windowUpdate.getUserData());
+
+                    EventManager.notify(MainController.getInstance(), MainController.getInstance());
+
+                    EventManager.removeAllObserver(this);
+                } else {    //if the above methods don't pass then incorrect/username password was entered
+                    usernameEntry.setStyle("-fx-border-color: red");
+                    passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+                    errorMessage.setText("Incorrect username/password. Try again!");
+                }
+            });
+
+            usernameEntry.clear();
+            passwordEntry.clear();
+        }
     }
 }

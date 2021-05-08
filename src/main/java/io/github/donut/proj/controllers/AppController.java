@@ -33,7 +33,7 @@ public class AppController implements IObserver {
      * @author Kord Boniadis
      */
     public AppController(Stage stage) {
-       // Logger.init("io/github/donut/proj/configs/logging.properties");
+        Logger.init("io/github/donut/proj/configs/logging.properties");
         //Logger.init("production");
         this.mainStage = stage;
 

@@ -7,8 +7,6 @@ import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
-import io.github.donut.proj.utils.Logger;
-import io.github.donut.proj.utils.RestrictiveTextField;
 import io.github.donut.sounds.EventSounds;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
@@ -57,7 +55,7 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
     public PasswordField passwordEntry1;
     public PasswordField passwordEntry2;
 
-    private AuthorizationCallback.ReplyMessage messageList;
+    private AuthorizationCallback.CreateMessage messageList;
 
     private MessagingAPI api;
     private AppController appController;
@@ -359,28 +357,26 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      */
     @Override
     public void update(Object eventType) {
-        if (eventType instanceof AuthorizationCallback.ReplyMessage)
-            messageList = (AuthorizationCallback.ReplyMessage) eventType;
+        if (eventType instanceof AuthorizationCallback.CreateMessage) {
+            messageList = (AuthorizationCallback.CreateMessage) eventType;
 
-        Logger.log("outside");
-
-        Platform.runLater(()->{
-            if(messageList.isAccountCreation()) {
-                emptyMessage.setText("");
-                passwordMessage.setText("");
-                registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
-            } else {
-                registrationMessage.setText("");
-                emptyMessage.setText("USER ALREADY EXISTS");
-                passwordMessage.setText("");
-            }
-            //clears the entry
-            firstNameEntry.clear();
-            lastNameEntry.clear();
-            usernameEntry.clear();
-            passwordEntry1.clear();
-            passwordEntry2.clear();
-            Logger.log("inside");
-        });
+            Platform.runLater(()->{
+                if(messageList.isAccountCreation()) {
+                    emptyMessage.setText("");
+                    passwordMessage.setText("");
+                    registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+                } else {
+                    registrationMessage.setText("");
+                    emptyMessage.setText("USER ALREADY EXISTS");
+                    passwordMessage.setText("");
+                }
+                //clears the entry
+                firstNameEntry.clear();
+                lastNameEntry.clear();
+                usernameEntry.clear();
+                passwordEntry1.clear();
+                passwordEntry2.clear();
+            });
+        }
     }
 }
