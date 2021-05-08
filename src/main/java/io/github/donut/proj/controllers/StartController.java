@@ -72,7 +72,7 @@ public class StartController implements Initializable, ISubject {
 
             EventManager.notify(LoginController.getInstance(), LoginController.getInstance());
 
-
+            EventManager.removeAllObserver(this);
         }
     }
 }

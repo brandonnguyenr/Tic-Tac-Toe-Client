@@ -33,8 +33,8 @@ public class AppController implements IObserver {
      * @author Kord Boniadis
      */
     public AppController(Stage stage) {
-//        Logger.init("io/github/donut/proj/configs/logging.properties");
-        Logger.init("production");
+       // Logger.init("io/github/donut/proj/configs/logging.properties");
+        //Logger.init("production");
         this.mainStage = stage;
 
         try {
@@ -119,13 +119,20 @@ public class AppController implements IObserver {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createAccountPage.fxml"));
 
         //setting the controller
+        Logger.log("BRO");
         loader.setController(obj);
+        System.out.println(obj);
+        System.out.println(loader);
         try {
+            System.out.println("1");
             Scene createAccountPageScene = new Scene(loader.load());
+            System.out.println("2");
             createAccountPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
+            System.out.println("3");
             mainStage.setScene(createAccountPageScene);
+            System.out.println("4");
         } catch (IOException e) {
-            System.out.println("9");
+            System.out.println("5");
             Logger.log(e);
         }
     }

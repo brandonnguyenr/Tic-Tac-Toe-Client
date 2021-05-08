@@ -4,6 +4,7 @@ import io.github.donut.proj.utils.DataValidation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manages all Subjects and there subscribed Observers
@@ -12,7 +13,7 @@ import java.util.Set;
  * @author Kord Boniadi
  */
 public final class EventManager {
-    private static final HashMap<ISubject, Set<IObserver>> eventMap = new HashMap<>();
+    private static final ConcurrentHashMap<ISubject, Set<IObserver>> eventMap = new ConcurrentHashMap<>();
 
     private EventManager() {
         /*

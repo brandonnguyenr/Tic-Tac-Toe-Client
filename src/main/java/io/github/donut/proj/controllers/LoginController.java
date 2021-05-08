@@ -5,7 +5,10 @@ import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.LoginData;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.listener.EventManager;
+import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.utils.Logger;
+import io.github.donut.sounds.EventSounds;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -29,11 +32,10 @@ import java.util.ResourceBundle;
  * @author  : Utsav Parajuli
  * @version : 0.1
  */
-public class LoginController implements Initializable, ISubject {
+public class LoginController implements Initializable, ISubject, IObserver {
 
     private static LoginController instance = new LoginController();
 
-    private static boolean status = false;
 
     public BorderPane loginPage;
 
@@ -51,8 +53,10 @@ public class LoginController implements Initializable, ISubject {
 
     public PasswordField passwordEntry;
 
-    private String username;
-    private String password;
+    private AuthorizationCallback.ReplyMessage messageList;
+
+    private AppController appController;
+    private MessagingAPI api;
 
     /**
      * @return instance of Login screen controller
@@ -143,21 +147,33 @@ public class LoginController implements Initializable, ISubject {
     /**
      * Method that will log you in when the login button is pressed
      * @param actionEvent mouse click
-     * @throws IOException Exception
      * @author Utsav Parajuli
      */
-    public void onLoginClicked (MouseEvent actionEvent) throws IOException {
+    public void onLoginClicked (MouseEvent actionEvent) {
+        EventSounds.getInstance().playButtonSound4();
         //gets the username and password
-        username = usernameEntry.getText();
-        password = passwordEntry.getText();
+
+
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
+        appController = (AppController) window.getUserData();
+
+        api = appController.getApi();
+
+        api.publish()
+                .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
+                .channel(Channels.AUTHOR_VALIDATE.toString())
+                .execute();
+
+//        System.out.println(Thread.currentThread().toString());
+//        Thread.yield();
 
         //TODO: for future check with the database
+
+
         //if the username and password match then allow the user to login
-        if (username.equals("admin") && password.equals("donut")) {
-
-            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-            EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+        if (messageList.isLoginValidation()) {
+            EventManager.register(MainController.getInstance(), appController);
 
             EventManager.notify(MainController.getInstance(), MainController.getInstance());
 
@@ -185,32 +201,26 @@ public class LoginController implements Initializable, ISubject {
      */
     public void onEnterPressed(KeyEvent keyEvent) throws IOException {
 
+
         //if the key pressed was an enter then process the code inside
         if(keyEvent.getCode() == KeyCode.ENTER) {
-            //gets the username and password
-            username = usernameEntry.getText();
-            password = passwordEntry.getText();
-//
-//            MessagingAPI api = new MessagingAPI();
-//
-//            api.subscribe()
-//                    .channels(Channels.PRIVATE + api.getUuid())
-//                    .execute();
-//
-//            api.addEventListener(new AuthorizationCallback(), Channels.PRIVATE + api.getUuid());
-//
-//            api.publish()
-//                    .message(new LoginData(username,null, null, password))
-//                    .channel(Channels.AUTHOR_VALIDATE.toString())
-//                    .execute();
 
+            EventSounds.getInstance().playButtonSound4();
+
+            Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+
+            appController = (AppController) window.getUserData();
+
+            api = appController.getApi();
+
+            api.publish()
+                    .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
+                    .channel(Channels.AUTHOR_VALIDATE.toString())
+                    .execute();
             //TODO: for future check with the database
             //if the username and password match then allow the user to login
-            if (status) {
-
-                Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
-
-                EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+            if (messageList.isLoginValidation()) {
+                EventManager.register(MainController.getInstance(), appController);
 
                 EventManager.notify(MainController.getInstance(), MainController.getInstance());
 
@@ -239,6 +249,7 @@ public class LoginController implements Initializable, ISubject {
      */
     public void onGuestLoginClicked(MouseEvent actionEvent) throws IOException {
 
+        EventSounds.getInstance().playButtonSound4();
 
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
@@ -259,8 +270,12 @@ public class LoginController implements Initializable, ISubject {
      */
     public void onCreateAccountClicked(MouseEvent actionEvent) throws IOException {
 
-        EventManager.notify(this, new CreateAccountController());
+        EventSounds.getInstance().playButtonSound4();
+        Logger.log("BRO");
+        System.out.println(((Node)actionEvent.getSource()).getScene().getWindow());
+        EventManager.notify(this, CreateAccountController.getInstance());
         EventManager.removeAllObserver(this);
+
     }
 
     /**
@@ -269,6 +284,7 @@ public class LoginController implements Initializable, ISubject {
      * @author Utsav Parajuli
      */
     public void onResetClicked(MouseEvent mouseEvent) {
+        EventSounds.getInstance().playButtonSound3();
         errorMessage.setText("");
         usernameEntry.setStyle("-fx-border-color: khaki");
         usernameEntry.setText("");
@@ -346,5 +362,18 @@ public class LoginController implements Initializable, ISubject {
      */
     public void onGuestButtonExit(MouseEvent mouseEvent) {
         guestButton.setImage(guestButtonIdle);
+    }
+
+    /**
+     * New info is received through this method. Object decoding is needed
+     *
+     * @param eventType General Object type
+     * @author Kord Boniadi
+     */
+
+    @Override
+    public void update(Object eventType) {
+        if (eventType instanceof AuthorizationCallback.ReplyMessage)
+            messageList = (AuthorizationCallback.ReplyMessage) eventType;
     }
 }

@@ -1,6 +1,7 @@
 package io.github.donut.proj;
 
 import io.github.donut.proj.controllers.AppController;
+import io.github.donut.proj.utils.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -24,10 +25,13 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+
         new AppController(stage).startApp();
     }
 
     public static void main(String[] args) {
+        Logger.init("io/github/donut/proj/configs/logging.properties");
+        Logger.log("BRO");
         launch(args);
     }
 }

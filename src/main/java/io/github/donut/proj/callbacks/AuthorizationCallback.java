@@ -10,6 +10,7 @@ import io.github.coreutils.proj.messages.LoginResponseData;
 import io.github.donut.proj.controllers.CreateAccountController;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.utils.Logger;
 
 public class AuthorizationCallback implements ISubscribeCallback, ISubject{
 
@@ -37,31 +38,31 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
                 System.out.println(message.getChannel());
                 System.out.println(Channels.AUTHOR_CREATE.toString());
 
-                //if (message.getChannel().equals(Channels.AUTHOR_CREATE.toString())) {
+                if (response.getInfo().equalsIgnoreCase("CREATE")) {
                     //System.out.println("HERE");
                     msg.setAccountCreationSuccess("Account Created Successfully!");
                     msg.setAccountCreation(true);
                     //System.out.println(msg.isAccountCreation());
-                //} else if (message.getChannel().equals(Channels.AUTHOR_VALIDATE.toString())) {
+                } else if (response.getInfo().equalsIgnoreCase("VALIDATE")) {
                     msg.setLoginSuccess("Login Success!");
                     msg.setLoginValidation(true);
-                //}
-
+                }
 
             } else {
                 //TODO: Remove test comments
                 System.out.println("unsuccessful");
-               // if (message.getChannel().equals(Channels.AUTHOR_CREATE.toString())) {
+                if (response.getInfo().equalsIgnoreCase("CREATE")) {
                     msg.setAccountCreationUnSuccess("Account Creation Failed!");
                     msg.setAccountCreation(false);
-               // } else if (message.getChannel().equals(Channels.AUTHOR_VALIDATE.toString())) {
+                } else if (response.getInfo().equalsIgnoreCase("VALIDATE")) {
                     msg.setLoginUnSuccess("Login Unsuccessful!");
                     msg.setLoginValidation(false);
-               // }
+                }
 //                out.printf("%s's query was NOT processed successfully!%n", response.getData().getUsername());
 //                out.printf("Error message returned: %s%n", response.getInfo());
             }
 
+            Logger.log("BRO");
             EventManager.notify(this, msg);
 
         }

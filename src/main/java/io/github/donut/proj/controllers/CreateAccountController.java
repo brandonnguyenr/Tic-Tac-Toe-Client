@@ -7,7 +7,10 @@ import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.utils.Logger;
 import io.github.donut.proj.utils.RestrictiveTextField;
+import io.github.donut.sounds.EventSounds;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -54,10 +57,10 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
     public PasswordField passwordEntry1;
     public PasswordField passwordEntry2;
 
-    private AuthorizationCallback.ReplyMessage messageList = new AuthorizationCallback.ReplyMessage();
+    private AuthorizationCallback.ReplyMessage messageList;
 
-    private AppController appController;
     private MessagingAPI api;
+    private AppController appController;
 
     //creates an instance of the controller
     private static CreateAccountController instance = new CreateAccountController();
@@ -104,6 +107,9 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
         usernameLabel.setText("Username    ");
         passwordLabel1.setText("Password    ");
         passwordLabel2.setText("Confirm     \nPassword");
+
+
+//        System.out.println(api);
     }
 
     /**
@@ -116,7 +122,7 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
     /**
      * Constructor
      */
-    public CreateAccountController() {
+    private CreateAccountController() {
         instance = this;
     }
 
@@ -127,6 +133,8 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      * @author Utsav Parajuli
      */
     public void onBackButtonClick(MouseEvent actionEvent) throws IOException {
+
+        EventSounds.getInstance().playButtonSound1();
         //Removes all observers to free up memory
         EventManager.removeAllObserver(this);
 
@@ -161,13 +169,19 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      *
      * @param keyEvent: the ENTER key pressed
      */
-    public void onEnterPressed(KeyEvent keyEvent) throws IOException, InterruptedException {
+    public void onEnterPressed(KeyEvent keyEvent) {
+        Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+
+        appController = (AppController) window.getUserData();
+
+        api = appController.getApi();
+
+        System.out.println(window + " inside create account");
 
         //checking if keycode was enter
         if (keyEvent.getCode() == KeyCode.ENTER) {
-            Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+            EventSounds.getInstance().playButtonSound4();
 
-            appController = (AppController) window.getUserData();
             createAccount();
         }
     }
@@ -199,11 +213,15 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      * @param actionEvent on click
      * @author Utsav Parajuli
      */
-    public void onSignUpClick(MouseEvent actionEvent) throws IOException, InterruptedException {
+    public void onSignUpClick(MouseEvent actionEvent) {
+        EventSounds.getInstance().playButtonSound4();
         //if mouse was clicked
+
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         appController = (AppController) window.getUserData();
+
+        api = appController.getApi();
 
         createAccount();
     }
@@ -214,7 +232,7 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      *
      * @author Utsav Parajuli
      */
-    private void createAccount() throws IOException, InterruptedException {
+    private void createAccount() {
 
         //This conditional statement executes if there are any empty field in the signup page and will display to
         //the user that some fields are empty
@@ -297,42 +315,40 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
 //                    .channel(Channels.AUTHOR_CREATE.toString())
 //                    .execute();
 
+            System.out.println("PUBLISHING TO DB");
 
-            api = appController.getApi();
             api.publish()
                     .message(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
                             lastNameEntry.getText(), passwordEntry1.getText()))
                     .channel(Channels.AUTHOR_CREATE.toString())
                     .execute();
 
-            System.out.println("1");
 
-                System.out.println(messageList.isAccountCreation());
-                if (messageList.isAccountCreation()) {
-                    System.out.println("2");
-                    emptyMessage.setText("");
-                    passwordMessage.setText("");
-                    registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+            //synchronized (this) {
+            //System.out.println(messageList.isAccountCreation());
 
-                    //TODO: from here send this message to the database and register the user. Made a PlayerInfo class that has
-                    // all of the users info
-
-                    //clears the entry
-                } else {
-                    registrationMessage.setText("");
-                    passwordMessage.setText("");
-                    emptyMessage.setText("USER ALREADY EXISTS");
-
-                    //clears the entry
-                }
-                firstNameEntry.clear();
-                lastNameEntry.clear();
-                usernameEntry.clear();
-                passwordEntry1.clear();
-                passwordEntry2.clear();
-            }
+//            if(messageList.isAccountCreation()) {
+//
+//            emptyMessage.setText("");
+//            passwordMessage.setText("");
+//            registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+//        } else {
+//            registrationMessage.setText("");
+//            emptyMessage.setText("USER ALREADY EXISTS");
+//            passwordMessage.setText("");
+//        }
+//        //clears the entry
+//        firstNameEntry.clear();
+//        lastNameEntry.clear();
+//        usernameEntry.clear();
+//        passwordEntry1.clear();
+//        passwordEntry2.clear();
+//    }
         }
-            //displays the success message
+    }
+
+    // }
+    //displays the success message
 
 
     /**
@@ -345,5 +361,26 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
     public void update(Object eventType) {
         if (eventType instanceof AuthorizationCallback.ReplyMessage)
             messageList = (AuthorizationCallback.ReplyMessage) eventType;
+
+        Logger.log("outside");
+
+        Platform.runLater(()->{
+            if(messageList.isAccountCreation()) {
+                emptyMessage.setText("");
+                passwordMessage.setText("");
+                registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+            } else {
+                registrationMessage.setText("");
+                emptyMessage.setText("USER ALREADY EXISTS");
+                passwordMessage.setText("");
+            }
+            //clears the entry
+            firstNameEntry.clear();
+            lastNameEntry.clear();
+            usernameEntry.clear();
+            passwordEntry1.clear();
+            passwordEntry2.clear();
+            Logger.log("inside");
+        });
     }
 }
