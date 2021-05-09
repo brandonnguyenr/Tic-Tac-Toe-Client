@@ -92,11 +92,11 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
     ));
 
 
-    @Override
     /**
      * Initialize the class.
-     * @author: Utsav Parajuli
+     * @author Utsav Parajuli
      */
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         createAccountTitle.setText("CREATE YOUR ACCOUNT");
         firstNameLabel.setText    ("First Name  ");
@@ -316,20 +316,24 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
             //updates the UI
             Platform.runLater(()->{
                 if(messageList.isAccountCreation()) {
+                    usernameEntry.setStyle("-fx-border-color: khaki");
                     emptyMessage.setText("");
                     passwordMessage.setText("");
                     registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+                    //clears the entry
+                    firstNameEntry.clear();
+                    lastNameEntry.clear();
+                    usernameEntry.clear();
+                    passwordEntry1.clear();
+                    passwordEntry2.clear();
                 } else {
+                    usernameEntry.setStyle("-fx-border-color: red");
                     registrationMessage.setText("");
-                    emptyMessage.setText("USER ALREADY EXISTS");
+                    emptyMessage.setText("USERNAME ALREADY EXISTS");
                     passwordMessage.setText("");
+                    //clears username entry
+                    usernameEntry.clear();
                 }
-                //clears the entry
-                firstNameEntry.clear();
-                lastNameEntry.clear();
-                usernameEntry.clear();
-                passwordEntry1.clear();
-                passwordEntry2.clear();
             });
         }
     }

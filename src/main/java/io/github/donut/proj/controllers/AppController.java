@@ -24,13 +24,12 @@ import java.util.Objects;
 public class AppController implements IObserver {
     private MessagingAPI api;           //instance of the API this instance is universal for one client
     public  Scene        mainScene;
-
     private final Stage  mainStage;
 
     /**
      * Constructor
      * @param stage mainStage object received from javafx start() method
-     * @author Kord Boniadis
+     * @author Kord Boniadi
      */
     public AppController(Stage stage) {
         Logger.init("io/github/donut/proj/configs/logging.properties");
@@ -56,6 +55,10 @@ public class AppController implements IObserver {
             api.free();
             e.printStackTrace();
         }
+
+        this.mainStage.setOnCloseRequest((event) -> {
+            api.free();
+        });
     }
 
     /**

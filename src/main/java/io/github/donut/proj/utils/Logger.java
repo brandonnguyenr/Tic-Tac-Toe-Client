@@ -302,7 +302,7 @@ public final class Logger {
      * @return time created in milli
      * @author Kord Boniadi
      */
-    public static long getFileCreationEpoch(File file) {
+    private static long getFileCreationEpoch(File file) {
         try {
             BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
             return attr.creationTime().toInstant().toEpochMilli();

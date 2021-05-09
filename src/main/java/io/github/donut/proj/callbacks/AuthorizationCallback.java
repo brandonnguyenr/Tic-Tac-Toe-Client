@@ -26,6 +26,7 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
      * @author Utsav Parajuli
      */
     public AuthorizationCallback() {
+        System.out.println("hi");
         EventManager.register(this, CreateAccountController.getInstance());
         EventManager.register(this, LoginController.getInstance());
     }
@@ -62,6 +63,8 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
                     loginMsg.setLoginSuccess("Login Success!");
                     loginMsg.setLoginValidation(true);
                     EventManager.notify(this, loginMsg);
+                    // needed to prevent memory leak
+                    EventManager.removeAllObserver(this);
                 }
 
             } else {                                                                 //else the login was unsuccessful
