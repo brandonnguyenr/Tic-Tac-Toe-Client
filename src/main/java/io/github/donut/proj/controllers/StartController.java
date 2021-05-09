@@ -1,5 +1,6 @@
 package io.github.donut.proj.controllers;
 
+import io.github.donut.proj.listener.ISubject;
 import io.github.donut.sounds.EventSounds;
 import io.github.donut.proj.listener.EventManager;
 import javafx.animation.Animation;
@@ -19,13 +20,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
  * Start page controller class
  * @author Kord Boniadi
  */
-public class StartController implements Initializable {
+public class StartController implements Initializable, ISubject {
     @FXML
     public Pane startPage;
 
@@ -61,21 +63,16 @@ public class StartController implements Initializable {
      */
     public void onKeyReleased(KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode().equals(KeyCode.Z)) {
+
             EventSounds.getInstance().playButtonSound4();
+
             Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("menuPage.fxml"));
 
-            EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
+            EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
 
-            Scene mainScene = new Scene(root);
-            mainScene.getStylesheets().add((getClass().getResource("styles.css")).toExternalForm());
+            EventManager.notify(LoginController.getInstance(), LoginController.getInstance());
 
-            ((AppController) window.getUserData()).mainScene = mainScene;
-
-            // set the title of the stage
-            window.setTitle("Donut Tic Tac Toe");
-            window.setScene(mainScene);
-            window.setResizable(false);
+            EventManager.removeAllObserver(this);
         }
     }
 }

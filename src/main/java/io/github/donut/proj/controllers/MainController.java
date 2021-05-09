@@ -39,7 +39,7 @@ public class MainController implements Initializable, ISubject {
      *
      *  Controller myController = loader.getController();
      *********************************************************************/
-    private static MainController instance;
+    private static MainController instance = new MainController();
 
     /**
      * @return instance of Main screen controller
@@ -109,7 +109,7 @@ public class MainController implements Initializable, ISubject {
      */
     public void onMultiPlayerButtonClick(/*MouseEvent mouseEvent*/) {
         EventSounds.getInstance().playButtonSound4();
-        MultiplayerController multiplayer = new MultiplayerController();
+        LobbyController multiplayer = new LobbyController();
         EventManager.notify(this, multiplayer);
     }
 

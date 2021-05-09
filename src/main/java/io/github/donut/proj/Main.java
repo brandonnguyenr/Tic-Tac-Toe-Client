@@ -1,6 +1,7 @@
 package io.github.donut.proj;
 
 import io.github.donut.proj.controllers.AppController;
+import io.github.donut.proj.utils.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

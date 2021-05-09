@@ -7,6 +7,36 @@
     -fx-font-size: 30px;
 }
 
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 5em;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
+}
+
 #winnerLabel {
     -fx-font-size: 64px;
 }
@@ -30,10 +60,10 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 20px;
+    -fx-font-size: 25px;
     -fx-alignment: center;
     -fx-min-width: 600;
     -fx-min-height: 35;
@@ -71,6 +101,63 @@
     -fx-text-fill: white;
 }
 
+#loginTitle {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 25px;
+}
+
+#usernameLabel, #passwordLabel, #firstNameLabel, #passwordLabel1, #passwordLabel2, #lastNameLabel, #guestLabel {
+    -fx-font-family: Chalkduster;
+    -fx-font-size: 20;
+}
+
+/*#vboxLobby {*/
+/*    -fx-border-color: red;*/
+/*    -fx-background-color: transparent;*/
+/*}*/
+
+
+#lobbyPage {
+    -fx-background-color: transparent;
+    -fx-border-color: khaki;
+    /*-fx-background-image: url("../images/theme_1/gradient_bluegreen.png");*/
+}
+
+#usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2 {
+    -fx-background-color: black;
+    -fx-border-color: khaki;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-min-height: 35;
+    -fx-max-height: 35;
+    -fx-min-width: 200;
+    -fx-max-width: 300;
+    -fx-font-size: 15px;
+    -fx-font-family: "Chalkduster";
+}
+#emptyMessage, #passwordMessage {
+    -fx-font-family: "Chalkduster";
+    -fx-alignment: center;
+    -fx-text-fill: red;
+    -fx-font-size: 15px;
+}
+
+#registrationMessage {
+    -fx-font-family: "Chalkduster";
+    -fx-alignment: center;
+    -fx-text-fill: #37c637;
+    -fx-font-size: 15px;
+}
+#firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 15;
+    -fx-text-fill: red;
+}
+#errorMessage {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 20px;
+    -fx-text-fill: red;
+}
 #nameEntry, #nameEntryMP1, #nameEntryMP2 {
     -fx-background-color: black;
     -fx-text-fill: #75a2e1;
@@ -86,7 +173,7 @@
 #player1Label {
     -fx-font-family: "Chalkduster";
 }
-#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage {
+#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }
