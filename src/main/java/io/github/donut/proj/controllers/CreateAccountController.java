@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 /**
  * Class that handles the CreateAccount page
  * @author  : Utsav Parajuli
- * @version : 0.2
+ * @version : 0.3
  */
 public class CreateAccountController implements Initializable, ISubject, IObserver {
 
@@ -48,17 +48,17 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
     public ImageView signUpButton;
 
     public BorderPane createAccountPage;
-    public TextField firstNameEntry;
-    public TextField lastNameEntry;
-    public TextField usernameEntry;
+    public TextField  firstNameEntry;
+    public TextField  lastNameEntry;
+    public TextField  usernameEntry;
 
     public PasswordField passwordEntry1;
     public PasswordField passwordEntry2;
 
-    private AuthorizationCallback.CreateMessage messageList;
+    private AuthorizationCallback.CreateMessage messageList;    //message list for the appropriate message to display
 
-    private MessagingAPI api;
-    private AppController appController;
+    private MessagingAPI api;                                   //instance of api
+    private AppController appController;                        //instance of app controller
 
     //creates an instance of the controller
     private static CreateAccountController instance = new CreateAccountController();
@@ -99,15 +99,11 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      */
     public void initialize(URL location, ResourceBundle resources) {
         createAccountTitle.setText("CREATE YOUR ACCOUNT");
-
-        firstNameLabel.setText("First Name  ");
-        lastNameLabel.setText("Last Name   ");
-        usernameLabel.setText("Username    ");
-        passwordLabel1.setText("Password    ");
-        passwordLabel2.setText("Confirm     \nPassword");
-
-
-//        System.out.println(api);
+        firstNameLabel.setText    ("First Name  ");
+        lastNameLabel.setText     ("Last Name   ");
+        usernameLabel.setText     ("Username    ");
+        passwordLabel1.setText    ("Password    ");
+        passwordLabel2.setText    ("Confirm     \nPassword");
     }
 
     /**
@@ -133,6 +129,7 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
     public void onBackButtonClick(MouseEvent actionEvent) throws IOException {
 
         EventSounds.getInstance().playButtonSound1();
+
         //Removes all observers to free up memory
         EventManager.removeAllObserver(this);
 
@@ -166,24 +163,39 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      * Event handler for enter key pressed
      *
      * @param keyEvent: the ENTER key pressed
+     *
+     * @author Utsav Parajuli
      */
     public void onEnterPressed(KeyEvent keyEvent) {
-        Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();    //gets the window
+        appController = (AppController) window.getUserData();                           //gets the AppController
 
-        appController = (AppController) window.getUserData();
-
-        api = appController.getApi();
-
-        System.out.println(window + " inside create account");
+        api = appController.getApi();                                                   //getting the instance of api
 
         //checking if keycode was enter
         if (keyEvent.getCode() == KeyCode.ENTER) {
             EventSounds.getInstance().playButtonSound4();
-
-            createAccount();
+            createAccount();                                                            //creating account
         }
     }
 
+    /**
+     * Event handler for create account button clicked
+     *
+     * @param actionEvent on click
+     * @author Utsav Parajuli
+     */
+    public void onSignUpClick(MouseEvent actionEvent) {
+        EventSounds.getInstance().playButtonSound4();
+
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();     //gets the window
+        appController = (AppController) window.getUserData();                               //gets the AppController
+
+        api = appController.getApi();                                                       //instance of api
+
+        //creates account
+        createAccount();
+    }
 
     /**
      * Event handler for create account button hover
@@ -203,25 +215,6 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      */
     public void onSignUpExit(MouseEvent mouseEvent) {
         signUpButton.setImage(signUpButtonIdle);
-    }
-
-    /**
-     * Event handler for create account button clicked
-     *
-     * @param actionEvent on click
-     * @author Utsav Parajuli
-     */
-    public void onSignUpClick(MouseEvent actionEvent) {
-        EventSounds.getInstance().playButtonSound4();
-        //if mouse was clicked
-
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        appController = (AppController) window.getUserData();
-
-        api = appController.getApi();
-
-        createAccount();
     }
 
     /**
@@ -298,68 +291,29 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
                 !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
                 !(passwordEntry2.getText().trim().isEmpty())) {
 
-
-//            MessagingAPI api = new MessagingAPI();
-//
-//            api.subscribe()
-//                    .channels(Channels.PRIVATE + api.getUuid())
-//                    .execute();
-//
-//            api.addEventListener(new AuthorizationCallback(), Channels.PRIVATE + api.getUuid());
-//
-//            api.publish()
-//                    .message(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
-//                            lastNameEntry.getText(), passwordEntry1.getText()))
-//                    .channel(Channels.AUTHOR_CREATE.toString())
-//                    .execute();
-
-            System.out.println("PUBLISHING TO DB");
-
+            //sending the message
             api.publish()
                     .message(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
                             lastNameEntry.getText(), passwordEntry1.getText()))
                     .channel(Channels.AUTHOR_CREATE.toString())
                     .execute();
-
-
-            //synchronized (this) {
-            //System.out.println(messageList.isAccountCreation());
-
-//            if(messageList.isAccountCreation()) {
-//
-//            emptyMessage.setText("");
-//            passwordMessage.setText("");
-//            registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
-//        } else {
-//            registrationMessage.setText("");
-//            emptyMessage.setText("USER ALREADY EXISTS");
-//            passwordMessage.setText("");
-//        }
-//        //clears the entry
-//        firstNameEntry.clear();
-//        lastNameEntry.clear();
-//        usernameEntry.clear();
-//        passwordEntry1.clear();
-//        passwordEntry2.clear();
-//    }
         }
     }
 
-    // }
-    //displays the success message
-
-
     /**
-     * New info is received through this method. Object decoding is needed
+     * New info is received through this method.
      *
      * @param eventType General Object type
      * @author Kord Boniadi
+     * @author Utsav Parajuli
      */
     @Override
     public void update(Object eventType) {
-        if (eventType instanceof AuthorizationCallback.CreateMessage) {
+        if (eventType instanceof AuthorizationCallback.CreateMessage) {         //checking if the object was a of
+                                                                                //create message type
             messageList = (AuthorizationCallback.CreateMessage) eventType;
 
+            //updates the UI
             Platform.runLater(()->{
                 if(messageList.isAccountCreation()) {
                     emptyMessage.setText("");

@@ -22,10 +22,10 @@ import java.util.Objects;
  * @author Utsav Parajuli
  */
 public class AppController implements IObserver {
-    private final Stage mainStage;
-    public Scene mainScene;
-    private MessagingAPI api;
-    private AuthorizationCallback ac;
+    private MessagingAPI api;           //instance of the API this instance is universal for one client
+    public  Scene        mainScene;
+
+    private final Stage  mainStage;
 
     /**
      * Constructor
@@ -37,17 +37,19 @@ public class AppController implements IObserver {
         //Logger.init("production");
         this.mainStage = stage;
 
+        //creating instance of api and subscribing to appropriate channels
         try {
-            //creating instance of API
             api = new MessagingAPI();
-            ac = new AuthorizationCallback();
+            AuthorizationCallback ac = new AuthorizationCallback();     //authorization callback instantiated
 
+            //channels the api is subscribed to
             api.subscribe()
                     .channels(Channels.AUTHOR_VALIDATE.toString(),
                               Channels.AUTHOR_CREATE.toString(),
                               Channels.PRIVATE + api.getUuid())
                     .execute();
 
+            //adding event listeners
             api.addEventListener(ac, Channels.AUTHOR_VALIDATE.toString(), Channels.AUTHOR_CREATE.toString(),
                                  Channels.PRIVATE + api.getUuid());
         } catch (IOException e) {
@@ -56,17 +58,22 @@ public class AppController implements IObserver {
         }
     }
 
+    /**
+     * This method will return the instance of api
+     * @return api : the api
+     */
     public MessagingAPI getApi() {
         return api;
     }
 
-        /**
+    /**
      * Sets the main scene for the main menu page as we use this scene as a cache for back buttons
      * @param scene : the main menu scene
      */
     public void setMainScene(Scene scene) {
         this.mainScene = scene;
     }
+
     /**
      * Initializes starting page for app
      * @throws IOException failure to initialize *.fxml loader files
@@ -94,7 +101,6 @@ public class AppController implements IObserver {
      * @author Utsav Parajuli
      */
     public void createLoginPage(LoginController obj) {
-        //EventManager.register(obj, this);
         //loads the fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
 
@@ -119,20 +125,12 @@ public class AppController implements IObserver {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createAccountPage.fxml"));
 
         //setting the controller
-        Logger.log("BRO");
         loader.setController(obj);
-        System.out.println(obj);
-        System.out.println(loader);
         try {
-            System.out.println("1");
             Scene createAccountPageScene = new Scene(loader.load());
-            System.out.println("2");
             createAccountPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
-            System.out.println("3");
             mainStage.setScene(createAccountPageScene);
-            System.out.println("4");
         } catch (IOException e) {
-            System.out.println("5");
             Logger.log(e);
         }
     }
@@ -293,9 +291,8 @@ public class AppController implements IObserver {
             recreateMenuPage();
         else if (eventType instanceof LoginController)                  // checking for Login page creation
             createLoginPage((LoginController) eventType);
-        else if (eventType instanceof CreateAccountController) {       // checking for Create Account page creation
+        else if (eventType instanceof CreateAccountController)          // checking for Create Account page creation
             createCreateAccountPage((CreateAccountController) eventType);
-        }
         else if (eventType instanceof MainController)                   // checking for Main Menu page creation
             createMenuPage((MainController) eventType);
     }

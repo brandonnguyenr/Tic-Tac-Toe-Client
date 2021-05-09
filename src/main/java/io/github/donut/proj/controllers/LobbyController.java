@@ -1,40 +1,28 @@
 package io.github.donut.proj.controllers;
 
-import static io.github.donut.proj.common.Token.*;
-
-import io.github.donut.proj.common.Player;
-import io.github.donut.proj.common.Token;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
-import io.github.donut.proj.utils.RestrictiveTextField;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
- * Intermediate screen where player 1 and player 2 select their desired
- * name and token.
- * @author Joey Campbell
+ * Lobby Screen in works
+ * @author Utsav Parajuli
  * @version 0.1
  */
 public class LobbyController implements Initializable, ISubject {
@@ -97,7 +85,7 @@ public class LobbyController implements Initializable, ISubject {
      * @param location  The location used to resolve relative paths for the root object, or
      *                  {@code null} if the location is not known.
      * @param resources The resources used to localize the root object, or {@code null} if
-     * @author Joey Campbell
+     * @author Utsav Parajuli
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -105,14 +93,10 @@ public class LobbyController implements Initializable, ISubject {
         lobbyPage.setId("lobbyPage");
 
         createLobbyButton.setId("createLobbyButton");
-//        lobbyPage.setContent(lobbyViewBg);
-//        lobbyPage.setContent(vboxLobby);
 
         //TODO: Will need to get the list of rooms (empty or full) and display
 
         VBox lobbyVbox = new VBox();
-
-//        lobbyPage.setContent(lobbyVbox);
 
         ArrayList<String> playerList = new ArrayList<>();
 
@@ -139,8 +123,6 @@ public class LobbyController implements Initializable, ISubject {
         lobbyPage.setContent(lobbyVbox);
     }
 
-
-
     /**
      * This method will start the game when the start button is clicked
      *
@@ -150,14 +132,6 @@ public class LobbyController implements Initializable, ISubject {
      */
     public void onCreateLobbyButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
-//        GameController game = new GameController(
-//                new Player(player1Name + " (" + tokenP1 + ")", tokenP1),
-//                new Player(player2Name + " (" + tokenP2 + ")", tokenP2));
-//
-//        EventManager.notify(this, game);
-//        EventManager.removeAllObserver(this);
-
-
     }
 
     /**

@@ -30,12 +30,11 @@ import java.util.ResourceBundle;
 /**
  * Class that handles the Login Page
  * @author  : Utsav Parajuli
- * @version : 0.1
+ * @version : 0.2
  */
 public class LoginController implements Initializable, ISubject, IObserver {
 
-    private static LoginController instance = new LoginController();
-
+    private static LoginController instance = new LoginController();    //instance of login controller
 
     public BorderPane loginPage;
 
@@ -53,11 +52,11 @@ public class LoginController implements Initializable, ISubject, IObserver {
 
     public PasswordField passwordEntry;
 
-    private AuthorizationCallback.LoginMessage messageList;
+    private AuthorizationCallback.LoginMessage messageList;     //message list that is replied for login related stuff
 
-    private AppController appController;
-    private MessagingAPI api;
-    private Stage windowUpdate;
+    private AppController appController;                        //instance of app controller
+    private MessagingAPI api;                                   //instance of api
+    private Stage windowUpdate;                                 //contains the window
 
     /**
      * @return instance of Login screen controller
@@ -136,13 +135,15 @@ public class LoginController implements Initializable, ISubject, IObserver {
      * @param location  The location used to resolve relative paths for the root object, or
      *                  {@code null} if the location is not known.
      * @param resources The resources used to localize the root object, or {@code null} if
+     *
+     * @author Utsav Parajuli
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loginTitle.setText("WELCOME BACK!! Please Login");
+        loginTitle.setText   ("WELCOME BACK!! Please Login");
         usernameLabel.setText("Username: ");
         passwordLabel.setText("Password: ");
-        guestLabel.setText("Press to Login as Guest");
+        guestLabel.setText   ("Press to Login as Guest");
     }
 
     /**
@@ -152,23 +153,21 @@ public class LoginController implements Initializable, ISubject, IObserver {
      */
     public void onLoginClicked (MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
-        //gets the username and password
 
+        //checking if fields are empty
         if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()) {
             //if the fields are empty
             usernameEntry.setStyle("-fx-border-color: red");
-            passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-            errorMessage.setText("Username/Password fields needed");
+            passwordEntry.setStyle("-fx-border-color: red");
+            errorMessage.setText("Incorrect username/password. Try again!");
         }
 
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();     //gets window
+        windowUpdate = window;                                                              //save the instance of window
+        appController = (AppController) window.getUserData();                               //getting app controller
+        api = appController.getApi();                                                       //getting api
 
-        windowUpdate = window;
-
-        appController = (AppController) window.getUserData();
-
-        api = appController.getApi();
-
+        //sending the message through the api
         api.publish()
                 .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
                 .channel(Channels.AUTHOR_VALIDATE.toString())
@@ -183,7 +182,6 @@ public class LoginController implements Initializable, ISubject, IObserver {
      */
     public void onEnterPressed(KeyEvent keyEvent) throws IOException {
 
-
         //if the key pressed was an enter then process the code inside
         if(keyEvent.getCode() == KeyCode.ENTER) {
 
@@ -193,18 +191,15 @@ public class LoginController implements Initializable, ISubject, IObserver {
                 //if the fields are empty
                 usernameEntry.setStyle("-fx-border-color: red");
                 passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-                errorMessage.setText("Username/Password fields needed");
+                errorMessage.setText("Incorrect username/password. Try again!");
             }
 
-            Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
+            Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();        //getting the stage
+            windowUpdate = window;                                                              //updating window
+            appController = (AppController) window.getUserData();                               //getting AppController
+            api = appController.getApi();                                                       //getting api
 
-            windowUpdate = window;
-
-            appController = (AppController) window.getUserData();
-
-            api = appController.getApi();
-
-            System.out.println("1");
+            //using the api to send message
             api.publish()
                     .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
                     .channel(Channels.AUTHOR_VALIDATE.toString())
@@ -222,12 +217,9 @@ public class LoginController implements Initializable, ISubject, IObserver {
 
         EventSounds.getInstance().playButtonSound4();
 
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
+        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();     //getting window
         EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
-
         EventManager.notify(MainController.getInstance(), MainController.getInstance());
-
         EventManager.removeAllObserver(this);
     }
 
@@ -239,9 +231,7 @@ public class LoginController implements Initializable, ISubject, IObserver {
     public void onCreateAccountClicked(MouseEvent actionEvent) {
 
         EventSounds.getInstance().playButtonSound4();
-
         EventManager.notify(this, CreateAccountController.getInstance());
-
         EventManager.removeAllObserver(this);
 
     }
@@ -339,18 +329,23 @@ public class LoginController implements Initializable, ISubject, IObserver {
      * @author Kord Boniadi
      */
 
+    /**
+     * New info is received through this method. For the login controller
+     *
+     * @param eventType General Object type
+     * @author Utsav Parajuli
+     */
     @Override
     public void update(Object eventType) {
-        if (eventType instanceof AuthorizationCallback.LoginMessage) {
-            messageList = (AuthorizationCallback.LoginMessage) eventType;
+        if (eventType instanceof AuthorizationCallback.LoginMessage) {          //checking if the loginMessage was sent
+            messageList = (AuthorizationCallback.LoginMessage) eventType;       //getting message
 
+            //updates the UI
             Platform.runLater(()-> {
-                //if the username and password match then allow the user to login
+                //if the username and password match then allow the user to login/take them to login page
                 if (messageList.isLoginValidation()) {
                     EventManager.register(MainController.getInstance(), (AppController) windowUpdate.getUserData());
-
                     EventManager.notify(MainController.getInstance(), MainController.getInstance());
-
                     EventManager.removeAllObserver(this);
                 } else {    //if the above methods don't pass then incorrect/username password was entered
                     usernameEntry.setStyle("-fx-border-color: red");
@@ -358,7 +353,7 @@ public class LoginController implements Initializable, ISubject, IObserver {
                     errorMessage.setText("Incorrect username/password. Try again!");
                 }
             });
-
+            //clears fields
             usernameEntry.clear();
             passwordEntry.clear();
         }
