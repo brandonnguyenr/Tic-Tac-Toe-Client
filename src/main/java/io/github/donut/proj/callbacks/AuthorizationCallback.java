@@ -26,7 +26,6 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
      * @author Utsav Parajuli
      */
     public AuthorizationCallback() {
-        System.out.println("hi");
         EventManager.register(this, CreateAccountController.getInstance());
         EventManager.register(this, LoginController.getInstance());
     }

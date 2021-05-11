@@ -13,11 +13,11 @@ repositories {
 
 dependencies {
     implementation 'org.apache.commons:commons-lang3:3.11'
-    implementation 'org.projectlombok:lombok:1.18.18'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    implementation files('libs/MessagingAPI-1.0-SNAPSHOT.jar')
-    implementation files('libs/CoreUtils-1.0-SNAPSHOT.jar')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
 javafx {
@@ -42,6 +42,7 @@ jar {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 mainClassName = 'io.github.donut.proj.Main'
