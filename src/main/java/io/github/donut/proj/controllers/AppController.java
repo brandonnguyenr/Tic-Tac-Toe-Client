@@ -9,6 +9,7 @@ import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.utils.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,28 +34,27 @@ public class AppController implements IObserver {
      */
     public AppController(Stage stage) {
         Logger.init("io/github/donut/proj/configs/logging.properties");
-        //Logger.init("production");
+//        Logger.init("production");
         this.mainStage = stage;
-
         //creating instance of api and subscribing to appropriate channels
-        try {
-            api = new MessagingAPI();
-            AuthorizationCallback ac = new AuthorizationCallback();     //authorization callback instantiated
+        api = new MessagingAPI();
+        AuthorizationCallback ac = new AuthorizationCallback();     //authorization callback instantiated
 
-            //channels the api is subscribed to
-            api.subscribe()
-                    .channels(Channels.AUTHOR_VALIDATE.toString(),
-                              Channels.AUTHOR_CREATE.toString(),
-                              Channels.PRIVATE + api.getUuid())
-                    .execute();
+        //channels the api is subscribed to
+        api.subscribe()
+                .channels(Channels.AUTHOR_VALIDATE.toString(),
+                        Channels.AUTHOR_CREATE.toString(),
+                        Channels.PRIVATE + api.getUuid())
+                .execute();
 
-            //adding event listeners
-            api.addEventListener(ac, Channels.AUTHOR_VALIDATE.toString(), Channels.AUTHOR_CREATE.toString(),
-                                 Channels.PRIVATE + api.getUuid());
-        } catch (IOException e) {
-            api.free();
-            e.printStackTrace();
-        }
+        //adding event listeners
+        api.addEventListener(ac, Channels.AUTHOR_VALIDATE.toString(), Channels.AUTHOR_CREATE.toString(),
+                Channels.PRIVATE + api.getUuid());
+
+        api.onclose(() -> {
+            System.out.println("api is now dead.");
+            Platform.runLater(mainStage::close);
+        });
 
         this.mainStage.setOnCloseRequest((event) -> {
             api.free();
