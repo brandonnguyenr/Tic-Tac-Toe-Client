@@ -9,6 +9,7 @@ import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.sounds.EventSounds;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -21,6 +22,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,9 +36,6 @@ import java.util.ResourceBundle;
  * @version : 0.2
  */
 public class LoginController implements Initializable, ISubject, IObserver {
-
-    private static LoginController instance = new LoginController();    //instance of login controller
-
     public BorderPane loginPage;
 
     public Label loginTitle;
@@ -55,22 +55,10 @@ public class LoginController implements Initializable, ISubject, IObserver {
     private AuthorizationCallback.LoginMessage messageList;     //message list that is replied for login related stuff
 
     private AppController appController;                        //instance of app controller
+    @Setter
     private MessagingAPI api;                                   //instance of api
     private Stage windowUpdate;                                 //contains the window
-
-    /**
-     * @return instance of Login screen controller
-     */
-    public static LoginController getInstance() {
-        return instance;
-    }
-
-    /**
-     * Constructor
-     */
-    public LoginController() {
-        instance = this;
-    }
+    private AuthorizationCallback ac;
 
     //login button idle
     private final Image loginButtonIdle = new Image(Objects.requireNonNull(
@@ -128,6 +116,27 @@ public class LoginController implements Initializable, ISubject, IObserver {
                     getResourceAsStream("io/github/donut/proj/images/icons/account_button_hover.png")
     ));
 
+    public LoginController() {
+        this.ac = new AuthorizationCallback(() -> {
+            Platform.runLater(() -> {
+                EventManager.register(MainController.getInstance(), (AppController) windowUpdate.getUserData());
+                EventManager.notify(MainController.getInstance(), MainController.getInstance());
+                EventManager.removeAllObserver(this);
+                //clears fields
+                usernameEntry.clear();
+                passwordEntry.clear();
+            });
+        }, () -> {
+            Platform.runLater(() -> {
+                usernameEntry.setStyle("-fx-border-color: red");
+                passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
+                errorMessage.setText("Incorrect username/password. Try again!");
+                //clears fields
+                usernameEntry.clear();
+                passwordEntry.clear();
+            });
+        });
+    }
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
@@ -146,12 +155,8 @@ public class LoginController implements Initializable, ISubject, IObserver {
         guestLabel.setText   ("Press to Login as Guest");
     }
 
-    /**
-     * Method that will log you in when the login button is pressed
-     * @param actionEvent mouse click
-     * @author Utsav Parajuli
-     */
-    public void onLoginClicked (MouseEvent actionEvent) {
+    /*=============================HELPER==========================================*/
+    public void worker(Event event) {
         EventSounds.getInstance().playButtonSound4();
 
         //checking if fields are empty
@@ -162,48 +167,33 @@ public class LoginController implements Initializable, ISubject, IObserver {
             errorMessage.setText("Incorrect username/password. Try again!");
         }
 
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();     //gets window
-        windowUpdate = window;                                                              //save the instance of window
-        appController = (AppController) window.getUserData();                               //getting app controller
-        api = appController.getApi();                                                       //getting api
-
+        api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
         //sending the message through the api
         api.publish()
                 .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
                 .channel(Channels.AUTHOR_VALIDATE.toString())
                 .execute();
     }
+    /*=============================HELPER END==========================================*/
+
+    /**
+     * Method that will log you in when the login button is pressed
+     * @param actionEvent mouse click
+     * @author Utsav Parajuli
+     */
+    public void onLoginClicked (MouseEvent actionEvent) {
+        worker(actionEvent);
+    }
 
     /**
      * Method that will log you in when the enter key is pressed
      * @param keyEvent Enter key pressed
-     * @throws IOException Exception
      * @author Utsav Parajuli
      */
-    public void onEnterPressed(KeyEvent keyEvent) throws IOException {
-
+    public void onEnterPressed(KeyEvent keyEvent) {
         //if the key pressed was an enter then process the code inside
         if(keyEvent.getCode() == KeyCode.ENTER) {
-
-            EventSounds.getInstance().playButtonSound4();
-
-            if (usernameEntry.getText().trim().isEmpty() && passwordEntry.getText().trim().isEmpty()) {
-                //if the fields are empty
-                usernameEntry.setStyle("-fx-border-color: red");
-                passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-                errorMessage.setText("Incorrect username/password. Try again!");
-            }
-
-            Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();        //getting the stage
-            windowUpdate = window;                                                              //updating window
-            appController = (AppController) window.getUserData();                               //getting AppController
-            api = appController.getApi();                                                       //getting api
-
-            //using the api to send message
-            api.publish()
-                    .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
-                    .channel(Channels.AUTHOR_VALIDATE.toString())
-                    .execute();
+            worker(keyEvent);
         }
     }
 
@@ -229,11 +219,9 @@ public class LoginController implements Initializable, ISubject, IObserver {
      * @author Utsav Parajuli
      */
     public void onCreateAccountClicked(MouseEvent actionEvent) {
-
         EventSounds.getInstance().playButtonSound4();
-        EventManager.notify(this, CreateAccountController.getInstance());
+        EventManager.notify(this, new CreateAccountController());
         EventManager.removeAllObserver(this);
-
     }
 
     /**
@@ -352,10 +340,10 @@ public class LoginController implements Initializable, ISubject, IObserver {
                     passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
                     errorMessage.setText("Incorrect username/password. Try again!");
                 }
+                //clears fields
+                usernameEntry.clear();
+                passwordEntry.clear();
             });
-            //clears fields
-            usernameEntry.clear();
-            passwordEntry.clear();
         }
     }
 }

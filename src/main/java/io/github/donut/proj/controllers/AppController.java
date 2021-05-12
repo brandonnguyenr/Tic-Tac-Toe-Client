@@ -38,7 +38,6 @@ public class AppController implements IObserver {
         this.mainStage = stage;
         //creating instance of api and subscribing to appropriate channels
         api = new MessagingAPI();
-        AuthorizationCallback ac = new AuthorizationCallback();     //authorization callback instantiated
 
         //channels the api is subscribed to
         api.subscribe()
@@ -46,10 +45,6 @@ public class AppController implements IObserver {
                         Channels.AUTHOR_CREATE.toString(),
                         Channels.PRIVATE + api.getUuid())
                 .execute();
-
-        //adding event listeners
-        api.addEventListener(ac, Channels.AUTHOR_VALIDATE.toString(), Channels.AUTHOR_CREATE.toString(),
-                Channels.PRIVATE + api.getUuid());
 
         api.onclose(() -> {
             System.out.println("api is now dead.");
@@ -104,6 +99,7 @@ public class AppController implements IObserver {
      * @author Utsav Parajuli
      */
     public void createLoginPage(LoginController obj) {
+        obj.setApi(api);
         //loads the fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("loginPage.fxml"));
 
@@ -124,6 +120,7 @@ public class AppController implements IObserver {
      * @author Utsav Parajuli
      */
     public void createCreateAccountPage(CreateAccountController obj) {
+        obj.setApi(api);
         //loads the fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("createAccountPage.fxml"));
 

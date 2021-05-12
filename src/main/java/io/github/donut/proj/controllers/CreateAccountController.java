@@ -9,6 +9,7 @@ import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.sounds.EventSounds;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -21,6 +22,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,11 +59,10 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
 
     private AuthorizationCallback.CreateMessage messageList;    //message list for the appropriate message to display
 
+    @Setter
     private MessagingAPI api;                                   //instance of api
     private AppController appController;                        //instance of app controller
-
-    //creates an instance of the controller
-    private static CreateAccountController instance = new CreateAccountController();
+    private AuthorizationCallback ac;
 
     //back button idle image
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
@@ -91,7 +92,31 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
                     getResourceAsStream("io/github/donut/proj/images/icons/signup_hover.png")
     ));
 
-
+    public CreateAccountController() {
+        this.ac = new AuthorizationCallback(() -> {
+            Platform.runLater(() -> {
+                usernameEntry.setStyle("-fx-border-color: khaki");
+                emptyMessage.setText("");
+                passwordMessage.setText("");
+                registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
+                //clears the entry
+                firstNameEntry.clear();
+                lastNameEntry.clear();
+                usernameEntry.clear();
+                passwordEntry1.clear();
+                passwordEntry2.clear();
+            });
+        }, () -> {
+            Platform.runLater(() -> {
+                usernameEntry.setStyle("-fx-border-color: red");
+                registrationMessage.setText("");
+                emptyMessage.setText("USERNAME ALREADY EXISTS");
+                passwordMessage.setText("");
+                //clears username entry
+                usernameEntry.clear();
+            });
+        });
+    }
     /**
      * Initialize the class.
      * @author Utsav Parajuli
@@ -107,20 +132,6 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
     }
 
     /**
-     * @return instance of Create account screen controller
-     */
-    public static CreateAccountController getInstance() {
-        return instance;
-    }
-
-    /**
-     * Constructor
-     */
-    private CreateAccountController() {
-        instance = this;
-    }
-
-    /**
      * Event handler for back button
      *
      * @param actionEvent mouse event
@@ -130,15 +141,14 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
 
         EventSounds.getInstance().playButtonSound1();
 
-        //Removes all observers to free up memory
-        EventManager.removeAllObserver(this);
-
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
-        //Registers the instance of login controller and notifies the event manager from which the
-        //method in AppController is called
-        EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
-        EventManager.notify(LoginController.getInstance(), LoginController.getInstance());
+        api.removeEventListener(ac);
+        // notifies the event manager from which the
+        // method in AppController is called
+        LoginController instance = new LoginController();
+        EventManager.register(instance, (AppController) window.getUserData());
+        EventManager.notify(instance, instance);
     }
 
     /**
@@ -167,15 +177,12 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      * @author Utsav Parajuli
      */
     public void onEnterPressed(KeyEvent keyEvent) {
-        Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();    //gets the window
-        appController = (AppController) window.getUserData();                           //gets the AppController
-
-        api = appController.getApi();                                                   //getting the instance of api
-
         //checking if keycode was enter
         if (keyEvent.getCode() == KeyCode.ENTER) {
             EventSounds.getInstance().playButtonSound4();
-            createAccount();                                                            //creating account
+            //creates account
+            createAccount();
+
         }
     }
 
@@ -187,14 +194,9 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      */
     public void onSignUpClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
-
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();     //gets the window
-        appController = (AppController) window.getUserData();                               //gets the AppController
-
-        api = appController.getApi();                                                       //instance of api
-
         //creates account
         createAccount();
+
     }
 
     /**
@@ -291,6 +293,7 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
                 !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
                 !(passwordEntry2.getText().trim().isEmpty())) {
 
+            api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
             //sending the message
             api.publish()
                     .message(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),

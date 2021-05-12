@@ -68,11 +68,10 @@ public class StartController implements Initializable, ISubject {
 
             Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();
 
-            EventManager.register(LoginController.getInstance(), (AppController) window.getUserData());
+            LoginController instance = new LoginController();
+            EventManager.register(instance, (AppController) window.getUserData());
 
-            EventManager.notify(LoginController.getInstance(), LoginController.getInstance());
-
-            EventManager.removeAllObserver(this);
+            EventManager.notify(instance, instance);
         }
     }
 }

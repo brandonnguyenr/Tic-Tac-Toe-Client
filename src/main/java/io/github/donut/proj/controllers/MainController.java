@@ -39,20 +39,21 @@ public class MainController implements Initializable, ISubject {
      *
      *  Controller myController = loader.getController();
      *********************************************************************/
-    private static MainController instance = new MainController();
-
+    private static class InnerHolder {
+        private static final MainController INSTANCE = new MainController();
+    }
     /**
-     * @return instance of Main screen controller
+     * @return instance of Login screen controller
      */
     public static MainController getInstance() {
-        return instance;
+        return MainController.InnerHolder.INSTANCE;
     }
 
     /**
      * Constructor
      */
-    public MainController() {
-        instance = this;
+    private MainController() {
+        // don't delete
     }
     /*end*****************************************************************/
 
