@@ -311,13 +311,6 @@ public class LoginController implements Initializable, ISubject, IObserver {
     }
 
     /**
-     * New info is received through this method. Object decoding is needed
-     *
-     * @param eventType General Object type
-     * @author Kord Boniadi
-     */
-
-    /**
      * New info is received through this method. For the login controller
      *
      * @param eventType General Object type

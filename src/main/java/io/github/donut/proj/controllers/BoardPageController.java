@@ -4,6 +4,7 @@ import io.github.donut.proj.common.Player;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.utils.Util;
 import io.github.donut.sounds.EventSounds;
 import io.github.donut.proj.common.BoardUI;
 import javafx.animation.Animation;
@@ -127,7 +128,7 @@ public class BoardPageController implements Initializable, IObserver, ISubject {
         EventManager.removeAllObserver(game.getPlayer2());
         EventManager.removeAllObserver(board);
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setTitle("Donut Tic Tac Toe");
+        window.setTitle(Util.TITLE);
         window.setScene(((AppController) window.getUserData()).mainScene);
         window.setResizable(false);
         window.show();

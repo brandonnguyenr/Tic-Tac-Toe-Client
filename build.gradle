@@ -29,7 +29,7 @@ test {
     useJUnitPlatform()
 }
 
-mainClassName = 'io.github.donut.proj.Main'
+mainClassName = 'io.github.donut.Launcher'
 
 sourceSets {
     main {

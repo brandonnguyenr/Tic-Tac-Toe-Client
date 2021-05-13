@@ -4,16 +4,17 @@ import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.donut.music.MusicPlayer;
 import io.github.donut.proj.PlayerType.Human;
-import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.utils.Logger;
+import io.github.donut.proj.utils.Util;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -81,12 +82,12 @@ public class AppController implements IObserver {
         MusicPlayer.getInstance();
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("startPage.fxml")));
 
-        Scene start = new Scene(root);
+        Scene start = new Scene(root, Util.APP_WIDTH, Util.APP_HEIGHT);
         start.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
         mainStage.setUserData(this);
         root.requestFocus();
         // set the title of the stage
-        mainStage.setTitle("Donut Tic Tac Toe");
+        mainStage.setTitle(Util.TITLE);
         mainStage.setScene(start);
         mainStage.setResizable(false);
         mainStage.show();
@@ -106,7 +107,7 @@ public class AppController implements IObserver {
         //setting the controller
         loader.setController(obj);
         try {
-            Scene loginPageScene = new Scene(loader.load());
+            Scene loginPageScene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
             loginPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(loginPageScene);
         } catch (IOException e) {
@@ -127,7 +128,7 @@ public class AppController implements IObserver {
         //setting the controller
         loader.setController(obj);
         try {
-            Scene createAccountPageScene = new Scene(loader.load());
+            Scene createAccountPageScene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
             createAccountPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(createAccountPageScene);
         } catch (IOException e) {
@@ -147,7 +148,7 @@ public class AppController implements IObserver {
         //setting the controller
         loader.setController(obj);
         try {
-            Scene menuPageScene = new Scene(loader.load());
+            Scene menuPageScene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
             menuPageScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
 
             setMainScene(menuPageScene);
@@ -172,7 +173,7 @@ public class AppController implements IObserver {
         //setting the main stage to the about us page scene
         loader.setController(obj);
         try {
-            Scene aboutUsScene = new Scene(loader.load());
+            Scene aboutUsScene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
             aboutUsScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(aboutUsScene);
         } catch (IOException e) {
@@ -195,7 +196,7 @@ public class AppController implements IObserver {
         //setting the controller
         loader.setController(obj);
         try {
-            Scene singlePlayerScene = new Scene(loader.load());
+            Scene singlePlayerScene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
             singlePlayerScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(singlePlayerScene);
         } catch (IOException e) {
@@ -219,7 +220,7 @@ public class AppController implements IObserver {
         //setting the controller
         loader.setController(obj);
         try {
-            Scene lobbyScene = new Scene(loader.load());
+            Scene lobbyScene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
             lobbyScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(lobbyScene);
         } catch (IOException e) {
@@ -239,7 +240,7 @@ public class AppController implements IObserver {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("boardPage.fxml"));
         loader.setController(controller);
         try {
-            Scene boardScene = new Scene(loader.load());
+            Scene boardScene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
             boardScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
             mainStage.setScene(boardScene);
         } catch (IOException e) {

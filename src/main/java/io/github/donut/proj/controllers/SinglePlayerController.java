@@ -9,6 +9,7 @@ import io.github.donut.proj.common.Token;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.utils.RestrictiveTextField;
+import io.github.donut.proj.utils.Util;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -218,7 +219,7 @@ public class SinglePlayerController implements Initializable, ISubject {
         EventManager.removeAllObserver(this);
         EventSounds.getInstance().playButtonSound1();
         Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setTitle("Donut Tic Tac Toe");
+        window.setTitle(Util.TITLE);
         window.setScene(((AppController) window.getUserData()).mainScene);
         window.setResizable(false);
     }
