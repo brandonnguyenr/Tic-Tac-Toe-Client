@@ -4,14 +4,11 @@ import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.LoginData;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
-import io.github.donut.proj.listener.EventManager;
-import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
-import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -21,43 +18,51 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 /**
  * Class that handles the Login Page
  * @author  : Utsav Parajuli
  * @version : 0.2
  */
-public class LoginController implements Initializable, ISubject, IObserver {
-    public BorderPane loginPage;
+@Getter
+public class LoginController extends AbstractController implements ISubject {
+    @FXML
+    private BorderPane loginPage;
 
-    public Label loginTitle;
-    public Label usernameLabel;
-    public Label passwordLabel;
-    public Label errorMessage;
-    public Label guestLabel;
+    @FXML
+    private Label loginTitle;
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private Label passwordLabel;
+    @FXML
+    private Label errorMessage;
+    @FXML
+    private Label guestLabel;
 
-    public TextField usernameEntry;
-    public ImageView loginButton;
-    public ImageView createAccountButton;
-    public ImageView guestButton;
-    public ImageView resetButton;
+    @FXML
+    private TextField usernameEntry;
+    @FXML
+    private ImageView loginButton;
+    @FXML
+    private ImageView createAccountButton;
+    @FXML
+    private ImageView guestButton;
+    @FXML
+    private ImageView resetButton;
 
-    public PasswordField passwordEntry;
+    @FXML
+    private PasswordField passwordEntry;
 
     private AuthorizationCallback.LoginMessage messageList;     //message list that is replied for login related stuff
 
-    private AppController appController;                        //instance of app controller
     @Setter
     private MessagingAPI api;                                   //instance of api
-    private Stage windowUpdate;                                 //contains the window
+    @Setter
     private AuthorizationCallback ac;
 
     //login button idle
@@ -116,43 +121,39 @@ public class LoginController implements Initializable, ISubject, IObserver {
                     getResourceAsStream("io/github/donut/proj/images/icons/account_button_hover.png")
     ));
 
-    public LoginController() {
-        this.ac = new AuthorizationCallback(() -> {
-            Platform.runLater(() -> {
-                EventManager.register(MainController.getInstance(), (AppController) windowUpdate.getUserData());
-                EventManager.notify(MainController.getInstance(), MainController.getInstance());
-                EventManager.removeAllObserver(this);
-                //clears fields
-                usernameEntry.clear();
-                passwordEntry.clear();
-            });
-        }, () -> {
-            Platform.runLater(() -> {
-                usernameEntry.setStyle("-fx-border-color: red");
-                passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-                errorMessage.setText("Incorrect username/password. Try again!");
-                //clears fields
-                usernameEntry.clear();
-                passwordEntry.clear();
-            });
-        });
-    }
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     *
      * @author Utsav Parajuli
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
+
         loginTitle.setText   ("WELCOME BACK!! Please Login");
         usernameLabel.setText("Username: ");
         passwordLabel.setText("Password: ");
         guestLabel.setText   ("Press to Login as Guest");
+
+        /*========================Action Events START=========================*/
+        usernameEntry.setOnKeyPressed(this::onEnterPressed);
+        passwordEntry.setOnKeyPressed(this::onEnterPressed);
+
+        resetButton.setOnMouseClicked(this::onResetClicked);
+        resetButton.setOnMouseEntered(this::onResetEnter);
+        resetButton.setOnMouseExited(this::onResetExit);
+
+        loginButton.setOnMouseClicked(this::onLoginClicked);
+        loginButton.setOnMouseEntered(this::onLoginButtonEnter);
+        loginButton.setOnMouseExited(this::onLoginButtonExit);
+
+        createAccountButton.setOnMouseClicked(this::onCreateAccountClicked);
+        createAccountButton.setOnMouseEntered(this::onCreateAccountEnter);
+        createAccountButton.setOnMouseExited(this::onCreateAccountExit);
+
+        guestButton.setOnMouseClicked(this::onGuestLoginClicked);
+        guestButton.setOnMouseEntered(this::onGuestButtonEnter);
+        guestButton.setOnMouseExited(this::onGuestButtonExit);
+        /*========================Action Events END=========================*/
     }
 
     /*=============================HELPER==========================================*/
@@ -167,6 +168,7 @@ public class LoginController implements Initializable, ISubject, IObserver {
             errorMessage.setText("Incorrect username/password. Try again!");
         }
 
+        api = ((AppController) stage.getUserData()).getApi();
         api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
         //sending the message through the api
         api.publish()
@@ -206,11 +208,9 @@ public class LoginController implements Initializable, ISubject, IObserver {
     public void onGuestLoginClicked(MouseEvent actionEvent) {
 
         EventSounds.getInstance().playButtonSound4();
-
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();     //getting window
-        EventManager.register(MainController.getInstance(), (AppController) window.getUserData());
-        EventManager.notify(MainController.getInstance(), MainController.getInstance());
-        EventManager.removeAllObserver(this);
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(ControllerFactory.getController(SceneName.Main), false));
+        if (api != null)
+            api.removeEventListener(ac);
     }
 
     /**
@@ -220,8 +220,9 @@ public class LoginController implements Initializable, ISubject, IObserver {
      */
     public void onCreateAccountClicked(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
-        EventManager.notify(this, new CreateAccountController());
-        EventManager.removeAllObserver(this);
+        stage.setScene(AppController.getScenes().get(SceneName.CREATEACCOUNT_PAGE).getScene(ControllerFactory.getController(SceneName.CREATEACCOUNT_PAGE), false));
+        if (api != null)
+            api.removeEventListener(ac);
     }
 
     /**
@@ -308,35 +309,5 @@ public class LoginController implements Initializable, ISubject, IObserver {
      */
     public void onGuestButtonExit(MouseEvent mouseEvent) {
         guestButton.setImage(guestButtonIdle);
-    }
-
-    /**
-     * New info is received through this method. For the login controller
-     *
-     * @param eventType General Object type
-     * @author Utsav Parajuli
-     */
-    @Override
-    public void update(Object eventType) {
-        if (eventType instanceof AuthorizationCallback.LoginMessage) {          //checking if the loginMessage was sent
-            messageList = (AuthorizationCallback.LoginMessage) eventType;       //getting message
-
-            //updates the UI
-            Platform.runLater(()-> {
-                //if the username and password match then allow the user to login/take them to login page
-                if (messageList.isLoginValidation()) {
-                    EventManager.register(MainController.getInstance(), (AppController) windowUpdate.getUserData());
-                    EventManager.notify(MainController.getInstance(), MainController.getInstance());
-                    EventManager.removeAllObserver(this);
-                } else {    //if the above methods don't pass then incorrect/username password was entered
-                    usernameEntry.setStyle("-fx-border-color: red");
-                    passwordEntry.setStyle("-fx-border-color: red");// or false to unset it
-                    errorMessage.setText("Incorrect username/password. Try again!");
-                }
-                //clears fields
-                usernameEntry.clear();
-                passwordEntry.clear();
-            });
-        }
     }
 }

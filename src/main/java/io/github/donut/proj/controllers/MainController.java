@@ -1,23 +1,21 @@
 package io.github.donut.proj.controllers;
 
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 /**
  * Main Screen Controller class
  * @author Grant Goldsworth
  */
-public class MainController implements Initializable, ISubject {
+public class MainController extends AbstractController implements ISubject {
     @FXML
     public BorderPane mainMenuPane;
 
@@ -32,49 +30,34 @@ public class MainController implements Initializable, ISubject {
 
     private final String theme = "theme_2";
 
-    /*
-     *  // By pass the need for this:
-     *  FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
-     *  Parent root = loader.load();
-     *
-     *  Controller myController = loader.getController();
-     *********************************************************************/
-    private static class InnerHolder {
-        private static final MainController INSTANCE = new MainController();
-    }
-    /**
-     * @return instance of Login screen controller
-     */
-    public static MainController getInstance() {
-        return MainController.InnerHolder.INSTANCE;
-    }
-
-    /**
-     * Constructor
-     */
-    private MainController() {
-        // don't delete
-    }
-    /*end*****************************************************************/
-
     /**
      * Is implicitly called when the main screen is being shown, currently does nothing
-     * @param url javafx specific
-     * @param rb javafx specific
      * @author Kord Boniadi
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    public void initialize() {
+        /*========================Action Events START=========================*/
+        singlePlayerButton.setOnMouseClicked(this::onSinglePlayerButtonClick);
+        singlePlayerButton.setOnMouseEntered(this::onSinglePlayerButtonHover);
+        singlePlayerButton.setOnMouseExited(this::onSinglePlayerButtonExit);
+
+        multiPlayerButton.setOnMouseClicked(this::onMultiPlayerButtonClick);
+        multiPlayerButton.setOnMouseEntered(this::onMultiPlayerButtonHover);
+        multiPlayerButton.setOnMouseExited(this::onMultiPlayerButtonExit);
+
+        aboutUsRect.setOnMouseClicked(this::onAboutButtonClicked);
+        aboutUsRect.setOnMouseEntered(this::onAboutRectEnter);
+        aboutUsRect.setOnMouseExited(this::onAboutRectExit);
+        /*========================Action Events END=========================*/
     }
 
     /**
      * Handles mouse click event on the single player image "button".
      * @author Grant Goldsworth
      */
-    public void onSinglePlayerButtonClick(/*MouseEvent mouseEvent*/) {
+    public void onSinglePlayerButtonClick(MouseEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
-        SinglePlayerController name = new SinglePlayerController();
-        EventManager.notify(this, name);
+        stage.setScene(AppController.getScenes().get(SceneName.SINGLEPLAYER_PAGE).getScene(false));
     }
 
     /**
@@ -82,7 +65,7 @@ public class MainController implements Initializable, ISubject {
      * the button icon to the hovered icon status.
      * @author Grant Goldsworth
      */
-    public void onSinglePlayerButtonHover(/*MouseEvent mouseEvent*/) {
+    public void onSinglePlayerButtonHover(MouseEvent mouseEvent) {
         singlePlayerButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -95,7 +78,7 @@ public class MainController implements Initializable, ISubject {
      * button icon to the normal status.
      * @author Grant Goldsworth
      */
-    public void onSinglePlayerButtonExit(/*MouseEvent mouseEvent*/) {
+    public void onSinglePlayerButtonExit(MouseEvent mouseEvent) {
         singlePlayerButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -108,10 +91,9 @@ public class MainController implements Initializable, ISubject {
      * Currently does nothing as MP is not implemented yet.
      * @author Grant Goldsworth
      */
-    public void onMultiPlayerButtonClick(/*MouseEvent mouseEvent*/) {
+    public void onMultiPlayerButtonClick(MouseEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
-        LobbyController multiplayer = new LobbyController();
-        EventManager.notify(this, multiplayer);
+        stage.setScene(AppController.getScenes().get(SceneName.LOBBY_PAGE).getScene(false));
     }
 
     /**
@@ -119,7 +101,7 @@ public class MainController implements Initializable, ISubject {
      * button icon to the hover status.
      * @author Grant Goldsworth
      */
-    public void onMultiPlayerButtonHover(/*MouseEvent mouseEvent*/) {
+    public void onMultiPlayerButtonHover(MouseEvent mouseEvent) {
         multiPlayerButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -133,7 +115,7 @@ public class MainController implements Initializable, ISubject {
      * button icon to the normal status.
      * @author Grant Goldsworth
      */
-    public void onMultiPlayerButtonExit(/*MouseEvent mouseEvent*/) {
+    public void onMultiPlayerButtonExit(MouseEvent mouseEvent) {
         multiPlayerButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -145,10 +127,9 @@ public class MainController implements Initializable, ISubject {
      * Handles mouse click event on the about us image "button".
      * @author Utsav Parajuli
      */
-    public void onAboutButtonClicked(/*MouseEvent mouseEvent*/) {
+    public void onAboutButtonClicked(MouseEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
-        AboutUsController aboutUs = new AboutUsController();
-        EventManager.notify(this, aboutUs);
+        stage.setScene(AppController.getScenes().get(SceneName.ABOUT).getScene(false, false));
     }
 
     /**
@@ -156,7 +137,7 @@ public class MainController implements Initializable, ISubject {
      * the button icon to the hovered icon status.
      * @author Utsav Parajuli
      */
-    public void onAboutRectEnter(/*MouseEvent mouseEvent*/) {
+    public void onAboutRectEnter(MouseEvent mouseEvent) {
         aboutUsRect.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -170,7 +151,7 @@ public class MainController implements Initializable, ISubject {
      * button icon to the normal status.
      * @author Utsav Parajuli
      */
-    public void onAboutRectExit(/*MouseEvent mouseEvent*/) {
+    public void onAboutRectExit(MouseEvent mouseEvent) {
         aboutUsRect.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().

@@ -4,17 +4,16 @@ import io.github.donut.proj.PlayerType.Human;
 import io.github.donut.proj.PlayerType.IPlayerType;
 import io.github.donut.proj.PlayerType.NPCEasyMode;
 import io.github.donut.proj.PlayerType.NPCHardMode;
+import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.common.Player;
 import io.github.donut.proj.common.Token;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.model.SceneName;
 import io.github.donut.proj.utils.RestrictiveTextField;
-import io.github.donut.proj.utils.Util;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -23,11 +22,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 import static io.github.donut.proj.common.Token.O;
 import static io.github.donut.proj.common.Token.X;
@@ -37,7 +33,7 @@ import static io.github.donut.proj.common.Token.X;
  * @author Utsav Parajuli
  * @version 0.3
  */
-public class SinglePlayerController implements Initializable, ISubject {
+public class SinglePlayerController extends AbstractController implements ISubject {
 
     @FXML
     public Label singlePlayerTitle;
@@ -98,13 +94,10 @@ public class SinglePlayerController implements Initializable, ISubject {
      * Called to initialize a controller after its root element has been
      * completely processed.
      *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
      * @author Utsav Parajuli
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
 
         //title screen
         singlePlayerTitle.setText("Single Player Mode");
@@ -140,6 +133,18 @@ public class SinglePlayerController implements Initializable, ISubject {
         tokenX.setToggleGroup(tokenGroup);
         tokenX.setSelected(true);
         tokenO.setToggleGroup(tokenGroup);
+
+        /*========================Action Events START=========================*/
+        nameEntry.setOnKeyPressed(this::onNameEntered);
+
+        startButton.setOnMouseClicked(this::onStartButtonClick);
+        startButton.setOnMouseEntered(this::onStartButtonEnter);
+        startButton.setOnMouseExited(this::onStartButtonExit);
+
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
+        /*========================Action Events END=========================*/
     }
 
     /**
@@ -205,8 +210,26 @@ public class SinglePlayerController implements Initializable, ISubject {
                 new Player(userName + " (" + userToken + ")", userToken, new Human()),
                 new Player(cpuLevel + " (" + cpuToken + ")", cpuToken, artificialBrain));
 
-        EventManager.notify(this, game);
-        EventManager.removeAllObserver(this);
+        BoardUI boardUI = new BoardUI();
+        BoardPageController controller = new BoardPageController(boardUI, game);
+
+        if (game.getPlayer1().getPlayerType() instanceof Human) {
+            EventManager.register(boardUI, (Human) game.getPlayer1().getPlayerType());
+        }
+
+        if (game.getPlayer2().getPlayerType() instanceof Human) {
+            EventManager.register(boardUI, (Human) game.getPlayer2().getPlayerType());
+        }
+
+        EventManager.register(boardUI, game.getPlayer1());
+        EventManager.register(boardUI, game.getPlayer2());
+        EventManager.register(controller, (AppController) stage.getUserData());
+        EventManager.register(game, boardUI);
+        stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(controller, false));
+        game.startGame();
+
+//        EventManager.notify(this, game);
+//        EventManager.removeAllObserver(this);
     }
 
     /**
@@ -216,12 +239,8 @@ public class SinglePlayerController implements Initializable, ISubject {
      * @author Kord Boniadi
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
-        EventManager.removeAllObserver(this);
         EventSounds.getInstance().playButtonSound1();
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setTitle(Util.TITLE);
-        window.setScene(((AppController) window.getUserData()).mainScene);
-        window.setResizable(false);
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
     }
 
     /**
@@ -229,7 +248,7 @@ public class SinglePlayerController implements Initializable, ISubject {
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonEnter() {
+    public void onBackButtonEnter(MouseEvent actionEvent) {
         backButton.setImage(backButtonHover);
     }
 
@@ -238,7 +257,7 @@ public class SinglePlayerController implements Initializable, ISubject {
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonExit() {
+    public void onBackButtonExit(MouseEvent actionEvent) {
         backButton.setImage(backButtonIdle);
     }
 
@@ -247,7 +266,7 @@ public class SinglePlayerController implements Initializable, ISubject {
      *
      * @author Utsav Parajuli
      */
-    public void onStartButtonEnter() {
+    public void onStartButtonEnter(MouseEvent actionEvent) {
         startButton.setImage(startButtonHover);
     }
 
@@ -256,7 +275,7 @@ public class SinglePlayerController implements Initializable, ISubject {
      *
      * @author Utsav Parajuli
      */
-    public void onStartButtonExit() {
+    public void onStartButtonExit(MouseEvent actionEvent) {
         startButton.setImage(startButtonIdle);
     }
 

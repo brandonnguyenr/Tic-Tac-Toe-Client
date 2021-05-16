@@ -22,12 +22,12 @@ public final class Resources {
      * This is basically a brute-force implementation.
      * Works for regular files and also JARs.
      *
-     * @author Greg Briggs
      * @param clazz Any java class that lives in the same place as the resources you want.
      * @param path Should end with "/", but not start with one.
      * @return Just the name of each member item, not the full paths.
      * @throws URISyntaxException
      * @throws IOException
+     * @author Kord Boniadi
      */
     public static String[] getResourceListing(Class clazz, String path) throws URISyntaxException, IOException {
         URL dirURL = clazz.getClassLoader().getResource(path);

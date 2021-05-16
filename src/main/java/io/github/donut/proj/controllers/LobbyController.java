@@ -1,12 +1,9 @@
 package io.github.donut.proj.controllers;
 
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
-import io.github.donut.proj.utils.Util;
+import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -14,19 +11,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 /**
  * Lobby Screen in works
  * @author Utsav Parajuli
  * @version 0.1
  */
-public class LobbyController implements Initializable, ISubject {
+public class LobbyController extends AbstractController implements ISubject {
 
     @FXML
     public Label title;
@@ -76,6 +70,7 @@ public class LobbyController implements Initializable, ISubject {
                     getResourceAsStream("io/github/donut/proj/images/icons/join_game.png")
     ));
 
+    @FXML
     ImageView lobbyViewBg = new ImageView(lobbyBackground);
 
 
@@ -83,13 +78,10 @@ public class LobbyController implements Initializable, ISubject {
      * Initializes a LobbyController object after its root element has been
      * completely processed.
      *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
      * @author Utsav Parajuli
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
 
         lobbyPage.setId("lobbyPage");
 
@@ -122,6 +114,16 @@ public class LobbyController implements Initializable, ISubject {
         }
 
         lobbyPage.setContent(lobbyVbox);
+
+        /*========================Action Events START=========================*/
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
+
+        createLobbyButton.setOnMouseClicked(this::onCreateLobbyButtonClick);
+        createLobbyButton.setOnMouseEntered(this::onCreateLobbyButtonEnter);
+        createLobbyButton.setOnMouseExited(this::onCreateLobbyButtonExit);
+        /*========================Action Events END=========================*/
     }
 
     /**
@@ -142,12 +144,13 @@ public class LobbyController implements Initializable, ISubject {
      * @author Kord Boniadi
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
-        EventManager.removeAllObserver(this);
+//        EventManager.removeAllObserver(this);
         EventSounds.getInstance().playButtonSound1();
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setTitle(Util.TITLE);
-        window.setScene(((AppController) window.getUserData()).mainScene);
-        window.setResizable(false);
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
+//        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+//        window.setTitle(Util.TITLE);
+//        window.setScene(((AppController) window.getUserData()).mainScene);
+//        window.setResizable(false);
     }
 
     /**
@@ -155,7 +158,7 @@ public class LobbyController implements Initializable, ISubject {
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonEnter() {
+    public void onBackButtonEnter(MouseEvent mouseEvent) {
         backButton.setImage(backButtonHover);
     }
 
@@ -164,7 +167,7 @@ public class LobbyController implements Initializable, ISubject {
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonExit() {
+    public void onBackButtonExit(MouseEvent mouseEvent) {
         backButton.setImage(backButtonIdle);
     }
 
@@ -173,7 +176,7 @@ public class LobbyController implements Initializable, ISubject {
      *
      * @author Utsav Parajuli
      */
-    public void onCreateLobbyButtonEnter() {
+    public void onCreateLobbyButtonEnter(MouseEvent mouseEvent) {
         createLobbyButton.setImage(createLobbyButtonHover);
     }
 
@@ -182,7 +185,7 @@ public class LobbyController implements Initializable, ISubject {
      *
      * @author Utsav Parajuli
      */
-    public void onCreateLobbyButtonExit() {
+    public void onCreateLobbyButtonExit(MouseEvent mouseEvent) {
         createLobbyButton.setImage(createLobbyButtonIdle);
     }
 }

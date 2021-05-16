@@ -7,15 +7,19 @@ import io.github.donut.proj.PlayerType.Human;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
+import io.github.donut.proj.model.SceneName;
+import io.github.donut.proj.utils.FxmlInfo;
 import io.github.donut.proj.utils.Logger;
 import io.github.donut.proj.utils.Util;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -24,9 +28,15 @@ import java.util.Objects;
  * @author Utsav Parajuli
  */
 public class AppController implements IObserver {
+    private static final String STYLES = "styles/styles.css";
+    private static final String PROPERTIES = "io/github/donut/proj/configs/logging.properties";
+    private static final String PRODUCTION = "production";
+
     private MessagingAPI api;           //instance of the API this instance is universal for one client
     public  Scene        mainScene;
     private final Stage  mainStage;
+    @Getter
+    private static final Map<SceneName, FxmlInfo> scenes = new HashMap<>();
 
     /**
      * Constructor
@@ -34,17 +44,15 @@ public class AppController implements IObserver {
      * @author Kord Boniadi
      */
     public AppController(Stage stage) {
-        Logger.init("io/github/donut/proj/configs/logging.properties");
-//        Logger.init("production");
+        Logger.init(PROPERTIES);
+//        Logger.init(PRODUCTION);
         this.mainStage = stage;
         //creating instance of api and subscribing to appropriate channels
         api = new MessagingAPI();
 
         //channels the api is subscribed to
         api.subscribe()
-                .channels(Channels.AUTHOR_VALIDATE.toString(),
-                        Channels.AUTHOR_CREATE.toString(),
-                        Channels.PRIVATE + api.getUuid())
+                .channels(Channels.PRIVATE + api.getUuid())
                 .execute();
 
         api.onclose(() -> {
@@ -55,6 +63,15 @@ public class AppController implements IObserver {
         this.mainStage.setOnCloseRequest((event) -> {
             api.free();
         });
+
+        scenes.put(SceneName.Main, new FxmlInfo(SceneName.Main.toString(), STYLES, SceneName.Main, mainStage));
+        scenes.put(SceneName.START, new FxmlInfo(SceneName.START.toString(), STYLES, SceneName.START, mainStage));
+        scenes.put(SceneName.LOGIN_PAGE, new FxmlInfo(SceneName.LOGIN_PAGE.toString(), STYLES, SceneName.LOGIN_PAGE, mainStage));
+        scenes.put(SceneName.CREATEACCOUNT_PAGE, new FxmlInfo(SceneName.CREATEACCOUNT_PAGE.toString(), STYLES, SceneName.CREATEACCOUNT_PAGE, mainStage));
+        scenes.put(SceneName.ABOUT, new FxmlInfo(SceneName.ABOUT.toString(), STYLES, SceneName.ABOUT, mainStage));
+        scenes.put(SceneName.SINGLEPLAYER_PAGE, new FxmlInfo(SceneName.SINGLEPLAYER_PAGE.toString(), STYLES, SceneName.SINGLEPLAYER_PAGE, mainStage));
+        scenes.put(SceneName.LOBBY_PAGE, new FxmlInfo(SceneName.LOBBY_PAGE.toString(), STYLES, SceneName.LOBBY_PAGE, mainStage));
+        scenes.put(SceneName.BOARD_PAGE, new FxmlInfo(SceneName.BOARD_PAGE.toString(), STYLES, SceneName.BOARD_PAGE, mainStage));
     }
 
     /**
@@ -73,6 +90,9 @@ public class AppController implements IObserver {
         this.mainScene = scene;
     }
 
+    public static void updateScenes(SceneName sceneName, FxmlInfo info) {
+        scenes.put(sceneName, info);
+    }
     /**
      * Initializes starting page for app
      * @throws IOException failure to initialize *.fxml loader files
@@ -80,15 +100,11 @@ public class AppController implements IObserver {
      */
     public void startApp() throws IOException {
         MusicPlayer.getInstance();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("startPage.fxml")));
-
-        Scene start = new Scene(root, Util.APP_WIDTH, Util.APP_HEIGHT);
-        start.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
+        Scene scene = scenes.get(SceneName.START).getScene(true, false);
+        scene.getRoot().requestFocus();
+        mainStage.setScene(scene);
         mainStage.setUserData(this);
-        root.requestFocus();
-        // set the title of the stage
         mainStage.setTitle(Util.TITLE);
-        mainStage.setScene(start);
         mainStage.setResizable(false);
         mainStage.show();
         Logger.log("program started..");
@@ -269,7 +285,7 @@ public class AppController implements IObserver {
     public void recreateMenuPage() {
         EventManager.cleanup();
         mainStage.setScene(mainScene);
-        EventManager.register(MainController.getInstance(), this);
+        EventManager.register(new MainController(), this);
     }
 
     /**

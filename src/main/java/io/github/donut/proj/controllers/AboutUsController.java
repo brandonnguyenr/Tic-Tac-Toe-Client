@@ -1,27 +1,21 @@
 package io.github.donut.proj.controllers;
 
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.model.SceneName;
 import io.github.donut.proj.utils.Logger;
-import io.github.donut.proj.utils.Util;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.awt.*;
 import java.net.URI;
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 /**
  * Class that handles the About Us page UI
@@ -29,7 +23,7 @@ import java.util.ResourceBundle;
  * @author Utsav Parajuli
  * @version 0.2
  */
-public class AboutUsController implements Initializable, ISubject {
+public class AboutUsController extends AbstractController implements ISubject {
 
     @FXML
     private Label aboutUsTitle;
@@ -64,14 +58,10 @@ public class AboutUsController implements Initializable, ISubject {
      * Called to initialize a controller after its root element has been
      * completely processed.
      *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     *                  the resource is unknown
      * @author Utsav Parajuli
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         //about us page
         aboutUsTitle.setText("TEAM DONUT CS4B");
 
@@ -79,7 +69,7 @@ public class AboutUsController implements Initializable, ISubject {
         info.setText("""
                 Welcome to our Tic Tac Toe Board Game. You will
                 be able to play local multiplayer with your friends,
-                as well as battle against a computer A.I. in two 
+                as well as battle against a computer A.I. in two
                 difficulty modes. We will be adding new features
                 soon. Stay tuned.
                             Have fun and happy playing!!""");
@@ -104,6 +94,12 @@ public class AboutUsController implements Initializable, ISubject {
         contributors.setText( "Kord Boniadi, Brandon Nguyen, Grant Goldsworth, Utsav Parajuli, Joey Campbell, Christopher Bassar");
         copyright.setText("Copyright \u00a9 2021 Donut");
         copyright.setPadding(new Insets(0, 0, 20, 0));
+
+        /*========================Action Events START=========================*/
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
+        /*========================Action Events END=========================*/
     }
 
     /**
@@ -113,12 +109,8 @@ public class AboutUsController implements Initializable, ISubject {
      * @author Kord Boniadi
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
-        EventManager.removeAllObserver(this);
         EventSounds.getInstance().playButtonSound1();
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setTitle(Util.TITLE);
-        window.setScene(((AppController) window.getUserData()).mainScene);
-        window.setResizable(false);
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
     }
 
     /**
@@ -126,7 +118,7 @@ public class AboutUsController implements Initializable, ISubject {
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonEnter() {
+    public void onBackButtonEnter(MouseEvent actionEvent) {
         backButton.setImage(backButtonHover);
     }
 
@@ -135,7 +127,7 @@ public class AboutUsController implements Initializable, ISubject {
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonExit() {
+    public void onBackButtonExit(MouseEvent actionEvent) {
         backButton.setImage(backButtonIdle);
     }
 }

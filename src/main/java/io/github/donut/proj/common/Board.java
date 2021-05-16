@@ -106,7 +106,7 @@ public class Board {
     @Override
     public int hashCode() {
         int result = Objects.hash(BOARD_ROWS, BOARD_COLUMNS);
-        result = 31 * result + Arrays.hashCode(getUnderlyingBoard());
+        result = 31 * result + Arrays.deepHashCode(getUnderlyingBoard());
         return result;
     }
 

@@ -1,6 +1,6 @@
 package io.github.donut.proj.utils;
 
-public class Util {
+public final class Util {
     public static final int APP_WIDTH = 800;
     public static final int APP_HEIGHT = 450;
     public static final String TITLE = "Donut Tic Tac Toe";

@@ -1,20 +1,18 @@
 package io.github.donut.proj.controllers;
 
+import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.common.Player;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
-import io.github.donut.proj.utils.Util;
+import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
-import io.github.donut.proj.common.BoardUI;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,18 +20,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 /**
  * This class handles the game board page UI
  * @author Kord Boniadi
  */
-public class BoardPageController implements Initializable, IObserver, ISubject {
+public class BoardPageController extends AbstractController implements IObserver, ISubject {
 
     public static class Finished{}
 
@@ -89,13 +84,10 @@ public class BoardPageController implements Initializable, IObserver, ISubject {
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
      * @author Kord Boniadi
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         playerNameLeft.setText(game.getPlayer1().getPlayerName());
         playerNameRight.setText(game.getPlayer2().getPlayerName());
         playerNameLeft.setPrefWidth(150);
@@ -108,12 +100,21 @@ public class BoardPageController implements Initializable, IObserver, ISubject {
         borderPane.setOnKeyReleased(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 EventSounds.getInstance().playButtonSound4();
-                EventManager.notify(this, new BoardPageController.Finished());
+                EventManager.cleanup();
+                AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
+                stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
+//                EventManager.notify(this, new BoardPageController.Finished());
             }
         });
 
         overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
         overlayPane.setVisible(false);
+
+        /*========================Action Events START=========================*/
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
+        /*========================Action Events END=========================*/
     }
 
     /**
@@ -127,18 +128,22 @@ public class BoardPageController implements Initializable, IObserver, ISubject {
         EventManager.removeAllObserver(game.getPlayer1());
         EventManager.removeAllObserver(game.getPlayer2());
         EventManager.removeAllObserver(board);
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setTitle(Util.TITLE);
-        window.setScene(((AppController) window.getUserData()).mainScene);
-        window.setResizable(false);
-        window.show();
+        EventManager.removeAllObserver(this);
+        AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
+//        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
+
+//        window.setTitle(Util.TITLE);
+//        window.setScene(((AppController) window.getUserData()).mainScene);
+//        window.setResizable(false);
+//        window.show();
     }
 
     /**
      * Event handler for back button hover effect
      * @author Kord Boniadi
      */
-    public void onBackButtonEnter() {
+    public void onBackButtonEnter(MouseEvent actionEvent) {
         backButton.setImage(backButtonHover);
     }
 
@@ -146,7 +151,7 @@ public class BoardPageController implements Initializable, IObserver, ISubject {
      * Event handler for back button idle effect
      * @author Kord Boniadi
      */
-    public void onBackButtonExit() {
+    public void onBackButtonExit(MouseEvent actionEvent) {
         backButton.setImage(backButtonIdle);
     }
 

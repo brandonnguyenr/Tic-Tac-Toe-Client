@@ -4,14 +4,10 @@ import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.LoginData;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
-import io.github.donut.proj.listener.EventManager;
-import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
-import javafx.application.Platform;
-import javafx.event.Event;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -21,47 +17,62 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.Setter;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 /**
  * Class that handles the CreateAccount page
  * @author  : Utsav Parajuli
  * @version : 0.3
  */
-public class CreateAccountController implements Initializable, ISubject, IObserver {
+@Getter
+public class CreateAccountController extends AbstractController implements ISubject {
 
-    public Label createAccountTitle;
-    public Label firstNameLabel;
-    public Label lastNameLabel;
-    public Label usernameLabel;
-    public Label passwordLabel1;
-    public Label passwordLabel2;
-    public Label registrationMessage;
-    public Label emptyMessage;
-    public Label passwordMessage;
+    @FXML
+    private Label createAccountTitle;
+    @FXML
+    private Label firstNameLabel;
+    @FXML
+    private Label lastNameLabel;
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private Label passwordLabel1;
+    @FXML
+    private Label passwordLabel2;
+    @FXML
+    private Label registrationMessage;
+    @FXML
+    private Label emptyMessage;
+    @FXML
+    private Label passwordMessage;
 
-    public ImageView backButton;
-    public ImageView signUpButton;
+    @FXML
+    private ImageView backButton;
+    @FXML
+    private ImageView signUpButton;
+    @FXML
 
-    public BorderPane createAccountPage;
-    public TextField  firstNameEntry;
-    public TextField  lastNameEntry;
-    public TextField  usernameEntry;
+    private BorderPane createAccountPage;
+    @FXML
+    private TextField  firstNameEntry;
+    @FXML
+    private TextField  lastNameEntry;
+    @FXML
+    private TextField  usernameEntry;
 
-    public PasswordField passwordEntry1;
-    public PasswordField passwordEntry2;
+    @FXML
+    private PasswordField passwordEntry1;
+    @FXML
+    private PasswordField passwordEntry2;
 
     private AuthorizationCallback.CreateMessage messageList;    //message list for the appropriate message to display
 
     @Setter
-    private MessagingAPI api;                                   //instance of api
-    private AppController appController;                        //instance of app controller
+    private MessagingAPI api = null;                                   //instance of api
+    @Setter
     private AuthorizationCallback ac;
 
     //back button idle image
@@ -92,43 +103,56 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
                     getResourceAsStream("io/github/donut/proj/images/icons/signup_hover.png")
     ));
 
-    public CreateAccountController() {
-        this.ac = new AuthorizationCallback(() -> {
-            Platform.runLater(() -> {
-                usernameEntry.setStyle("-fx-border-color: khaki");
-                emptyMessage.setText("");
-                passwordMessage.setText("");
-                registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
-                //clears the entry
-                firstNameEntry.clear();
-                lastNameEntry.clear();
-                usernameEntry.clear();
-                passwordEntry1.clear();
-                passwordEntry2.clear();
-            });
-        }, () -> {
-            Platform.runLater(() -> {
-                usernameEntry.setStyle("-fx-border-color: red");
-                registrationMessage.setText("");
-                emptyMessage.setText("USERNAME ALREADY EXISTS");
-                passwordMessage.setText("");
-                //clears username entry
-                usernameEntry.clear();
-            });
-        });
-    }
     /**
      * Initialize the class.
      * @author Utsav Parajuli
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         createAccountTitle.setText("CREATE YOUR ACCOUNT");
         firstNameLabel.setText    ("First Name  ");
         lastNameLabel.setText     ("Last Name   ");
         usernameLabel.setText     ("Username    ");
         passwordLabel1.setText    ("Password    ");
         passwordLabel2.setText    ("Confirm     \nPassword");
+
+        /*========================Action Events START=========================*/
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
+
+        firstNameEntry.setOnKeyPressed(this::onEnterPressed);
+        lastNameEntry.setOnKeyPressed(this::onEnterPressed);
+        usernameEntry.setOnKeyPressed(this::onEnterPressed);
+        passwordEntry1.setOnKeyPressed(this::onEnterPressed);
+        passwordEntry2.setOnKeyPressed(this::onEnterPressed);
+
+        signUpButton.setOnMouseClicked(this::onSignUpClick);
+        signUpButton.setOnMouseEntered(this::onSignUpEnter);
+        signUpButton.setOnMouseExited(this::onSignUpExit);
+        /*========================Action Events END=========================*/
+    }
+
+    /**
+     * Clear UI elements
+     * @author Kord Boniadi
+     */
+    public void clearScreen() {
+        firstNameEntry.clear();
+        lastNameEntry.clear();
+        usernameEntry.clear();
+        passwordEntry1.clear();
+        passwordEntry2.clear();
+
+        emptyMessage.setText("");
+        passwordMessage.setText("");
+        registrationMessage.setText("");
+
+        firstNameEntry.setStyle("-fx-border-color: khaki");
+        lastNameEntry.setStyle("-fx-border-color: khaki");
+        usernameEntry.setStyle("-fx-border-color: khaki");
+        passwordEntry1.setStyle("-fx-border-color: khaki");
+        passwordEntry2.setStyle("-fx-border-color: khaki");
     }
 
     /**
@@ -137,18 +161,13 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      * @param actionEvent mouse event
      * @author Utsav Parajuli
      */
-    public void onBackButtonClick(MouseEvent actionEvent) throws IOException {
-
+    public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
+        stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE), false));
+        clearScreen();
 
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
-        api.removeEventListener(ac);
-        // notifies the event manager from which the
-        // method in AppController is called
-        LoginController instance = new LoginController();
-        EventManager.register(instance, (AppController) window.getUserData());
-        EventManager.notify(instance, instance);
+        if (api != null)
+            api.removeEventListener(ac);
     }
 
     /**
@@ -156,7 +175,7 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonEnter() {
+    public void onBackButtonEnter(MouseEvent mouseEvent) {
         backButton.setImage(backButtonHover);
     }
 
@@ -165,7 +184,7 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonExit() {
+    public void onBackButtonExit(MouseEvent mouseEvent) {
         backButton.setImage(backButtonIdle);
     }
 
@@ -293,6 +312,7 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
                 !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
                 !(passwordEntry2.getText().trim().isEmpty())) {
 
+            api = ((AppController) stage.getUserData()).getApi();
             api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
             //sending the message
             api.publish()
@@ -300,44 +320,6 @@ public class CreateAccountController implements Initializable, ISubject, IObserv
                             lastNameEntry.getText(), passwordEntry1.getText()))
                     .channel(Channels.AUTHOR_CREATE.toString())
                     .execute();
-        }
-    }
-
-    /**
-     * New info is received through this method.
-     *
-     * @param eventType General Object type
-     * @author Kord Boniadi
-     * @author Utsav Parajuli
-     */
-    @Override
-    public void update(Object eventType) {
-        if (eventType instanceof AuthorizationCallback.CreateMessage) {         //checking if the object was a of
-                                                                                //create message type
-            messageList = (AuthorizationCallback.CreateMessage) eventType;
-
-            //updates the UI
-            Platform.runLater(()->{
-                if(messageList.isAccountCreation()) {
-                    usernameEntry.setStyle("-fx-border-color: khaki");
-                    emptyMessage.setText("");
-                    passwordMessage.setText("");
-                    registrationMessage.setText("Successfully Registered! Go back to Login Screen.");
-                    //clears the entry
-                    firstNameEntry.clear();
-                    lastNameEntry.clear();
-                    usernameEntry.clear();
-                    passwordEntry1.clear();
-                    passwordEntry2.clear();
-                } else {
-                    usernameEntry.setStyle("-fx-border-color: red");
-                    registrationMessage.setText("");
-                    emptyMessage.setText("USERNAME ALREADY EXISTS");
-                    passwordMessage.setText("");
-                    //clears username entry
-                    usernameEntry.clear();
-                }
-            });
         }
     }
 }
