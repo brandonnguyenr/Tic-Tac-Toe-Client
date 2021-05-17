@@ -23,12 +23,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+@Getter
 public class UpdateAccountController extends AbstractController implements ISubject {
 
     @FXML

@@ -1,6 +1,7 @@
 package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.callbacks.AuthorizationCallback;
+import io.github.donut.proj.callbacks.UpdatesCallback;
 import io.github.donut.proj.model.SceneName;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -152,7 +153,82 @@ public final class ControllerFactory {
      * @author Utsav Parajuli
      * @return {@link UpdateAccountController}
      */
-    private static UpdateAccountController createUpdateAccountController() { return new UpdateAccountController(); }
+    private static UpdateAccountController createUpdateAccountController() {
+        UpdateAccountController controller = new UpdateAccountController();
+
+
+        controller.setUc(new UpdatesCallback((event) -> {
+
+            Platform.runLater(() -> {
+                if (event.getType().equalsIgnoreCase("USERNAME")) {
+                    controller.getCurrentUserNameTab1().setStyle("-fx-border-color: khaki");
+                    controller.getNewUserNameTab1().setStyle("-fx-border-color: khaki");
+                    controller.getConfirmUserNameTab1().setStyle("-fx-border-color: khaki");
+
+                    controller.getCurrentUsernameErrorTab1().setText("");
+                    controller.getDifferentUsernameErrorTab1().setText("");
+                    controller.getSuccessfulUpdateTab1().setText("ACCOUNT UPDATED!");
+
+                    controller.getCurrentUserNameTab1().clear();
+                    controller.getNewUserNameTab1().clear();
+                    controller.getConfirmUserNameTab1().clear();
+
+                } else if (event.getType().equalsIgnoreCase("PERSONAL")) {
+                    controller.getUserNameTab2().setStyle("-fx-border-color: khaki");
+                    controller.getFirstNameEntryTab2().setStyle("-fx-border-color: khaki");
+                    controller.getLastNameEntryTab2().setStyle("-fx-border-color: khaki");
+
+                    controller.getUsernameErrorTab2().setText("");
+                    controller.getSuccessfulUpdateTab2().setText("ACCOUNT UPDATED!");
+
+                    controller.getUserNameTab2().clear();
+                    controller.getFirstNameEntryTab2().clear();
+                    controller.getLastNameEntryTab2().clear();
+
+                } else if (event.getType().equalsIgnoreCase("PASSWORD")) {
+                    controller.getUserNameEntryTab3().setStyle("-fx-border-color: khaki");
+                    controller.getCurrentPasswordTab3().setStyle("-fx-border-color: khaki");
+                    controller.getNewPasswordEntryTab3().setStyle("-fx-border-color: khaki");
+                    controller.getConfirmPasswordEntryTab3().setStyle("-fx-border-color: khaki");
+
+                    controller.getUsernameErrorTab3().setText("");
+                    controller.getDifferentPasswordErrorTab3().setText("");
+                    controller.getSuccessfulUpdateTab3().setText("ACCOUNT UPDATED!");
+
+                    controller.getUserNameEntryTab3().clear();
+                    controller.getCurrentPasswordTab3().clear();
+                    controller.getNewPasswordEntryTab3().clear();
+                    controller.getConfirmPasswordEntryTab3().clear();
+                }
+            });
+
+        }, ((event) -> {
+            Platform.runLater(() -> {
+                if (event.getType().equalsIgnoreCase("USERNAME")) {
+                    controller.getCurrentUserNameTab1().setStyle("-fx-border-color: red");
+                    controller.getNewUserNameTab1().setStyle("-fx-border-color: red");
+                    controller.getConfirmUserNameTab1().setStyle("-fx-border-color: red");
+
+                    controller.getDifferentUsernameErrorTab1().setText("");
+                    controller.getSuccessfulUpdateTab1().setText("");
+                    controller.getCurrentUsernameErrorTab1().setText("Incorrect username/Username already exists!");
+                } else if (event.getType().equalsIgnoreCase("PERSONAL")) {
+                    controller.getUserNameTab2().setStyle("-fx-border-color: red");
+
+                    controller.getSuccessfulUpdateTab2().setText("");
+                    controller.getUsernameErrorTab2().setText("Username does not exist!");
+                } else if (event.getType().equalsIgnoreCase("PASSWORD")) {
+                    controller.getUserNameEntryTab3().setStyle("-fx-border-color: red");
+                    controller.getCurrentPasswordTab3().setStyle("-fx-border-color: red");
+
+                    controller.getDifferentPasswordErrorTab3().setText("");
+                    controller.getSuccessfulUpdateTab3().setText("");
+                    controller.getUsernameErrorTab3().setText("Username/Password do not match");
+                }
+            });
+        })));
+        return controller;
+    }
 
 
     /**
