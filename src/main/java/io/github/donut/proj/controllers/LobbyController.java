@@ -49,8 +49,6 @@ public class LobbyController extends AbstractController implements ISubject {
     @FXML
     private ImageView backButton;
 
-
-
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
             getClassLoader().

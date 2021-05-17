@@ -345,7 +345,7 @@ public class UpdateAccountController extends AbstractController implements Initi
     }
 
     private void personalInfoChange() {
-        if(userNameTab2.getText().trim().isEmpty() || firstNameEntryTab2.getText().trim().isEmpty() ||
+        if (userNameTab2.getText().trim().isEmpty() || firstNameEntryTab2.getText().trim().isEmpty() ||
                 lastNameEntryTab2.getText().trim().isEmpty()) {
 
             successfulUpdateTab2.setText("");
@@ -359,7 +359,7 @@ public class UpdateAccountController extends AbstractController implements Initi
                 lastNameEntryTab2.setStyle("-fx-border-color: red");
         }
 
-        if(!(userNameTab2.getText().trim().isEmpty()) || !(firstNameEntryTab2.getText().trim().isEmpty()) ||
+        if (!(userNameTab2.getText().trim().isEmpty()) || !(firstNameEntryTab2.getText().trim().isEmpty()) ||
                 !(lastNameEntryTab2.getText().trim().isEmpty())) {
 
             if (!(userNameTab2.getText().trim().isEmpty()))
