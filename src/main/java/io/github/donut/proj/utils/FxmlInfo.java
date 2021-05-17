@@ -23,7 +23,7 @@ public class FxmlInfo {
     @Getter
     private final String styleSheet;
     @Setter
-    private Scene scene;
+    private Scene scene = null;
 
     /**
      * Constructor
@@ -72,7 +72,7 @@ public class FxmlInfo {
     /**
      * Default getScene() method. Equivalent to calling:
      * <p>
-     *     <code>worker(true, null, true);</code>
+     *     <code>getScene(isFxml: true, controller: null, isCache: true);</code>
      * </p>
      * @author Kord Boniadi
      * @see #worker(boolean, AbstractController, boolean)
@@ -85,7 +85,7 @@ public class FxmlInfo {
     /**
      * Equivalent to calling:
      * <p>
-     *     <code>worker(isFxml, null, true);</code>
+     *     <code>getScene(isFxml, controller: null, isCache: true);</code>
      * </p>
      * @author Kord Boniadi
      * @param isFxml {@code true if { using controller injection } else false}
@@ -98,7 +98,7 @@ public class FxmlInfo {
     /**
      * Equivalent to calling:
      * <p>
-     *     <code>worker(false, controller, true);</code>
+     *     <code>getScene(isFxml: false, controller, isCache: true);</code>
      * </p>
      * @author Kord Boniadi
      * @param controller set custom controller
@@ -111,7 +111,7 @@ public class FxmlInfo {
     /**
      * Equivalent to calling:
      * <p>
-     *     <code>worker(isFxml, null, isCache);</code>
+     *     <code>getScene(isFxml, controller: null, isCache);</code>
      * </p>
      * @author Kord Boniadi
      * @param isFxml {@code true if { using controller injection } else false}
@@ -125,7 +125,7 @@ public class FxmlInfo {
     /**
      * Equivalent to calling:
      * <p>
-     *     <code>worker(false, controller, true);</code>
+     *     <code>getScene(isFxml: false, controller, isCache);</code>
      * </p>
      * @author Kord Boniadi
      * @param controller set custom controller

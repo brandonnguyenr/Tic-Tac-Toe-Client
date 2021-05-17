@@ -312,7 +312,8 @@ public class CreateAccountController extends AbstractController implements ISubj
                 !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
                 !(passwordEntry2.getText().trim().isEmpty())) {
 
-            api = ((AppController) stage.getUserData()).getApi();
+            if (api == null)
+                api = ((AppController) stage.getUserData()).getApi();
             api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
             //sending the message
             api.publish()

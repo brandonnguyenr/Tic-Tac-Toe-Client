@@ -61,7 +61,7 @@ public class LoginController extends AbstractController implements ISubject {
     private AuthorizationCallback.LoginMessage messageList;     //message list that is replied for login related stuff
 
     @Setter
-    private MessagingAPI api;                                   //instance of api
+    private MessagingAPI api = null;                                   //instance of api
     @Setter
     private AuthorizationCallback ac;
 
@@ -168,7 +168,8 @@ public class LoginController extends AbstractController implements ISubject {
             errorMessage.setText("Incorrect username/password. Try again!");
         }
 
-        api = ((AppController) stage.getUserData()).getApi();
+        if (api == null)
+            api = ((AppController) stage.getUserData()).getApi();
         api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
         //sending the message through the api
         api.publish()
@@ -206,9 +207,8 @@ public class LoginController extends AbstractController implements ISubject {
      * @author Utsav Parajuli
      */
     public void onGuestLoginClicked(MouseEvent actionEvent) {
-
         EventSounds.getInstance().playButtonSound4();
-        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(ControllerFactory.getController(SceneName.Main), false));
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(ControllerFactory.getController(SceneName.Main)));
         if (api != null)
             api.removeEventListener(ac);
     }

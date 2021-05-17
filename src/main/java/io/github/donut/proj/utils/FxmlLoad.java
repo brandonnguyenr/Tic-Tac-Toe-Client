@@ -42,7 +42,7 @@ public final class FxmlLoad {
     /**
      * load scene method
      * <p>
-     *     <code>load(info, null, isFxml);</code>
+     *     <code>load(info, controller: null, isFxml);</code>
      * </p>
      * @author Kord Boniadi
      * @param info fxml info {@link FxmlInfo}
@@ -65,7 +65,6 @@ public final class FxmlLoad {
      */
     public static Scene load(FxmlInfo info, AbstractController controller, boolean isFxml) throws IOException {
         if (info.isCached()) {
-            System.out.println(info.getSceneName().name());
             return info.getScene();
         }
 
