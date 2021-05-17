@@ -2,8 +2,7 @@ package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
-import io.github.donut.proj.listener.EventManager;
-import io.github.donut.proj.listener.IObserver;
+import io.github.donut.music.MusicPlayer;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.proj.utils.FxmlInfo;
 import io.github.donut.proj.utils.Logger;
@@ -22,7 +21,7 @@ import java.util.Map;
  * @author Kord Boniadi
  * @author Utsav Parajuli
  */
-public class AppController implements IObserver {
+public class AppController {
     private static final String STYLES = "styles/styles.css";
     private static final String PROPERTIES = "io/github/donut/proj/configs/logging.properties";
     private static final String PRODUCTION = "production";
@@ -94,7 +93,7 @@ public class AppController implements IObserver {
      * @author Kord Boniadi
      */
     public void startApp() throws IOException {
-//        MusicPlayer.getInstance();
+        MusicPlayer.getInstance();
         Scene scene = scenes.get(SceneName.START).getScene(true, false);
         scene.getRoot().requestFocus();
         mainStage.setScene(scene);
@@ -103,63 +102,5 @@ public class AppController implements IObserver {
         mainStage.setResizable(false);
         mainStage.show();
         Logger.log("program started..");
-    }
-
-//    /**
-//     * BoardPage factory method
-//     * @param obj instance of GameController with initial params
-//     * @author Kord Boniadi
-//     */
-//    public void createBoardPage(GameController obj) {
-//        BoardUI boardUI = new BoardUI();
-//        BoardPageController controller = new BoardPageController(boardUI, obj);
-//
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("boardPage.fxml"));
-//        loader.setController(controller);
-//        try {
-//            Scene boardScene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
-//            boardScene.getStylesheets().add((Objects.requireNonNull(getClass().getResource("styles.css"))).toExternalForm());
-//            mainStage.setScene(boardScene);
-//        } catch (IOException e) {
-//            Logger.log(e);
-//        }
-//
-//        if (obj.getPlayer1().getPlayerType() instanceof Human) {
-//            EventManager.register(boardUI, (Human) obj.getPlayer1().getPlayerType());
-//        }
-//
-//        if (obj.getPlayer2().getPlayerType() instanceof Human) {
-//            EventManager.register(boardUI, (Human) obj.getPlayer2().getPlayerType());
-//        }
-//
-//        EventManager.register(boardUI, obj.getPlayer1());
-//        EventManager.register(boardUI, obj.getPlayer2());
-//        EventManager.register(controller, this);
-//        EventManager.register(obj, boardUI);
-//        obj.startGame();
-//    }
-
-    /**
-     * MenuPage factory method
-     * @author Kord Boniadi
-     */
-    public void recreateMenuPage() {
-        EventManager.cleanup();
-        mainStage.setScene(mainScene);
-        EventManager.register(new MainController(), this);
-    }
-
-    /**
-     * Receives data from a subscribed subject
-     * @param eventType object container
-     * @author Kord Boniadi
-     * @author Utsav Parajuli
-     */
-    @Override
-    public void update(Object eventType) {
-        if (eventType instanceof BoardPageController.Finished)     // checking for Menu page creation
-            recreateMenuPage();
-//        else if (eventType instanceof GameController)                   // checking for Board page creation
-//            createBoardPage((GameController) eventType);
     }
 }

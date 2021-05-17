@@ -155,6 +155,7 @@ public class SinglePlayerController extends AbstractController implements ISubje
      */
     public void onNameEntered(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
+            EventSounds.getInstance().playButtonSound4();
             startGame();
         }
     }
@@ -223,7 +224,7 @@ public class SinglePlayerController extends AbstractController implements ISubje
 
         EventManager.register(boardUI, game.getPlayer1());
         EventManager.register(boardUI, game.getPlayer2());
-        EventManager.register(controller, (AppController) stage.getUserData());
+//        EventManager.register(controller, (AppController) stage.getUserData());
         EventManager.register(game, boardUI);
         stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(controller, false));
         game.startGame();

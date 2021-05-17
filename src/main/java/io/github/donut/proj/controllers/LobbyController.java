@@ -144,13 +144,8 @@ public class LobbyController extends AbstractController implements ISubject {
      * @author Kord Boniadi
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
-//        EventManager.removeAllObserver(this);
         EventSounds.getInstance().playButtonSound1();
         stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
-//        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-//        window.setTitle(Util.TITLE);
-//        window.setScene(((AppController) window.getUserData()).mainScene);
-//        window.setResizable(false);
     }
 
     /**

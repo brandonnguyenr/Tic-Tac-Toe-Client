@@ -29,9 +29,6 @@ import java.util.Objects;
  * @author Kord Boniadi
  */
 public class BoardPageController extends AbstractController implements IObserver, ISubject {
-
-    public static class Finished{}
-
     @FXML
     private Label playerNameLeft;
 
@@ -103,7 +100,6 @@ public class BoardPageController extends AbstractController implements IObserver
                 EventManager.cleanup();
                 AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
                 stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
-//                EventManager.notify(this, new BoardPageController.Finished());
             }
         });
 
@@ -128,15 +124,8 @@ public class BoardPageController extends AbstractController implements IObserver
         EventManager.removeAllObserver(game.getPlayer1());
         EventManager.removeAllObserver(game.getPlayer2());
         EventManager.removeAllObserver(board);
-        EventManager.removeAllObserver(this);
         AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
-//        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
-
-//        window.setTitle(Util.TITLE);
-//        window.setScene(((AppController) window.getUserData()).mainScene);
-//        window.setResizable(false);
-//        window.show();
     }
 
     /**

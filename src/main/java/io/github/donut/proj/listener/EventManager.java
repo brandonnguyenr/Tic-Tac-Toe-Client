@@ -1,7 +1,7 @@
 package io.github.donut.proj.listener;
 
 import io.github.donut.proj.utils.DataValidation;
-import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class EventManager {
     private static final ConcurrentHashMap<ISubject, Set<IObserver>> eventMap = new ConcurrentHashMap<>();
-
     private EventManager() {
         /*
          *  Don't remove...
