@@ -20,6 +20,11 @@ import lombok.Setter;
 
 import java.util.Objects;
 
+/**
+ * UpdateAccountController where player will be able to change their username, personal info, and password.
+ *
+ * @author Utsav Parajuli
+ */
 @Getter
 public class UpdateAccountController extends AbstractController implements ISubject {
 
@@ -88,22 +93,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
     private MessagingAPI api = null;                            //instance of api
 
     @Setter
-    private UpdatesCallback uc;                        //instance of app controller
-
-
-    //back button idle image
-    private final Image backButtonIdle = new Image(Objects.requireNonNull(
-            getClass().
-                    getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
-    ));
-
-    //back button hover image
-    private final Image backButtonHover = new Image(Objects.requireNonNull(
-            getClass().
-                    getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
-    ));
+    private UpdatesCallback uc;                                //instance of updates callback
 
     /**
      * Initialize the class.
@@ -114,6 +104,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
 
         tabPane.getSelectionModel().select(updateUsernameTitle);
 
+        /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
@@ -146,25 +137,24 @@ public class UpdateAccountController extends AbstractController implements ISubj
         updateUsernameTitle.setOnSelectionChanged(this::onTabClosed);
         updatePersonalInfoTitle.setOnSelectionChanged(this::onTabClosed);
         changePasswordTitle.setOnSelectionChanged(this::onTabClosed);
+        /*========================Action Events END=========================*/
 
-//        currentUsernameErrorTab1.setText("");
-//        successfulUpdateTab1.setText("");
-//        differentUsernameErrorTab1.setText("");
-//
-//        usernameErrorTab2.setText("");
-//        successfulUpdateTab2.setText("");
-//
-//        usernameErrorTab3.setText("");
-//        successfulUpdateTab3.setText("");
-//        differentPasswordErrorTab3.setText("");
         clearScreen();
     }
 
+    /**
+     * Method that will clear all the other tabs when one is closed
+     * @param event : mouse event
+     * @author Utsav Parajuli
+     */
     public void onTabClosed(Event event) {
         clearScreen();
     }
+
     /**
      * Clears UI elements
+     *
+     * @author Utsav Parajuli
      */
     public void clearScreen() {
 
@@ -198,6 +188,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
      *
      * @param actionEvent mouse event
      * @author Kord Boniadi
+     * @author Utsav Parajuli
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
@@ -225,21 +216,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
     }
 
 
-    //update account button idle
-    private final Image updateButtonIdle = new Image(Objects.requireNonNull(
-            getClass().
-                    getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/icons/update_button.png")
-    ));
-
-    //update account button hover
-    private final Image updateButtonHover = new Image(Objects.requireNonNull(
-            getClass().
-                    getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/icons/update_button_select.png")
-    ));
-
-
     /**
      * Event handler for create account button hover
      *
@@ -264,6 +240,10 @@ public class UpdateAccountController extends AbstractController implements ISubj
         passwordChangeButton.setImage(updateButtonIdle);
     }
 
+    /**
+     * Event handler for ENTER pressed on the username update tab
+     * @param keyEvent : key pressed
+     */
     public void onUserNameChangeEnterPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             EventSounds.getInstance().playButtonSound4();
@@ -271,7 +251,67 @@ public class UpdateAccountController extends AbstractController implements ISubj
         }
     }
 
+    /**
+     * Event handler for username update button clicked
+     *
+     * @param actionEvent on click
+     * @author Utsav Parajuli
+     */
+    public void onUserNameChangeClick(MouseEvent actionEvent) {
+        EventSounds.getInstance().playButtonSound4();
+        userNameChange();
+    }
+
+    /**
+     * Event handler for ENTER pressed on the personal info update tab
+     * @param keyEvent : key pressed
+     */
+    public void onPersonalInfoChangeEnterPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            EventSounds.getInstance().playButtonSound4();
+            personalInfoChange();
+        }
+    }
+
+    /**
+     * Event handler for personal info update button clicked
+     *
+     * @param actionEvent on click
+     * @author Utsav Parajuli
+     */
+    public void onPersonalInfoClick(MouseEvent actionEvent) {
+        EventSounds.getInstance().playButtonSound4();
+        personalInfoChange();
+    }
+
+    /**
+     * Event handler for ENTER pressed on the password update tab
+     * @param keyEvent : key pressed
+     */
+    public void onPasswordChangeEnterPressed(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            EventSounds.getInstance().playButtonSound4();
+            passwordChange();
+        }
+    }
+
+    /**
+     * Event handler for password change button clicked
+     *
+     * @param actionEvent on click
+     * @author Utsav Parajuli
+     */
+    public void onPasswordChangeClick(MouseEvent actionEvent) {
+        EventSounds.getInstance().playButtonSound4();
+        passwordChange();
+    }
+
+    /**
+     * This method will update the username of the player. Will ask for current username and the new username
+     * two times to update. New usernames should match. Will also publish via the api
+     */
     private void userNameChange() {
+        //checking if any of the fields were empty
         if(currentUserNameTab1.getText().trim().isEmpty() || newUserNameTab1.getText().trim().isEmpty() ||
                 confirmUserNameTab1.getText().trim().isEmpty()) {
 
@@ -321,37 +361,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
         }
     }
 
-    /**
-     * Event handler for create account button clicked
-     *
-     * @param actionEvent on click
-     * @author Utsav Parajuli
-     */
-    public void onUserNameChangeClick(MouseEvent actionEvent) {
-        EventSounds.getInstance().playButtonSound4();
-
-        userNameChange();
-    }
-
-    /**
-     * Event handler for create account button clicked
-     *
-     * @param actionEvent on click
-     * @author Utsav Parajuli
-     */
-    public void onPersonalInfoClick(MouseEvent actionEvent) {
-        EventSounds.getInstance().playButtonSound4();
-
-        personalInfoChange();
-    }
-
-    public void onPersonalInfoChangeEnterPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            EventSounds.getInstance().playButtonSound4();
-            personalInfoChange();
-        }
-    }
-
     private void personalInfoChange() {
         if (userNameTab2.getText().trim().isEmpty() || firstNameEntryTab2.getText().trim().isEmpty() ||
                 lastNameEntryTab2.getText().trim().isEmpty()) {
@@ -391,28 +400,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
                     .execute();
         }
     }
-
-    /**
-     * Event handler for create account button clicked
-     *
-     * @param actionEvent on click
-     * @author Utsav Parajuli
-     */
-    public void onPasswordChangeClick(MouseEvent actionEvent) {
-        EventSounds.getInstance().playButtonSound4();
-
-        passwordChange();
-    }
-
-
-
-    public void onPasswordChangeEnterPressed(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            EventSounds.getInstance().playButtonSound4();
-            passwordChange();
-        }
-    }
-
 
     private void passwordChange() {
         if(userNameEntryTab3.getText().trim().isEmpty() || currentPasswordTab3.getText().trim().isEmpty() ||
@@ -470,4 +457,33 @@ public class UpdateAccountController extends AbstractController implements ISubj
                     .execute();
         }
     }
+
+    //back button idle image
+    private final Image backButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
+    ));
+
+    //back button hover image
+    private final Image backButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
+    ));
+
+
+    //update account button idle
+    private final Image updateButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/update_button.png")
+    ));
+
+    //update account button hover
+    private final Image updateButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/update_button_select.png")
+    ));
 }

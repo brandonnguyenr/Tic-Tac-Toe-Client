@@ -156,11 +156,10 @@ public final class ControllerFactory {
     private static UpdateAccountController createUpdateAccountController() {
         UpdateAccountController controller = new UpdateAccountController();
 
-
         controller.setUc(new UpdatesCallback((event) -> {
-
+            //runs if the state was resolved
             Platform.runLater(() -> {
-                if (event.getType().equalsIgnoreCase("USERNAME")) {
+                if (event.getType().equalsIgnoreCase("USERNAME")) {             //username update successful
                     controller.getCurrentUserNameTab1().setStyle("-fx-border-color: khaki");
                     controller.getNewUserNameTab1().setStyle("-fx-border-color: khaki");
                     controller.getConfirmUserNameTab1().setStyle("-fx-border-color: khaki");
@@ -169,11 +168,12 @@ public final class ControllerFactory {
                     controller.getDifferentUsernameErrorTab1().setText("");
                     controller.getSuccessfulUpdateTab1().setText("ACCOUNT UPDATED!");
 
+                    //clearing screen
                     controller.getCurrentUserNameTab1().clear();
                     controller.getNewUserNameTab1().clear();
                     controller.getConfirmUserNameTab1().clear();
 
-                } else if (event.getType().equalsIgnoreCase("PERSONAL")) {
+                } else if (event.getType().equalsIgnoreCase("PERSONAL")) {      //personal info update successful
                     controller.getUserNameTab2().setStyle("-fx-border-color: khaki");
                     controller.getFirstNameEntryTab2().setStyle("-fx-border-color: khaki");
                     controller.getLastNameEntryTab2().setStyle("-fx-border-color: khaki");
@@ -181,11 +181,12 @@ public final class ControllerFactory {
                     controller.getUsernameErrorTab2().setText("");
                     controller.getSuccessfulUpdateTab2().setText("ACCOUNT UPDATED!");
 
+                    //clearing screen
                     controller.getUserNameTab2().clear();
                     controller.getFirstNameEntryTab2().clear();
                     controller.getLastNameEntryTab2().clear();
 
-                } else if (event.getType().equalsIgnoreCase("PASSWORD")) {
+                } else if (event.getType().equalsIgnoreCase("PASSWORD")) {      //password update successful
                     controller.getUserNameEntryTab3().setStyle("-fx-border-color: khaki");
                     controller.getCurrentPasswordTab3().setStyle("-fx-border-color: khaki");
                     controller.getNewPasswordEntryTab3().setStyle("-fx-border-color: khaki");
@@ -203,8 +204,9 @@ public final class ControllerFactory {
             });
 
         }, ((event) -> {
+            //the update was unsuccessful
             Platform.runLater(() -> {
-                if (event.getType().equalsIgnoreCase("USERNAME")) {
+                if (event.getType().equalsIgnoreCase("USERNAME")) {             //username update error
                     controller.getCurrentUserNameTab1().setStyle("-fx-border-color: red");
                     controller.getNewUserNameTab1().setStyle("-fx-border-color: red");
                     controller.getConfirmUserNameTab1().setStyle("-fx-border-color: red");
@@ -212,12 +214,12 @@ public final class ControllerFactory {
                     controller.getDifferentUsernameErrorTab1().setText("");
                     controller.getSuccessfulUpdateTab1().setText("");
                     controller.getCurrentUsernameErrorTab1().setText("Incorrect username/Username already exists!");
-                } else if (event.getType().equalsIgnoreCase("PERSONAL")) {
+                } else if (event.getType().equalsIgnoreCase("PERSONAL")) {      //personal update error
                     controller.getUserNameTab2().setStyle("-fx-border-color: red");
 
                     controller.getSuccessfulUpdateTab2().setText("");
                     controller.getUsernameErrorTab2().setText("Username does not exist!");
-                } else if (event.getType().equalsIgnoreCase("PASSWORD")) {
+                } else if (event.getType().equalsIgnoreCase("PASSWORD")) {      //password update error
                     controller.getUserNameEntryTab3().setStyle("-fx-border-color: red");
                     controller.getCurrentPasswordTab3().setStyle("-fx-border-color: red");
 

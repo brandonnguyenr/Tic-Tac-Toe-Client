@@ -7,13 +7,7 @@ import io.github.API.messagedata.MsgStatus;
 import io.github.API.utils.GsonWrapper;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.LoginResponseData;
-import io.github.donut.proj.controllers.CreateAccountController;
-import io.github.donut.proj.controllers.LoginController;
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * This class is the used as a callback that will have the data that is returned from the authentication service.
