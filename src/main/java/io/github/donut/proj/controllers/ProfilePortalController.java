@@ -52,8 +52,8 @@ public class ProfilePortalController extends AbstractController implements Initi
     }
 
     public void onHistoryButtonClick(MouseEvent mouseEvent) {
-//        EventSounds.getInstance().playButtonSound4();
-        
+        EventSounds.getInstance().playButtonSound4();
+        stage.setScene(AppController.getScenes().get(SceneName.HISTORY_PAGE).getScene(false, false));
     }
 
     /**

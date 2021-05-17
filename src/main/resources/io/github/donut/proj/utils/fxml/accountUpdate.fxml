@@ -49,7 +49,7 @@
                               </HBox>
                               <ImageView fx:id="userNameChangeButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onUserNameChangeClick" onMouseEntered="#onUpdateEnter" onMouseExited="#onUpdateExit" pickOnBounds="true" preserveRatio="true" translateY="10.0">
                                  <image>
-                                    <Image url="@../images/icons/update_button.png" />
+                                    <Image url="@../../images/icons/update_button.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -89,7 +89,7 @@
                               </HBox>
                               <ImageView fx:id="personalInfoButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onPersonalInfoClick" onMouseEntered="#onUpdateEnter" onMouseExited="#onUpdateExit" pickOnBounds="true" preserveRatio="true" translateY="10.0">
                                  <image>
-                                    <Image url="@../images/icons/update_button.png" />
+                                    <Image url="@../../images/icons/update_button.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -136,7 +136,7 @@
                               </HBox>
                               <ImageView fx:id="passwordChangeButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onPasswordChangeClick" onMouseEntered="#onUpdateEnter" onMouseExited="#onUpdateExit" pickOnBounds="true" preserveRatio="true" translateY="-5.0">
                                  <image>
-                                    <Image url="@../images/icons/update_button.png" />
+                                    <Image url="@../../images/icons/update_button.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -152,7 +152,7 @@
          <children>
             <ImageView fx:id="backButton1" fitHeight="89.0" fitWidth="97.0" onMouseClicked="#onBackButtonClick" onMouseEntered="#onBackButtonEnter" onMouseExited="#onBackButtonExit" preserveRatio="true">
                <image>
-                  <Image url="@../images/common/back_arrow.png" />
+                  <Image url="@../../images/common/back_arrow.png" />
                </image>
             </ImageView>
             <Label fx:id="updateAccountTitle" alignment="CENTER" contentDisplay="CENTER" text="ACCOUNT UPDATE" translateY="20" />

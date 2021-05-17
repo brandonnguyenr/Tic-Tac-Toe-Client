@@ -67,6 +67,8 @@ public class AppController {
         scenes.put(SceneName.LOBBY_PAGE, new FxmlInfo(SceneName.LOBBY_PAGE.toString(), STYLES, SceneName.LOBBY_PAGE, mainStage));
         scenes.put(SceneName.BOARD_PAGE, new FxmlInfo(SceneName.BOARD_PAGE.toString(), STYLES, SceneName.BOARD_PAGE, mainStage));
         scenes.put(SceneName.PORTAL_PAGE, new FxmlInfo(SceneName.PORTAL_PAGE.toString(), STYLES, SceneName.PORTAL_PAGE, mainStage));
+        scenes.put(SceneName.HISTORY_PAGE, new FxmlInfo(SceneName.HISTORY_PAGE.toString(), STYLES, SceneName.HISTORY_PAGE, mainStage));
+
     }
 
     /**

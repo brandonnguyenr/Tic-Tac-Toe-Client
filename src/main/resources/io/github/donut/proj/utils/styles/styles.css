@@ -60,7 +60,7 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle, #createAccountTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 35px;
@@ -150,10 +150,11 @@
 }
 #firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 15;
+    -fx-font-size: 20;
     -fx-text-fill: red;
 }
-#errorMessage {
+#errorMessage, #personalInfoError, #changePasswordError, #currentUsernameErrorTab1, #differentUsernameErrorTab1,
+#usernameErrorTab2, #differentPasswordErrorTab3, #usernameErrorTab3  {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20px;
     -fx-text-fill: red;
@@ -173,7 +174,7 @@
 #player1Label {
     -fx-font-family: "Chalkduster";
 }
-#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage {
+#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage, #playerHistoryPage, #updateAccountPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }
@@ -390,3 +391,47 @@
 
 
 /*=============================== END ROOM TABLE CSS ===============================*/
+
+/*==================================== TAB CSS =====================================*/
+.tab-pane > .tab-header-area > .headers-region > .tab:top {
+    -fx-border-color: khaki;
+    -fx-border-radius: 5 5 0 0;
+    -fx-background-color: #1d1d1d;
+    -fx-pref-height: 40px;
+    -fx-background-insets: 0;
+    -fx-font-family: "Chalkduster";
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected:top {
+    -fx-border-color: #75a2e1 khaki khaki khaki;
+    -fx-border-width: 5 1 1 1;
+    -fx-border-radius: 5 5 0 0;
+/-fx-background-color: #3b3939;/
+-fx-pref-height: 40px;
+    -fx-background-insets: 0;
+}
+
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected > .tab-container > .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: khaki;
+    -fx-font-weight: bold;
+    -fx-font-family: "Chalkduster";
+}
+
+
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: khaki;
+    -fx-font-weight: bold;
+}
+
+
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color:transparent;
+    -fx-border-color: khaki;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-insets: 0;
+    -fx-pref-height: 45px;
+}
+/*=============================== END TAB CSS ===============================*/

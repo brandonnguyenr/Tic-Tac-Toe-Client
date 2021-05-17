@@ -2,6 +2,7 @@ package io.github.donut.proj.controllers;
 
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
+import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -20,7 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class PlayerHistoryController implements Initializable, ISubject {
+public class PlayerHistoryController extends AbstractController implements Initializable, ISubject {
     @FXML
     private ImageView backButton;
 
@@ -45,6 +45,10 @@ public class PlayerHistoryController implements Initializable, ISubject {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
+
         buildTable();
     }
 
@@ -285,7 +289,7 @@ public class PlayerHistoryController implements Initializable, ISubject {
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonEnter() {
+    public void onBackButtonEnter(MouseEvent actionEvent) {
         backButton.setImage(backButtonHover);
     }
 
@@ -294,7 +298,7 @@ public class PlayerHistoryController implements Initializable, ISubject {
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonExit() {
+    public void onBackButtonExit(MouseEvent actionEvent) {
         backButton.setImage(backButtonIdle);
     }
 
@@ -302,15 +306,11 @@ public class PlayerHistoryController implements Initializable, ISubject {
      * Event handler for back button
      *
      * @param actionEvent mouse event
-     * @author Kord Boniadi
+     * @author Joey Campbell
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
         // TODO - Is this leaking memory?
         EventSounds.getInstance().playButtonSound1();
-        EventSounds.getInstance().playButtonSound4();
-        ProfilePortalController portalController = new ProfilePortalController();
-        EventManager.notify(this, portalController);
-        EventManager.removeAllObserver(this);
+        stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false));
     }
-    // ======================================================
 }
