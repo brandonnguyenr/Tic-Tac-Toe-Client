@@ -17,16 +17,16 @@
    <center>
       <VBox alignment="CENTER" prefHeight="280.0" prefWidth="800.0" spacing="25.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="historyButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onHistoryButtonClick" onMouseEntered="#onHistoryButtonHover" onMouseExited="#onHistoryButtonExit" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="historyButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../../images/theme_2/history_button.png" />
                <VBox.margin>
                   <Insets top="55.0" />
                </VBox.margin>
             </ImageView>
-            <ImageView fx:id="statsButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onStatsButtonClick" onMouseEntered="#onStatsButtonHover" onMouseExited="#onStatsButtonExit" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="statsButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../../images/theme_2/stats_button.png" />
             </ImageView>
-            <ImageView fx:id="profileSettingsButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onPlayerSettingsButtonClick" onMouseEntered="#onPlayerSettingsButtonHover" onMouseExited="#onPlayerSettingsButtonExit" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="profileSettingsButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../../images/theme_2/profile_settings_button.png" />
             </ImageView>
          </children>

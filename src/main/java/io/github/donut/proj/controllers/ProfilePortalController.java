@@ -34,20 +34,33 @@ public class ProfilePortalController extends AbstractController implements Initi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
 
+        historyButton.setOnMouseClicked(this::onHistoryButtonClick);
+        historyButton.setOnMouseEntered(this::onHistoryButtonHover);
+        historyButton.setOnMouseExited(this::onHistoryButtonExit);
+
+        statsButton.setOnMouseClicked(this::onStatsButtonClick);
+        statsButton.setOnMouseEntered(this::onStatsButtonHover);
+        statsButton.setOnMouseExited(this::onStatsButtonExit);
+
+        profileSettingsButton.setOnMouseClicked(this::onPlayerSettingsButtonClick);
+        profileSettingsButton.setOnMouseEntered(this::onPlayerSettingsButtonHover);
+        profileSettingsButton.setOnMouseExited(this::onPlayerSettingsButtonExit);
     }
 
-    public void onHistoryButtonClick(/*MouseEvent mouseEvent*/) {
+    public void onHistoryButtonClick(MouseEvent mouseEvent) {
 //        EventSounds.getInstance().playButtonSound4();
-//        PlayerHistoryController historyController = new PlayerHistoryController();
-//        EventManager.notify(this, historyController);
+        
     }
 
     /**
      * Sets the image on the history button to its hover image
      * @author Joey Campbell
      */
-    public void onHistoryButtonHover(/*MouseEvent mouseEvent*/) {
+    public void onHistoryButtonHover(MouseEvent mouseEvent) {
         historyButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -59,7 +72,7 @@ public class ProfilePortalController extends AbstractController implements Initi
      * Sets the image on the history button to its regular image
      * @author Joey Campbell
      */
-    public void onHistoryButtonExit(/*MouseEvent mouseEvent*/) {
+    public void onHistoryButtonExit(MouseEvent mouseEvent) {
         historyButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -67,7 +80,7 @@ public class ProfilePortalController extends AbstractController implements Initi
         ));
     }
 
-    public void onStatsButtonClick(/*MouseEvent mouseEvent*/) {
+    public void onStatsButtonClick(MouseEvent mouseEvent) {
         // TODO - Handle stats here
     }
 
@@ -75,7 +88,7 @@ public class ProfilePortalController extends AbstractController implements Initi
      * Sets the image on the stats button to its hover image
      * @author Joey Campbell
      */
-    public void onStatsButtonHover(/*MouseEvent mouseEvent*/) {
+    public void onStatsButtonHover(MouseEvent mouseEvent) {
         statsButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -87,7 +100,7 @@ public class ProfilePortalController extends AbstractController implements Initi
      * Sets the image on the stats button to its regular image
      * @author Joey Campbell
      */
-    public void onStatsButtonExit(/*MouseEvent mouseEvent*/) {
+    public void onStatsButtonExit(MouseEvent mouseEvent) {
         statsButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -95,7 +108,7 @@ public class ProfilePortalController extends AbstractController implements Initi
         ));
     }
 
-    public void onPlayerSettingsButtonClick(/*MouseEvent mouseEvent*/) {
+    public void onPlayerSettingsButtonClick(MouseEvent mouseEvent) {
         // TODO - Handle player settings here
     }
 
@@ -103,7 +116,7 @@ public class ProfilePortalController extends AbstractController implements Initi
      * Sets the image on the player settings button to its hover image
      * @author Joey Campbell
      */
-    public void onPlayerSettingsButtonHover(/*MouseEvent mouseEvent*/) {
+    public void onPlayerSettingsButtonHover(MouseEvent mouseEvent) {
         profileSettingsButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -115,7 +128,7 @@ public class ProfilePortalController extends AbstractController implements Initi
      * Sets the image on the player settings button to its regular image
      * @author Joey Campbell
      */
-    public void onPlayerSettingsButtonExit(/*MouseEvent mouseEvent*/) {
+    public void onPlayerSettingsButtonExit(MouseEvent mouseEvent) {
         profileSettingsButton.setImage(new Image(Objects.requireNonNull(
                 getClass().
                 getClassLoader().
@@ -148,7 +161,7 @@ public class ProfilePortalController extends AbstractController implements Initi
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonEnter() {
+    public void onBackButtonEnter(MouseEvent mouseEvent) {
         backButton.setImage(backButtonHover);
     }
 
@@ -157,7 +170,7 @@ public class ProfilePortalController extends AbstractController implements Initi
      *
      * @author Kord Boniadi
      */
-    public void onBackButtonExit() {
+    public void onBackButtonExit(MouseEvent actionEvent) {
         backButton.setImage(backButtonIdle);
     }
 

@@ -94,7 +94,7 @@ public class AppController {
      * @author Kord Boniadi
      */
     public void startApp() throws IOException {
-        MusicPlayer.getInstance();
+//        MusicPlayer.getInstance();
         Scene scene = scenes.get(SceneName.START).getScene(true, false);
         scene.getRoot().requestFocus();
         mainStage.setScene(scene);
