@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
 <!--<?import io.github.donut.proj.utils.RestrictiveTextField?>-->
 
-<BorderPane fx:id="multiplayerPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="multiplayerPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
-            <Image url="@../../images/common/back_arrow.png"/>
+            <Image url="@../../images/common/back_arrow.png" />
          </ImageView>
-         <Label fx:id="multiplayerTitle" alignment="TOP_CENTER" text="Multiplayer"/>
+         <Label fx:id="multiplayerTitle" alignment="TOP_CENTER" text="Multiplayer">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+            <padding>
+               <Insets top="30.0" />
+            </padding></Label>
       </HBox>
    </top>
    <bottom>
       <ImageView fx:id="createLobbyButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <Image url="@../../images/icons/create_lobby_button.png"/>
+         <Image url="@../../images/icons/create_lobby_button.png" />
       </ImageView>
    </bottom>
    <center>

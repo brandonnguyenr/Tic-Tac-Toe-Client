@@ -42,6 +42,8 @@ public final class ControllerFactory {
                 yield createSinglePlayerController();
             case CREATEACCOUNT_PAGE:
                 yield createCreateAccountController();
+            case PORTAL_PAGE:
+                yield createProfilePortalController();
             default:
                 throw new IllegalArgumentException("A factory has not been created yet for that controller");
         };
@@ -125,6 +127,8 @@ public final class ControllerFactory {
     private static StartController createStartController() {
         return new StartController();
     }
+
+    private static ProfilePortalController createProfilePortalController() { return new ProfilePortalController(); }
 
     /**
      * CreateAccountController Helper
