@@ -14,149 +14,109 @@
 <?import javafx.scene.control.PasswordField?>
 <BorderPane fx:id="updateAccountPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab fx:id="updateUsernameTitle" text="Update Username">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="315.0" prefWidth="800.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" translateY="-20.0">
-                                 <children>
-                                    <Label fx:id="currentUsernameErrorTab1" text="Label" />
-                                    <Label fx:id="successfulUpdateTab1" layoutX="10.0" layoutY="10.0" text="Label" />
-                                    <Label fx:id="differentUsernameErrorTab1" layoutX="40.0" layoutY="10.0" text="Label" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="usernameTab1" alignment="CENTER" text="Current Username  " />
-                                    <TextField fx:id="currentUserNameTab1" onKeyPressed="#onUserNameChangeEnterPressed" translateX="-0.5" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="10.0" layoutY="95.0" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="username2Tab1" alignment="CENTER" text="New Username      " />
-                                    <TextField fx:id="newUserNameTab1" onKeyPressed="#onUserNameChangeEnterPressed" translateX="0.5" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="10.0" layoutY="180.0" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="username3Tab1" alignment="CENTER" text="Confirm Username " />
-                                    <TextField fx:id="confirmUserNameTab1" onKeyPressed="#onUserNameChangeEnterPressed" translateX="0.25" />
-                                 </children>
-                              </HBox>
-                              <ImageView fx:id="userNameChangeButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onUserNameChangeClick" onMouseEntered="#onUpdateEnter" onMouseExited="#onUpdateExit" pickOnBounds="true" preserveRatio="true" translateY="10.0">
-                                 <image>
-                                    <Image url="@../../images/icons/update_button.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-            <Tab fx:id="updatePersonalInfoTitle" text="Update Personal Info">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="315.0" prefWidth="800.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" translateY="-20.0">
-                                 <children>
-                                    <Label fx:id="usernameErrorTab2" text="Label" />
-                                    <Label fx:id="successfulUpdateTab2" layoutX="10.0" layoutY="10.0" text="Label" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="usernameTab2" alignment="CENTER" text="Username          " />
-                                    <TextField fx:id="userNameTab2" onKeyPressed="#onPersonalInfoChangeEnterPressed" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="10.0" layoutY="95.0" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="firstNameTab2" alignment="CENTER" text="New First Name   " />
-                                    <TextField fx:id="firstNameEntryTab2" onKeyPressed="#onPersonalInfoChangeEnterPressed" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="10.0" layoutY="180.0" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                                 <children>
-                                    <Label fx:id="lastNameTab2" alignment="CENTER" text="New Last Name    " />
-                                    <TextField fx:id="lastNameEntryTab2" onKeyPressed="#onPersonalInfoChangeEnterPressed" translateX="-0.5" />
-                                 </children>
-                              </HBox>
-                              <ImageView fx:id="personalInfoButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onPersonalInfoClick" onMouseEntered="#onUpdateEnter" onMouseExited="#onUpdateExit" pickOnBounds="true" preserveRatio="true" translateY="10.0">
-                                 <image>
-                                    <Image url="@../../images/icons/update_button.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                     </children></AnchorPane>
-               </content>
-            </Tab>
-          <Tab fx:id="changePasswordTitle" text="Change Password">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="315.0" prefWidth="800.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="usernameErrorTab3" text="Label" />
-                                    <Label fx:id="successfulUpdateTab3" layoutX="10.0" layoutY="10.0" text="Label" />
-                                    <Label fx:id="differentPasswordErrorTab3" layoutX="40.0" layoutY="10.0" text="Label" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0" translateY="-5.0">
-                                 <children>
-                                    <Label fx:id="usernameTab3" alignment="CENTER" text="Username           " />
-                                    <TextField fx:id="userNameEntryTab3" onKeyPressed="#onPasswordChangeEnterPressed" translateX="1.0" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="10.0" layoutY="95.0" prefHeight="50.0" prefWidth="200.0" spacing="10.0" translateY="-5.0">
-                                 <children>
-                                    <Label fx:id="passwordTab3" alignment="CENTER" text="Current Password  " />
-                                    <PasswordField fx:id="currentPasswordTab3" onKeyPressed="#onPasswordChangeEnterPressed" translateX="-0.25" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="10.0" layoutY="180.0" prefHeight="50.0" prefWidth="200.0" spacing="10.0" translateY="-5.0">
-                                 <children>
-                                    <Label fx:id="newPasswordTab3" alignment="CENTER" text="New Password      " />
-                                    <PasswordField fx:id="newPasswordEntryTab3" onKeyPressed="#onPasswordChangeEnterPressed" translateX="1.0" />
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="10.0" layoutY="55.0" prefHeight="50.0" prefWidth="200.0" spacing="10.0" translateY="-5.0">
-                                 <children>
-                                    <Label fx:id="confirmPasswordTab3" alignment="CENTER" text="Confirm Password " />
-                                    <PasswordField fx:id="confirmPasswordEntryTab3" onKeyPressed="#onPasswordChangeEnterPressed" translateX="0.75" />
-                                 </children>
-                              </HBox>
-                              <ImageView fx:id="passwordChangeButton" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#onPasswordChangeClick" onMouseEntered="#onUpdateEnter" onMouseExited="#onUpdateExit" pickOnBounds="true" preserveRatio="true" translateY="-5.0">
-                                 <image>
-                                    <Image url="@../../images/icons/update_button.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
+      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE"
+               BorderPane.alignment="CENTER">
+         <Tab fx:id="updateUsernameTitle" text="Update Username">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <VBox alignment="CENTER" prefHeight="315.0" prefWidth="800.0">
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" translateY="-20.0">
+                     <Label fx:id="currentUsernameErrorTab1" text="Label"/>
+                     <Label fx:id="successfulUpdateTab1" layoutX="10.0" layoutY="10.0" text="Label"/>
+                     <Label fx:id="differentUsernameErrorTab1" layoutX="40.0" layoutY="10.0" text="Label"/>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                     <Label fx:id="usernameTab1" alignment="CENTER" text="Current Username  "/>
+                     <TextField fx:id="currentUserNameTab1" translateX="-0.5"/>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="95.0" prefHeight="50.0" prefWidth="200.0"
+                        spacing="10.0">
+                     <Label fx:id="username2Tab1" alignment="CENTER" text="New Username      "/>
+                     <TextField fx:id="newUserNameTab1" translateX="0.5"/>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="180.0" prefHeight="50.0" prefWidth="200.0"
+                        spacing="10.0">
+                     <Label fx:id="username3Tab1" alignment="CENTER" text="Confirm Username "/>
+                     <TextField fx:id="confirmUserNameTab1" translateX="0.25"/>
+                  </HBox>
+                  <ImageView fx:id="userNameChangeButton" fitHeight="150.0" fitWidth="200.0"
+                             pickOnBounds="true" preserveRatio="true" translateY="10.0">
+                     <Image url="@../../images/icons/update_button.png"/>
+                  </ImageView>
+               </VBox>
+            </AnchorPane>
+         </Tab>
+         <Tab fx:id="updatePersonalInfoTitle" text="Update Personal Info">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <VBox alignment="CENTER" prefHeight="315.0" prefWidth="800.0">
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" translateY="-20.0">
+                     <Label fx:id="usernameErrorTab2" text="Label"/>
+                     <Label fx:id="successfulUpdateTab2" layoutX="10.0" layoutY="10.0" text="Label"/>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                     <Label fx:id="usernameTab2" alignment="CENTER" text="Username          "/>
+                     <TextField fx:id="userNameTab2"/>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="95.0" prefHeight="50.0" prefWidth="200.0"
+                        spacing="10.0">
+                     <Label fx:id="firstNameTab2" alignment="CENTER" text="New First Name   "/>
+                     <TextField fx:id="firstNameEntryTab2"/>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="180.0" prefHeight="50.0" prefWidth="200.0"
+                        spacing="10.0">
+                     <Label fx:id="lastNameTab2" alignment="CENTER" text="New Last Name    "/>
+                     <TextField fx:id="lastNameEntryTab2" translateX="-0.5"/>
+                  </HBox>
+                  <ImageView fx:id="personalInfoButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                             preserveRatio="true" translateY="10.0">
+                     <Image url="@../../images/icons/update_button.png"/>
+                  </ImageView>
+               </VBox>
+            </AnchorPane>
+         </Tab>
+         <Tab fx:id="changePasswordTitle" text="Change Password">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <VBox alignment="CENTER" prefHeight="315.0" prefWidth="800.0">
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+                     <Label fx:id="usernameErrorTab3" text="Label"/>
+                     <Label fx:id="successfulUpdateTab3" layoutX="10.0" layoutY="10.0" text="Label"/>
+                     <Label fx:id="differentPasswordErrorTab3" layoutX="40.0" layoutY="10.0" text="Label"/>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0"
+                        translateY="-5.0">
+                     <Label fx:id="usernameTab3" alignment="CENTER" text="Username           "/>
+                     <TextField fx:id="userNameEntryTab3" translateX="1.0"/>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="95.0" prefHeight="50.0" prefWidth="200.0"
+                        spacing="10.0" translateY="-5.0">
+                     <Label fx:id="passwordTab3" alignment="CENTER" text="Current Password  "/>
+                     <PasswordField fx:id="currentPasswordTab3" translateX="-0.25"/>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="180.0" prefHeight="50.0" prefWidth="200.0"
+                        spacing="10.0" translateY="-5.0">
+                     <Label fx:id="newPasswordTab3" alignment="CENTER" text="New Password      "/>
+                     <PasswordField fx:id="newPasswordEntryTab3" translateX="1.0"/>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="55.0" prefHeight="50.0" prefWidth="200.0"
+                        spacing="10.0" translateY="-5.0">
+                     <Label fx:id="confirmPasswordTab3" alignment="CENTER" text="Confirm Password "/>
+                     <PasswordField fx:id="confirmPasswordEntryTab3" translateX="0.75"/>
+                  </HBox>
+                  <ImageView fx:id="passwordChangeButton" fitHeight="150.0" fitWidth="200.0"
+                             pickOnBounds="true" preserveRatio="true" translateY="-5.0">
+                     <Image url="@../../images/icons/update_button.png"/>
+                  </ImageView>
+               </VBox>
+            </AnchorPane>
+         </Tab>
       </TabPane>
    </center>
    <top>
       <HBox minWidth="50.0" prefHeight="100.0" prefWidth="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fx:id="backButton1" fitHeight="89.0" fitWidth="97.0" onMouseClicked="#onBackButtonClick" onMouseEntered="#onBackButtonEnter" onMouseExited="#onBackButtonExit" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/common/back_arrow.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="updateAccountTitle" alignment="CENTER" contentDisplay="CENTER" text="ACCOUNT UPDATE" translateY="20" />
-         </children>
+         <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
+            <Image url="@../../images/common/back_arrow.png"/>
+         </ImageView>
+         <Label fx:id="updateAccountTitle" alignment="CENTER" contentDisplay="CENTER" text="ACCOUNT UPDATE"
+                translateY="20"/>
       </HBox>
    </top>
 </BorderPane>

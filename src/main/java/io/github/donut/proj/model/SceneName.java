@@ -10,7 +10,8 @@ public enum SceneName {
     LOGIN_PAGE("fxml/loginPage.fxml"),
     SINGLEPLAYER_PAGE("fxml/singlePlayerPage.fxml"),
     PORTAL_PAGE("fxml/profilePortalPage.fxml"),
-    HISTORY_PAGE("fxml/playerHistoryPage.fxml");
+    HISTORY_PAGE("fxml/playerHistoryPage.fxml"),
+    UPDATE_ACCOUNT_PAGE("fxml/accountUpdate.fxml");
 
     private final String value;
 

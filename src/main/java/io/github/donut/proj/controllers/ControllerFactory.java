@@ -46,6 +46,8 @@ public final class ControllerFactory {
                 yield createProfilePortalController();
             case HISTORY_PAGE:
                 yield createPlayerHistoryController();
+            case UPDATE_ACCOUNT_PAGE:
+                yield createUpdateAccountController();
             default:
                 throw new IllegalArgumentException("A factory has not been created yet for that controller");
         };
@@ -143,6 +145,15 @@ public final class ControllerFactory {
      * @return {@link PlayerHistoryController}
      */
     private static PlayerHistoryController createPlayerHistoryController() { return new PlayerHistoryController(); }
+
+    /**
+     * UpdateAccountController Helper
+     * @author Joey Campbell
+     * @author Utsav Parajuli
+     * @return {@link UpdateAccountController}
+     */
+    private static UpdateAccountController createUpdateAccountController() { return new UpdateAccountController(); }
+
 
     /**
      * CreateAccountController Helper

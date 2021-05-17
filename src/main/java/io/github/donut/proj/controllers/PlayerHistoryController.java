@@ -309,7 +309,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
      * @author Joey Campbell
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
-        // TODO - Is this leaking memory?
         EventSounds.getInstance().playButtonSound1();
         stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false));
     }

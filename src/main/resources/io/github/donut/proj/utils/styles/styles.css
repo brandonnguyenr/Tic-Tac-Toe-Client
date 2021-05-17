@@ -60,7 +60,7 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 35px;
@@ -111,19 +111,15 @@
     -fx-font-size: 20;
 }
 
-/*#vboxLobby {*/
-/*    -fx-border-color: red;*/
-/*    -fx-background-color: transparent;*/
-/*}*/
-
-
 #lobbyPage {
     -fx-background-color: transparent;
     -fx-border-color: khaki;
     /*-fx-background-image: url("../images/theme_1/gradient_bluegreen.png");*/
 }
 
-#usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2 {
+#usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2, #currentUserNameTab1, #newUserNameTab1,
+#confirmUserNameTab1, #userNameTab2, #firstNameEntryTab2, #lastNameEntryTab2, #userNameEntryTab3, #currentPasswordTab3,
+#newPasswordEntryTab3, #confirmPasswordEntryTab3 {
     -fx-background-color: black;
     -fx-border-color: khaki;
     -fx-text-fill: white;
@@ -135,6 +131,14 @@
     -fx-font-size: 15px;
     -fx-font-family: "Chalkduster";
 }
+
+#usernameTab1, #username2Tab1, #username3Tab1, #usernameTab2, #firstNameTab2, #lastNameTab2, #usernameTab3,
+#passwordTab3, #newPasswordTab3, #confirmPasswordTab3 {
+    -fx-font-family: "Chalkduster";
+    -fx-text-fill: khaki;
+    -fx-font-size: 20;
+}
+
 #emptyMessage, #passwordMessage {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
@@ -142,12 +146,13 @@
     -fx-font-size: 15px;
 }
 
-#registrationMessage {
+#registrationMessage, #successfulUpdateTab1, #successfulUpdateTab3, #successfulUpdateTab2 {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
     -fx-text-fill: #37c637;
-    -fx-font-size: 15px;
+    -fx-font-size: 20px;
 }
+
 #firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20;
@@ -406,8 +411,8 @@
     -fx-border-color: #75a2e1 khaki khaki khaki;
     -fx-border-width: 5 1 1 1;
     -fx-border-radius: 5 5 0 0;
-/-fx-background-color: #3b3939;/
--fx-pref-height: 40px;
+    -fx-background-color: #3b3939;
+    -fx-pref-height: 40px;
     -fx-background-insets: 0;
 }
 

@@ -109,7 +109,8 @@ public class ProfilePortalController extends AbstractController implements Initi
     }
 
     public void onPlayerSettingsButtonClick(MouseEvent mouseEvent) {
-        // TODO - Handle player settings here
+        EventSounds.getInstance().playButtonSound4();
+        stage.setScene(AppController.getScenes().get(SceneName.UPDATE_ACCOUNT_PAGE).getScene(false, false));
     }
 
     /**
