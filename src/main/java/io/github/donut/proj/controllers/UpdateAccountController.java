@@ -3,6 +3,7 @@ package io.github.donut.proj.controllers;
 import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.UpdateData;
+import io.github.donut.proj.callbacks.UpdatesCallback;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
@@ -22,12 +23,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import lombok.Setter;
 
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class UpdateAccountController extends AbstractController implements Initializable, ISubject {
+public class UpdateAccountController extends AbstractController implements ISubject {
 
     @FXML
     private ImageView backButton;
@@ -85,17 +87,11 @@ public class UpdateAccountController extends AbstractController implements Initi
 //    private UpdatesCallback.PersonalInfoMsg personalInfoMsg;
 //    private UpdatesCallback.PasswordMsg     passwordMsg;
 
-    private MessagingAPI api;                                   //instance of api
-    private AppController appController;                        //instance of app controller
+    @Setter
+    private MessagingAPI api = null;                            //instance of api
 
-    private static UpdateAccountController instance = new UpdateAccountController();
-
-    /**
-     * @return instance of Create account screen controller
-     */
-    public static UpdateAccountController getInstance() {
-        return instance;
-    }
+    @Setter
+    private UpdatesCallback uc;                        //instance of app controller
 
 
     //back button idle image
@@ -113,15 +109,11 @@ public class UpdateAccountController extends AbstractController implements Initi
     ));
 
     /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
+     * Initialize the class.
+     * @author Utsav Parajuli
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
@@ -141,9 +133,11 @@ public class UpdateAccountController extends AbstractController implements Initi
         currentUserNameTab1.setOnKeyPressed(this::onUserNameChangeEnterPressed);
         newUserNameTab1.setOnKeyPressed(this::onUserNameChangeEnterPressed);
         confirmUserNameTab1.setOnKeyPressed(this::onUserNameChangeEnterPressed);
+
         userNameTab2.setOnKeyPressed(this::onPersonalInfoChangeEnterPressed);
         firstNameEntryTab2.setOnKeyPressed(this::onPersonalInfoChangeEnterPressed);
         lastNameEntryTab2.setOnKeyPressed(this::onPersonalInfoChangeEnterPressed);
+
         userNameEntryTab3.setOnKeyPressed(this::onPasswordChangeEnterPressed);
         currentPasswordTab3.setOnKeyPressed(this::onPasswordChangeEnterPressed);
         newPasswordEntryTab3.setOnKeyPressed(this::onPasswordChangeEnterPressed);
@@ -161,6 +155,22 @@ public class UpdateAccountController extends AbstractController implements Initi
         differentPasswordErrorTab3.setText("");
     }
 
+    /**
+     * Clears UI elements
+     */
+    public void clearScreen() {
+
+        currentUsernameErrorTab1.setText("");
+        successfulUpdateTab1.setText("");
+        differentUsernameErrorTab1.setText("");
+
+        usernameErrorTab2.setText("");
+        successfulUpdateTab2.setText("");
+
+        usernameErrorTab3.setText("");
+        successfulUpdateTab3.setText("");
+        differentPasswordErrorTab3.setText("");
+    }
 
     /**
      * Event handler for back button
@@ -171,6 +181,7 @@ public class UpdateAccountController extends AbstractController implements Initi
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
         stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false));
+        clearScreen();
     }
 
     /**
@@ -232,12 +243,6 @@ public class UpdateAccountController extends AbstractController implements Initi
     }
 
     public void onUserNameChangeEnterPressed(KeyEvent keyEvent) {
-
-        Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();    //gets the window
-        appController = (AppController) window.getUserData();                           //gets the AppController
-
-        api = appController.getApi();                                                   //getting the instance of api
-
         if (keyEvent.getCode() == KeyCode.ENTER) {
             EventSounds.getInstance().playButtonSound4();
             userNameChange();
@@ -292,6 +297,17 @@ public class UpdateAccountController extends AbstractController implements Initi
 //                            newUserNameTab1.getText(), null))
 //                    .channel(Channels.UPDATE_USERNAME.toString())
 //                    .execute();
+
+            if (api == null)
+                api = ((AppController) stage.getUserData()).getApi();
+            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
+            //sending the message
+            api.publish()
+                    .message(new UpdateData(currentUserNameTab1.getText(), null, null, null,
+                            newUserNameTab1.getText(), null))
+                    .channel(Channels.UPDATE_USERNAME.toString())
+                    .execute();
+
         }
     }
 
@@ -302,12 +318,6 @@ public class UpdateAccountController extends AbstractController implements Initi
      * @author Utsav Parajuli
      */
     public void onUserNameChangeClick(MouseEvent actionEvent) {
-
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();    //gets the window
-        appController = (AppController) window.getUserData();                           //gets the AppController
-
-        api = appController.getApi();                                                   //getting the instance of api
-
         EventSounds.getInstance().playButtonSound4();
 
         userNameChange();
@@ -320,24 +330,12 @@ public class UpdateAccountController extends AbstractController implements Initi
      * @author Utsav Parajuli
      */
     public void onPersonalInfoClick(MouseEvent actionEvent) {
-
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();    //gets the window
-        appController = (AppController) window.getUserData();                           //gets the AppController
-
-        api = appController.getApi();                                                   //getting the instance of api
-
         EventSounds.getInstance().playButtonSound4();
 
         personalInfoChange();
     }
 
     public void onPersonalInfoChangeEnterPressed(KeyEvent keyEvent) {
-
-        Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();    //gets the window
-        appController = (AppController) window.getUserData();                           //gets the AppController
-
-        api = appController.getApi();                                                   //getting the instance of api
-
         if (keyEvent.getCode() == KeyCode.ENTER) {
             EventSounds.getInstance().playButtonSound4();
             personalInfoChange();
@@ -381,6 +379,15 @@ public class UpdateAccountController extends AbstractController implements Initi
 //                            lastNameEntryTab2.getText(), null, null))
 //                    .channel(Channels.UPDATE_PERSONAL_INFO.toString())
 //                    .execute();
+            if (api == null)
+                api = ((AppController) stage.getUserData()).getApi();
+            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
+
+            api.publish()
+                    .message(new UpdateData(userNameTab2.getText(), null, firstNameEntryTab2.getText(),
+                            lastNameEntryTab2.getText(), null, null))
+                    .channel(Channels.UPDATE_PERSONAL_INFO.toString())
+                    .execute();
         }
     }
 
@@ -391,12 +398,6 @@ public class UpdateAccountController extends AbstractController implements Initi
      * @author Utsav Parajuli
      */
     public void onPasswordChangeClick(MouseEvent actionEvent) {
-
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();    //gets the window
-        appController = (AppController) window.getUserData();                           //gets the AppController
-
-        api = appController.getApi();                                                   //getting the instance of api
-
         EventSounds.getInstance().playButtonSound4();
 
         passwordChange();
@@ -405,12 +406,6 @@ public class UpdateAccountController extends AbstractController implements Initi
 
 
     public void onPasswordChangeEnterPressed(KeyEvent keyEvent) {
-
-        Stage window = (Stage) ((Node) keyEvent.getSource()).getScene().getWindow();    //gets the window
-        appController = (AppController) window.getUserData();                           //gets the AppController
-
-        api = appController.getApi();                                                   //getting the instance of api
-
         if (keyEvent.getCode() == KeyCode.ENTER) {
             EventSounds.getInstance().playButtonSound4();
             passwordChange();
@@ -472,6 +467,15 @@ public class UpdateAccountController extends AbstractController implements Initi
 //                            null, null, newPasswordEntryTab3.getText()))
 //                    .channel(Channels.UPDATE_PASSWORD.toString())
 //                    .execute();
+            if (api == null)
+                api = ((AppController) stage.getUserData()).getApi();
+            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
+
+            api.publish()
+                    .message(new UpdateData(userNameEntryTab3.getText(), currentPasswordTab3.getText(), null,
+                            null, null, newPasswordEntryTab3.getText()))
+                    .channel(Channels.UPDATE_PASSWORD.toString())
+                    .execute();
         }
     }
 

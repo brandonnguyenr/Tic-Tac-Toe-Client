@@ -49,37 +49,43 @@ public class UpdatesCallback implements ISubscribeCallback, ISubject {
 
             if (response.isUpdateSuccess()) {                                        //if the login/create was successful
                 if (response.getInfo().equalsIgnoreCase("USERNAME")) {    //checking if the message was create
-                    usernameMsg.setMessage("Username Updated!");
-                    usernameMsg.setUsernameUpdate(true);
-                    EventManager.notify(this, usernameMsg);
+//                    usernameMsg.setMessage("Username Updated!");
+//                    usernameMsg.setUsernameUpdate(true);
+//                    EventManager.notify(this, usernameMsg);
+                    this.resolved.run();
 
                 } else if (response.getInfo().equalsIgnoreCase("PERSONALINFO")) {   //checking if message was login
-                    personalInfoMsg.setMessage("Personal Info Updated!");
-                    personalInfoMsg.setPersonalInfoUpdate(true);
-                    EventManager.notify(this, personalInfoMsg);
+//                    personalInfoMsg.setMessage("Personal Info Updated!");
+//                    personalInfoMsg.setPersonalInfoUpdate(true);
+//                    EventManager.notify(this, personalInfoMsg);
+                    this.resolved.run();
 
                     // needed to prevent memory leak
                     //EventManager.removeAllObserver(this);
                 } else if (response.getInfo().equalsIgnoreCase("PASSWORD")) {   //checking if message was login
-                    passwordMsg.setMessage("Password Updated");
-                    passwordMsg.setPasswordUpdate(true);
-                    EventManager.notify(this, passwordMsg);
-                    // needed to prevent memory leak
-                    //EventManager.removeAllObserver(this);
+//                    passwordMsg.setMessage("Password Updated");
+//                    passwordMsg.setPasswordUpdate(true);
+//                    EventManager.notify(this, passwordMsg);
+                    this.resolved.run();
                 }
             } else {                                                                 //else the login was unsuccessful
                 if (response.getInfo().equalsIgnoreCase("USERNAME")) {     //checking if the message was create
-                    usernameMsg.setMessage("Username Update Failed");
-                    usernameMsg.setUsernameUpdate(false);
-                    EventManager.notify(this, usernameMsg);
+//                    usernameMsg.setMessage("Username Update Failed");
+//                    usernameMsg.setUsernameUpdate(false);
+//                    EventManager.notify(this, usernameMsg);
+                    this.rejected.run();
                 } else if (response.getInfo().equalsIgnoreCase("PERSONALINFO")) {   //checking if message was login
-                    personalInfoMsg.setMessage("Personal Info Update Failed");
-                    personalInfoMsg.setPersonalInfoUpdate(false);
-                    EventManager.notify(this, personalInfoMsg);
+//                    personalInfoMsg.setMessage("Personal Info Update Failed");
+//                    personalInfoMsg.setPersonalInfoUpdate(false);
+//                    EventManager.notify(this, personalInfoMsg);
+                    this.rejected.run();
+
                 } else if (response.getInfo().equalsIgnoreCase("PASSWORD")) {   //checking if message was login
-                    passwordMsg.setMessage("Password Update Failed");
-                    passwordMsg.setPasswordUpdate(false);
-                    EventManager.notify(this, passwordMsg);
+//                    passwordMsg.setMessage("Password Update Failed");
+//                    passwordMsg.setPasswordUpdate(false);
+//                    EventManager.notify(this, passwordMsg);
+                    this.rejected.run();
+
                 }
             }
         }
