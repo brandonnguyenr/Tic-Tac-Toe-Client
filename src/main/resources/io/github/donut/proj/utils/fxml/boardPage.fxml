@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <BorderPane id="boardPage" fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+               minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0">
+      <top>
+         <HBox prefHeight="47.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
+               <Image url="@../../images/common/back_arrow.png"/>
+            </ImageView>
+         </HBox>
+      </top>
+      <center>
+         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER"/>
+      </center>
+      <left>
+         <Label fx:id="playerNameLeft" alignment="TOP_CENTER" text="Label" BorderPane.alignment="CENTER"/>
+      </left>
+      <right>
+         <Label fx:id="playerNameRight" alignment="TOP_CENTER" text="Label" BorderPane.alignment="CENTER"/>
+      </right>
+   </BorderPane>
+   <Pane fx:id="overlayPane" prefHeight="200.0" prefWidth="200.0">
+      <VBox alignment="CENTER" layoutY="-2.0" prefHeight="450.0" prefWidth="800.0">
+         <Label fx:id="winnerLabel" text="Label">
+            <VBox.margin>
+               <Insets bottom="100.0"/>
+            </VBox.margin>
+         </Label>
+         <Label fx:id="exitPrompt" text="Label">
+            <VBox.margin>
+               <Insets/>
+            </VBox.margin>
+         </Label>
+      </VBox>
+   </Pane>
+</StackPane>

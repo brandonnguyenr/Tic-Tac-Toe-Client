@@ -11,29 +11,22 @@
 <BorderPane fx:id="aboutUsPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox minWidth="50.0" prefHeight="100.0" prefWidth="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" onMouseClicked="#onBackButtonClick" onMouseEntered="#onBackButtonEnter" onMouseExited="#onBackButtonExit" preserveRatio="true">
-               <image>
-                  <Image url="@../images/common/back_arrow.png" />
-               </image></ImageView>
-            <Label fx:id="aboutUsTitle" alignment="CENTER" contentDisplay="CENTER" text="Label" translateY="20"/>
-         </children>
+         <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
+            <Image url="@../../images/common/back_arrow.png"/>
+         </ImageView>
+         <Label fx:id="aboutUsTitle" alignment="CENTER" contentDisplay="CENTER" text="Label" translateY="20"/>
       </HBox>
    </top>
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" translateY="-10" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="info" text="Label" />
-            <Hyperlink fx:id="githubLink" text="Hyperlink" translateY="20.0" />
-         </children>
+         <Label fx:id="info" text="Label"/>
+         <Hyperlink fx:id="githubLink" text="Hyperlink" translateY="20.0"/>
       </VBox>
    </center>
    <bottom>
       <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="contributors" text="Label" />
-            <Label fx:id="copyright" text="Label" />
-         </children>
+         <Label fx:id="contributors" text="Label"/>
+         <Label fx:id="copyright" text="Label"/>
       </VBox>
    </bottom>
 </BorderPane>

@@ -29,6 +29,7 @@ public final class MusicPlayer {
     private String[] resourceList;
 
     /**
+     * @author Kord Boniadi
      * @return one instance of MusicPlayer
      */
     public static MusicPlayer getInstance() {
@@ -86,9 +87,9 @@ public final class MusicPlayer {
 
     /**
      * Helper for creating a MediaPlayer instance for a specific mp3 file
+     * @author Kord Boniadi
      * @param filePath location of media file
      * @return instance of MediaPlayer for a specific media file
-     * @author Kord Boniadi
      */
     private MediaPlayer createPlayer(String filePath) {
         final MediaPlayer player = new MediaPlayer(new Media(getClass().getResource(filePath).toString()));
@@ -101,8 +102,8 @@ public final class MusicPlayer {
 
     /**
      * Helper class for setting the current active player instance
-     * @param newPlayer MediaPlayer instance that will be played
      * @author Kord Boniadi
+     * @param newPlayer MediaPlayer instance that will be played
      */
     private void setCurrentlyPlaying(final MediaPlayer newPlayer) {
         newPlayer.seek(Duration.ZERO);

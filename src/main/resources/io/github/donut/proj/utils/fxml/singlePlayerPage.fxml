@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import io.github.donut.proj.utils.RestrictiveTextField?>
+
+<BorderPane fx:id="singlePlayerPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <Label fx:id="title" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="33.0" text="Label" textAlignment="CENTER" translateY="-30"/>
+            <RestrictiveTextField fx:id="nameEntry" alignment="BOTTOM_CENTER"/>
+            <HBox fx:id="midThird" alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
+                <Label fx:id="difficultyLevelTitle" alignment="CENTER" text="Label"/>
+                <ToolBar fx:id="difficultyLevelBar" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" minWidth="200.0"
+                         prefHeight="40.0" prefWidth="150.0">
+                    <RadioButton fx:id="easyMode" mnemonicParsing="false" text="RadioButton"/>
+                    <RadioButton fx:id="hardMode" mnemonicParsing="false" text="RadioButton" translateX="20.0"/>
+                </ToolBar>
+            </HBox>
+            <HBox fx:id="midFourth" alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
+                <Label fx:id="tokenSelectorTitle" alignment="CENTER" text="Label"/>
+                <ToolBar fx:id="tokenBar" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" minWidth="200.0"
+                         prefHeight="40.0" prefWidth="150.0">
+                    <RadioButton fx:id="tokenX" mnemonicParsing="false" text="RadioButton"/>
+                    <RadioButton fx:id="tokenO" mnemonicParsing="false" text="RadioButton" translateX="45.0"/>
+                </ToolBar>
+            </HBox>
+            <ImageView fx:id="startButton" fitHeight="150.0" fitWidth="200.0" preserveRatio="true"
+                       BorderPane.alignment="TOP_CENTER">
+                <Image url="@../../images/theme_2/start_button.png"/>
+            </ImageView>
+        </VBox>
+    </center>
+    <top>
+        <HBox fx:id="topHbox" prefHeight="70.0" prefWidth="200.0" BorderPane.alignment="BOTTOM_CENTER">
+            <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
+                <Image url="@../../images/common/back_arrow.png"/>
+            </ImageView>
+            <Label fx:id="singlePlayerTitle" alignment="CENTER" contentDisplay="CENTER" text="Label"/>
+        </HBox>
+    </top>
+</BorderPane>

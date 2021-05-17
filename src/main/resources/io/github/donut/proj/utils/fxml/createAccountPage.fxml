@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="createAccountPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" translateY="-20.0" BorderPane.alignment="CENTER">
+          <HBox alignment="TOP_CENTER" prefHeight="50.0" prefWidth="200.0">
+              <Label fx:id="registrationMessage" alignment="CENTER" contentDisplay="CENTER" />
+              <Label fx:id="passwordMessage" alignment="CENTER" contentDisplay="CENTER" />
+              <Label fx:id="emptyMessage" alignment="CENTER" contentDisplay="CENTER" />
+          </HBox>
+          <HBox fx:id="firstName" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+              <Label fx:id="firstNameLabel" text="Label" />
+              <TextField fx:id="firstNameEntry" alignment="CENTER" pickOnBounds="false" />
+          </HBox>
+
+          <HBox fx:id="lastName" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+              <Label fx:id="lastNameLabel" text="Label" />
+              <TextField fx:id="lastNameEntry" alignment="CENTER" pickOnBounds="false" translateX="-2.0" />
+          </HBox>
+
+          <HBox fx:id="username" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+              <Label fx:id="usernameLabel" text="Label" />
+              <TextField fx:id="usernameEntry" alignment="CENTER" pickOnBounds="false" translateX="-2.0" />
+          </HBox>
+
+          <HBox fx:id="password1" alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+              <Label fx:id="passwordLabel1" text="Label" />
+              <PasswordField fx:id="passwordEntry1" alignment="CENTER" />
+          </HBox>
+
+          <HBox fx:id="password2" alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
+              <Label fx:id="passwordLabel2" text="Label" />
+              <PasswordField fx:id="passwordEntry2" alignment="CENTER" />
+          </HBox>
+
+         </VBox>
+   </center>
+   <top>
+       <HBox prefHeight="60.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
+               <Image url="@../../images/common/back_arrow.png" />
+           </ImageView>
+           <Label fx:id="createAccountTitle" alignment="CENTER" contentDisplay="CENTER" text="Label" />
+       </HBox>
+   </top>
+   <bottom>
+       <ImageView fx:id="signUpButton" fitHeight="45.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+           <Image url="@../../images/icons/signup.png" />
+       </ImageView>
+   </bottom>
+</BorderPane>

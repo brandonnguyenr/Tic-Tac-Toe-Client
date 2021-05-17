@@ -46,6 +46,9 @@ public final class Logger {
         appLogger.setLevel(newLevel);
     }
 
+    public static boolean isLoggingEnabled() {
+        return !production;
+    }
     /**
      * Load a config file for the logger and set locale to english.
      * @param relativePath the path in resources of the config file
