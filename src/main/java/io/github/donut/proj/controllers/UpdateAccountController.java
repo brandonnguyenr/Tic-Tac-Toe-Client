@@ -181,6 +181,19 @@ public class UpdateAccountController extends AbstractController implements ISubj
         usernameErrorTab3.setText("");
         successfulUpdateTab3.setText("");
         differentPasswordErrorTab3.setText("");
+
+        currentUserNameTab1.clear();
+        newUserNameTab1.clear();
+        confirmUserNameTab1.clear();
+
+        userNameTab2.clear();
+        firstNameEntryTab2.clear();
+        lastNameEntryTab2.clear();
+
+        userNameEntryTab3.clear();
+        currentPasswordTab3.clear();
+        newPasswordEntryTab3.clear();
+        confirmPasswordEntryTab3.clear();
     }
 
     /**
@@ -309,16 +322,20 @@ public class UpdateAccountController extends AbstractController implements ISubj
     /**
      * This method will update the username of the player. Will ask for current username and the new username
      * two times to update. New usernames should match. Will also publish via the api
+     *
+     * @author Utsav Parajuli
      */
     private void userNameChange() {
         //checking if any of the fields were empty
         if(currentUserNameTab1.getText().trim().isEmpty() || newUserNameTab1.getText().trim().isEmpty() ||
                 confirmUserNameTab1.getText().trim().isEmpty()) {
 
+            //displaying error message
             successfulUpdateTab1.setText("");
             differentUsernameErrorTab1.setText("");
             currentUsernameErrorTab1.setText("One or more fields are empty");
 
+            //showing which box had an error
             if (currentUserNameTab1.getText().trim().isEmpty())
                 currentUserNameTab1.setStyle("-fx-border-color: red");
             if (newUserNameTab1.getText().trim().isEmpty())
@@ -327,9 +344,11 @@ public class UpdateAccountController extends AbstractController implements ISubj
                 confirmUserNameTab1.setStyle("-fx-border-color: red");
         }
 
+        //checking if any of the fields are filled
         if(!(currentUserNameTab1.getText().trim().isEmpty()) || !(newUserNameTab1.getText().trim().isEmpty()) ||
                 !(confirmUserNameTab1.getText().trim().isEmpty())) {
 
+            //highlights the box that are correct
             if (!(currentUserNameTab1.getText().trim().isEmpty()))
                 currentUserNameTab1.setStyle("-fx-border-color: khaki");
             if (!(newUserNameTab1.getText().trim().isEmpty()))
@@ -338,6 +357,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
                 confirmUserNameTab1.setStyle("-fx-border-color: khaki");
         }
 
+        //checking if the usernames do not match with each other
         if(!(newUserNameTab1.getText().equals(confirmUserNameTab1.getText()))) {
             confirmUserNameTab1.setStyle("-fx-border-color: red");
             currentUsernameErrorTab1.setText("");
@@ -345,6 +365,8 @@ public class UpdateAccountController extends AbstractController implements ISubj
             differentUsernameErrorTab1.setText("Usernames do not match");
         }
 
+        //if all the previous conditions were false we check if all the required fields were entered
+        //and make a call to the api
         if(!(currentUserNameTab1.getText().trim().isEmpty()) && !(newUserNameTab1.getText().trim().isEmpty()) &&
                 !(confirmUserNameTab1.getText().trim().isEmpty()) &&
                 newUserNameTab1.getText().equals(confirmUserNameTab1.getText())) {
@@ -361,13 +383,22 @@ public class UpdateAccountController extends AbstractController implements ISubj
         }
     }
 
+    /**
+     * This method will change the personal info of the player. Will ask for the username of player and new first name
+     * and last name to update.
+     *
+     * @author Utsav Parajuli
+     */
     private void personalInfoChange() {
+        //will check if any of the fields are empty
         if (userNameTab2.getText().trim().isEmpty() || firstNameEntryTab2.getText().trim().isEmpty() ||
                 lastNameEntryTab2.getText().trim().isEmpty()) {
 
+            //will display error message
             successfulUpdateTab2.setText("");
             usernameErrorTab2.setText("One or more fields are empty");
 
+            //highlights which box has an error
             if (userNameTab2.getText().trim().isEmpty())
                 userNameTab2.setStyle("-fx-border-color: red");
             if (firstNameEntryTab2.getText().trim().isEmpty())
@@ -376,9 +407,11 @@ public class UpdateAccountController extends AbstractController implements ISubj
                 lastNameEntryTab2.setStyle("-fx-border-color: red");
         }
 
+        //will check which boxes are filled
         if (!(userNameTab2.getText().trim().isEmpty()) || !(firstNameEntryTab2.getText().trim().isEmpty()) ||
                 !(lastNameEntryTab2.getText().trim().isEmpty())) {
 
+            //highlights the boxes that are filled
             if (!(userNameTab2.getText().trim().isEmpty()))
                 userNameTab2.setStyle("-fx-border-color: khaki");
             if (!(firstNameEntryTab2.getText().trim().isEmpty()))
@@ -387,6 +420,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
                 lastNameEntryTab2.setStyle("-fx-border-color: khaki");
         }
 
+        //checks if all the fields are entered and makes a call to the api
         if(!(userNameTab2.getText().trim().isEmpty()) && !(firstNameEntryTab2.getText().trim().isEmpty()) &&
                 !(lastNameEntryTab2.getText().trim().isEmpty())) {
             if (api == null)
@@ -401,15 +435,23 @@ public class UpdateAccountController extends AbstractController implements ISubj
         }
     }
 
+    /**
+     * This method will change the password of the player. They will the prompted to enter their current username,
+     * current password, new password and re-entering the new password.
+     * @author Utsav Parajuli
+     */
     private void passwordChange() {
+        //checking if any of the fields are empty
         if(userNameEntryTab3.getText().trim().isEmpty() || currentPasswordTab3.getText().trim().isEmpty() ||
                 newPasswordEntryTab3.getText().trim().isEmpty() ||
                 confirmPasswordEntryTab3.getText().trim().isEmpty()) {
 
+            //displaying error message
             successfulUpdateTab3.setText("");
             differentPasswordErrorTab3.setText("");
             usernameErrorTab3.setText("One or more fields are empty");
 
+            //setting the boxes to red if an error occurred
             if (userNameEntryTab3.getText().trim().isEmpty())
                 userNameEntryTab3.setStyle("-fx-border-color: red");
             if (currentPasswordTab3.getText().trim().isEmpty())
@@ -420,9 +462,11 @@ public class UpdateAccountController extends AbstractController implements ISubj
                 confirmPasswordEntryTab3.setStyle("-fx-border-color: red");
         }
 
+        //checking if any boxes were filled
         if(!(userNameEntryTab3.getText().trim().isEmpty()) || !(currentPasswordTab3.getText().trim().isEmpty()) ||
                 !(newPasswordEntryTab3.getText().trim().isEmpty()) || !(confirmPasswordEntryTab3.getText().trim().isEmpty())) {
 
+            //if any of the boxes were filled set it to normal
             if (!(userNameEntryTab3.getText().trim().isEmpty()))
                 userNameEntryTab3.setStyle("-fx-border-color: khaki");
             if (!(currentPasswordTab3.getText().trim().isEmpty()))
@@ -433,6 +477,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
                 confirmPasswordEntryTab3.setStyle("-fx-border-color: khaki");
         }
 
+        //checking if new passwords match
         if(!(newPasswordEntryTab3.getText().equals(confirmPasswordEntryTab3.getText()))) {
             confirmPasswordEntryTab3.setStyle("-fx-border-color: red");
             successfulUpdateTab3.setText("");
@@ -440,11 +485,11 @@ public class UpdateAccountController extends AbstractController implements ISubj
             differentPasswordErrorTab3.setText("Passwords do not match!");
         }
 
+        //checking if all the fields were filled and passwords match and making an api call
         if(!(userNameEntryTab3.getText().trim().isEmpty()) && !(currentPasswordTab3.getText().trim().isEmpty()) &&
                 !(newPasswordEntryTab3.getText().trim().isEmpty()) &&
                 !(confirmPasswordEntryTab3.getText().trim().isEmpty()) &&
-                (newPasswordEntryTab3.getText().equals(confirmPasswordEntryTab3.getText())))
-        {
+                (newPasswordEntryTab3.getText().equals(confirmPasswordEntryTab3.getText()))) {
 
             if (api == null)
                 api = ((AppController) stage.getUserData()).getApi();
