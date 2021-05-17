@@ -205,6 +205,9 @@ public class SinglePlayerController extends AbstractController implements ISubje
             cpuLevel = "Pro";
             artificialBrain = new NPCHardMode(cpuToken, userToken);
         }
+        nameEntry.clear();
+        easyMode.setSelected(true);
+        tokenX.setSelected(true);
 
         // TODO make an actual selection
         GameController game = new GameController(
@@ -224,13 +227,9 @@ public class SinglePlayerController extends AbstractController implements ISubje
 
         EventManager.register(boardUI, game.getPlayer1());
         EventManager.register(boardUI, game.getPlayer2());
-//        EventManager.register(controller, (AppController) stage.getUserData());
         EventManager.register(game, boardUI);
         stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(controller, false));
         game.startGame();
-
-//        EventManager.notify(this, game);
-//        EventManager.removeAllObserver(this);
     }
 
     /**
@@ -241,6 +240,9 @@ public class SinglePlayerController extends AbstractController implements ISubje
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
+        nameEntry.clear();
+        easyMode.setSelected(true);
+        tokenX.setSelected(true);
         stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
     }
 
