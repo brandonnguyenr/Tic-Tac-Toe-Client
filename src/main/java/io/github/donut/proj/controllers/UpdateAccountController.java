@@ -4,31 +4,21 @@ import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.UpdateData;
 import io.github.donut.proj.callbacks.UpdatesCallback;
-import io.github.donut.proj.listener.EventManager;
-import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
-import io.github.donut.proj.utils.Logger;
 import io.github.donut.sounds.EventSounds;
-import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 @Getter
 public class UpdateAccountController extends AbstractController implements ISubject {
@@ -85,9 +75,14 @@ public class UpdateAccountController extends AbstractController implements ISubj
     @FXML
     private Label usernameErrorTab3;
 
-//    private UpdatesCallback.UsernameMsg     usernameMsg;
-//    private UpdatesCallback.PersonalInfoMsg personalInfoMsg;
-//    private UpdatesCallback.PasswordMsg     passwordMsg;
+    @FXML
+    private Tab updateUsernameTitle;
+    @FXML
+    private Tab updatePersonalInfoTitle;
+    @FXML
+    private Tab changePasswordTitle;
+    @FXML
+    private TabPane tabPane;
 
     @Setter
     private MessagingAPI api = null;                            //instance of api
@@ -116,6 +111,9 @@ public class UpdateAccountController extends AbstractController implements ISubj
      */
     @FXML
     public void initialize() {
+
+        tabPane.getSelectionModel().select(updateUsernameTitle);
+
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
@@ -145,22 +143,43 @@ public class UpdateAccountController extends AbstractController implements ISubj
         newPasswordEntryTab3.setOnKeyPressed(this::onPasswordChangeEnterPressed);
         confirmPasswordEntryTab3.setOnKeyPressed(this::onPasswordChangeEnterPressed);
 
-        currentUsernameErrorTab1.setText("");
-        successfulUpdateTab1.setText("");
-        differentUsernameErrorTab1.setText("");
+        updateUsernameTitle.setOnSelectionChanged(this::onTabClosed);
+        updatePersonalInfoTitle.setOnSelectionChanged(this::onTabClosed);
+        changePasswordTitle.setOnSelectionChanged(this::onTabClosed);
 
-        usernameErrorTab2.setText("");
-        successfulUpdateTab2.setText("");
-
-        usernameErrorTab3.setText("");
-        successfulUpdateTab3.setText("");
-        differentPasswordErrorTab3.setText("");
+//        currentUsernameErrorTab1.setText("");
+//        successfulUpdateTab1.setText("");
+//        differentUsernameErrorTab1.setText("");
+//
+//        usernameErrorTab2.setText("");
+//        successfulUpdateTab2.setText("");
+//
+//        usernameErrorTab3.setText("");
+//        successfulUpdateTab3.setText("");
+//        differentPasswordErrorTab3.setText("");
+        clearScreen();
     }
 
+    public void onTabClosed(Event event) {
+        clearScreen();
+    }
     /**
      * Clears UI elements
      */
     public void clearScreen() {
+
+        currentUserNameTab1.setStyle("-fx-border-color: khaki");
+        newUserNameTab1.setStyle("-fx-border-color: khaki");
+        confirmUserNameTab1.setStyle("-fx-border-color: khaki");
+
+        userNameTab2.setStyle("-fx-border-color: khaki");
+        firstNameEntryTab2.setStyle("-fx-border-color: khaki");
+        lastNameEntryTab2.setStyle("-fx-border-color: khaki");
+
+        userNameEntryTab3.setStyle("-fx-border-color: khaki");
+        currentPasswordTab3.setStyle("-fx-border-color: khaki");
+        newPasswordEntryTab3.setStyle("-fx-border-color: khaki");
+        confirmPasswordEntryTab3.setStyle("-fx-border-color: khaki");
 
         currentUsernameErrorTab1.setText("");
         successfulUpdateTab1.setText("");
@@ -184,6 +203,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
         EventSounds.getInstance().playButtonSound1();
         stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false));
         clearScreen();
+        tabPane.getSelectionModel().select(updateUsernameTitle);
     }
 
     /**
@@ -288,18 +308,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
         if(!(currentUserNameTab1.getText().trim().isEmpty()) && !(newUserNameTab1.getText().trim().isEmpty()) &&
                 !(confirmUserNameTab1.getText().trim().isEmpty()) &&
                 newUserNameTab1.getText().equals(confirmUserNameTab1.getText())) {
-
-            //TODO: make DB call
-//            currentUsernameErrorTab1.setText("");
-//            differentUsernameErrorTab1.setText("");
-//            successfulUpdateTab1.setText("UPDATED!");
-            //sending the message
-//            api.publish()
-//                    .message(new UpdateData(currentUserNameTab1.getText(), null, null, null,
-//                            newUserNameTab1.getText(), null))
-//                    .channel(Channels.UPDATE_USERNAME.toString())
-//                    .execute();
-
             if (api == null)
                 api = ((AppController) stage.getUserData()).getApi();
             api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
@@ -372,15 +380,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
 
         if(!(userNameTab2.getText().trim().isEmpty()) && !(firstNameEntryTab2.getText().trim().isEmpty()) &&
                 !(lastNameEntryTab2.getText().trim().isEmpty())) {
-
-            //TODO: make DB call
-//            usernameErrorTab2.setText("");
-//            successfulUpdateTab2.setText("UPDATED!");
-//            api.publish()
-//                    .message(new UpdateData(userNameTab2.getText(), null, firstNameEntryTab2.getText(),
-//                            lastNameEntryTab2.getText(), null, null))
-//                    .channel(Channels.UPDATE_PERSONAL_INFO.toString())
-//                    .execute();
             if (api == null)
                 api = ((AppController) stage.getUserData()).getApi();
             api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
@@ -460,15 +459,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
                 (newPasswordEntryTab3.getText().equals(confirmPasswordEntryTab3.getText())))
         {
 
-            //TODO: make DB call
-//            usernameErrorTab3.setText("");
-//            differentPasswordErrorTab3.setText("");
-//            successfulUpdateTab3.setText("UPDATED!");
-//            api.publish()
-//                    .message(new UpdateData(userNameEntryTab3.getText(), currentPasswordTab3.getText(), null,
-//                            null, null, newPasswordEntryTab3.getText()))
-//                    .channel(Channels.UPDATE_PASSWORD.toString())
-//                    .execute();
             if (api == null)
                 api = ((AppController) stage.getUserData()).getApi();
             api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
@@ -480,95 +470,4 @@ public class UpdateAccountController extends AbstractController implements ISubj
                     .execute();
         }
     }
-
-//    /**
-//     * New info is received through this method. Object decoding is needed
-//     *
-//     * @param eventType General Object type
-//     * @author Kord Boniadi
-//     */
-//    @Override
-//    public void update(Object eventType) {
-//        if (eventType instanceof UpdatesCallback.UsernameMsg) {
-//            usernameMsg = (UpdatesCallback.UsernameMsg) eventType;
-//            Platform.runLater(()->{
-//                if (usernameMsg.isUsernameUpdate()) {
-//
-//                    currentUserNameTab1.setStyle("-fx-border-color: khaki");
-//                    newUserNameTab1.setStyle("-fx-border-color: khaki");
-//                    confirmUserNameTab1.setStyle("-fx-border-color: khaki");
-//
-//                    currentUsernameErrorTab1.setText("");
-//                    differentUsernameErrorTab1.setText("");
-//                    successfulUpdateTab1.setText("ACCOUNT UPDATED!");
-//
-//                    currentUserNameTab1.clear();
-//                    newUserNameTab1.clear();
-//                    confirmUserNameTab1.clear();
-//                } else{
-//                    currentUserNameTab1.setStyle("-fx-border-color: red");
-//                    currentUserNameTab1.setStyle("-fx-border-color: red");
-//                    confirmUserNameTab1.setStyle("-fx-border-color: red");
-//
-//                    differentUsernameErrorTab1.setText("");
-//                    successfulUpdateTab1.setText("");
-//                    currentUsernameErrorTab1.setText("Incorrect username/Username already exists!");
-//                }
-//
-//            });
-//        }
-//        else if (eventType instanceof UpdatesCallback.PersonalInfoMsg) {
-//            personalInfoMsg = (UpdatesCallback.PersonalInfoMsg) eventType;
-//            Platform.runLater(()->{
-//                if (personalInfoMsg.isPersonalInfoUpdate()) {
-//
-//                    userNameTab2.setStyle("-fx-border-color: khaki");
-//                    firstNameEntryTab2.setStyle("-fx-border-color: khaki");
-//                    lastNameEntryTab2.setStyle("-fx-border-color: khaki");
-//
-//                    usernameErrorTab2.setText("");
-//                    successfulUpdateTab2.setText("ACCOUNT UPDATED!");
-//
-//                    userNameTab2.clear();
-//                    firstNameEntryTab2.clear();
-//                    lastNameEntryTab2.clear();
-//                }
-//                else {
-//                    userNameTab2.setStyle("-fx-border-color: red");
-//
-//                    successfulUpdateTab2.setText("");
-//                    usernameErrorTab2.setText("Username does not exist!");
-//                }
-//            });
-//        }
-//        else if (eventType instanceof UpdatesCallback.PasswordMsg) {
-//            passwordMsg = (UpdatesCallback.PasswordMsg) eventType;
-//            Platform.runLater(()->{
-//                if (passwordMsg.isPasswordUpdate()) {
-//
-//                    userNameEntryTab3.setStyle("-fx-border-color: khaki");
-//                    currentPasswordTab3.setStyle("-fx-border-color: khaki");
-//                    newPasswordEntryTab3.setStyle("-fx-border-color: khaki");
-//                    confirmPasswordEntryTab3.setStyle("-fx-border-color: khaki");
-//
-//                    usernameErrorTab3.setText("");
-//                    differentPasswordErrorTab3.setText("");
-//                    successfulUpdateTab3.setText("ACCOUNT UPDATED!");
-//
-//                    userNameEntryTab3.clear();
-//                    currentPasswordTab3.clear();
-//                    newPasswordEntryTab3.clear();
-//                    confirmPasswordEntryTab3.clear();
-//                }
-//                else {
-//                    userNameEntryTab3.setStyle("-fx-border-color: red");
-//                    currentPasswordTab3.setStyle("-fx-border-color: red");
-//
-//                    differentPasswordErrorTab3.setText("");
-//                    successfulUpdateTab3.setText("");
-//                    usernameErrorTab3.setText("Username/Password do not match");
-//                }
-//            });
-//        }
-//    }
 }

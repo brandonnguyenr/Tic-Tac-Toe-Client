@@ -7,11 +7,10 @@ import io.github.API.messagedata.MsgStatus;
 import io.github.API.utils.GsonWrapper;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.UpdateResponseData;
-import io.github.donut.proj.controllers.UpdateAccountController;
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
-import io.github.donut.proj.utils.Logger;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.function.Consumer;
 
@@ -46,41 +45,24 @@ public class UpdatesCallback implements ISubscribeCallback, ISubject {
 
             if (response.isUpdateSuccess()) {                                        //if the login/create was successful
                 if (response.getInfo().equalsIgnoreCase("USERNAME")) {    //checking if the message was create
-//                    usernameMsg.setMessage("Username Updated!");
-//                    usernameMsg.setUsernameUpdate(true);
-//                    EventManager.notify(this, usernameMsg);
                     this.resolved.accept(new RequestMsg("Username", true));
+
                 } else if (response.getInfo().equalsIgnoreCase("PERSONALINFO")) {   //checking if message was login
-//                    personalInfoMsg.setMessage("Personal Info Updated!");
-//                    personalInfoMsg.setPersonalInfoUpdate(true);
-//                    EventManager.notify(this, personalInfoMsg);
                     this.resolved.accept(new RequestMsg("Personal", true));
 
-                    // needed to prevent memory leak
-                    //EventManager.removeAllObserver(this);
                 } else if (response.getInfo().equalsIgnoreCase("PASSWORD")) {   //checking if message was login
-//                    passwordMsg.setMessage("Password Updated");
-//                    passwordMsg.setPasswordUpdate(true);
-//                    EventManager.notify(this, passwordMsg);
                     this.resolved.accept(new RequestMsg("Password", true));
                 }
             } else {                                                                 //else the login was unsuccessful
                 if (response.getInfo().equalsIgnoreCase("USERNAME")) {     //checking if the message was create
-//                    usernameMsg.setMessage("Username Update Failed");
-//                    usernameMsg.setUsernameUpdate(false);
-//                    EventManager.notify(this, usernameMsg);
                     this.rejected.accept(new RequestMsg("Username", false));
+
                 } else if (response.getInfo().equalsIgnoreCase("PERSONALINFO")) {   //checking if message was login
-//                    personalInfoMsg.setMessage("Personal Info Update Failed");
-//                    personalInfoMsg.setPersonalInfoUpdate(false);
-//                    EventManager.notify(this, personalInfoMsg);
                     this.rejected.accept(new RequestMsg("Personal", false));
 
                 } else if (response.getInfo().equalsIgnoreCase("PASSWORD")) {   //checking if message was login
-//                    passwordMsg.setMessage("Password Update Failed");
-//                    passwordMsg.setPasswordUpdate(false);
-//                    EventManager.notify(this, passwordMsg);
                     this.rejected.accept(new RequestMsg("Password", false));
+
                 }
             }
         }
