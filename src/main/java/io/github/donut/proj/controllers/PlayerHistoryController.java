@@ -30,19 +30,29 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * PlayerHistoryController contains the table view object for the player to see their past games.
+ * @author Joey Campbell
+ * @version 0.1
+ */
 public class PlayerHistoryController extends AbstractController implements Initializable, ISubject {
     @FXML
     private ImageView backButton;
 
     @FXML
     private BorderPane playerHistoryPage;
-    // =================== TABLE RELATED ===================
-//    @FXML
+
     private TableView<RoomHistoryData> playerHistoryTable;
 
     @FXML
     private ObservableList<RoomHistoryData> tvOList;
 
+    /**
+     * Sets all action events and loads the table view object
+     * @param location location
+     * @param resources resources
+     * @author Joey Campbell
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         backButton.setOnMouseClicked(this::onBackButtonClick);
@@ -52,6 +62,10 @@ public class PlayerHistoryController extends AbstractController implements Initi
         buildTable();
     }
 
+    /**
+     * Populates each column of the table and sets their spacing
+     * @author Joey Campbell
+     */
     private void buildTable() {
         TableColumn<RoomHistoryData, String> roomIdCol      = new TableColumn<>("ID");
         roomIdCol.setReorderable(false);
@@ -101,8 +115,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
 
         playerHistoryTable.setItems(tvOList);
 
-        //playerHistoryTable.getColumns().addAll(roomIdCol, winLossTieCol, playersCol, startTimeCol, endTimeCol, roomCreatorCol);
-
         playerHistoryTable.setPadding(new Insets(0, 65.5, 30, 65.5));
         playerHistoryTable.setSelectionModel(null);
 
@@ -115,11 +127,13 @@ public class PlayerHistoryController extends AbstractController implements Initi
 
         playerHistoryPage.setCenter(playerHistoryTable);
 
-//        playerHistoryTable.setStyle("-fx-font-size: 12; -fx-font-weight: bold");
-
         addMovesButtonToTable();
     }
 
+    /**
+     * Static data object for populating the table view.
+     * @author Joey Campbell
+     */
     @Getter
     @Setter
     @ToString
@@ -192,6 +206,10 @@ public class PlayerHistoryController extends AbstractController implements Initi
         }
     }
 
+    /**
+     * Loads the observable array list with RoomHistoryData objects
+     * @author Joey Campbell
+     */
     private void fillTableWithObservableData() {
         tvOList = FXCollections.observableArrayList();
 
@@ -213,6 +231,10 @@ public class PlayerHistoryController extends AbstractController implements Initi
                 new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}));
     }
 
+    /**
+     * Fills the last column in the table with a clickable button to join games.
+     * @author Joey Campbell
+     */
     private void addMovesButtonToTable() {
         TableColumn<RoomHistoryData, Void> movesCol = new TableColumn("Moves");
         movesCol.setResizable(false);
@@ -262,8 +284,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
         playerHistoryTable.getColumns().add(movesCol);
     }
 
-
-    // ===================== BACK BUTTON RELATED =====================
     /**
      * Event handler for back button idle effect
      * @author Kord Boniadi

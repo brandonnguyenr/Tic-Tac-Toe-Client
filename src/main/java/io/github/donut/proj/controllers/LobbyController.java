@@ -23,9 +23,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Lobby Screen in works
+ * Lobby Screen contains the lobby viewer table view which shows the active games.
+ * Will have functionality to join games.
  * @author Utsav Parajuli
- * @version 0.1
+ * @author Joey Campbell
+ * @version 0.2
  */
 public class LobbyController extends AbstractController implements ISubject {
 
@@ -82,6 +84,10 @@ public class LobbyController extends AbstractController implements ISubject {
                     getResourceAsStream("io/github/donut/proj/images/icons/join_game.png")
     ));
 
+    /**
+     * Static data class used for populating the tableview object
+     * @author Joey Campbell
+     */
     public static class LobbyData {
         private String lobbyName;
         private String playersInvolved;
@@ -114,9 +120,10 @@ public class LobbyController extends AbstractController implements ISubject {
 
     /**
      * Initializes a LobbyController object after its root element has been
-     * completely processed.
+     * completely processed. It also loads the tableview object
      *
      * @author Utsav Parajuli
+     * @author Joey Campbell
      */
     @FXML
     public void initialize() {
@@ -172,6 +179,10 @@ public class LobbyController extends AbstractController implements ISubject {
         /*========================Action Events END=========================*/
     }
 
+    /**
+     * Fills an observable array list with the LobbyData objects.
+     * @author Joey Campbell
+     */
     private void fillTableWithObservableData() {
         tvOList = FXCollections.observableArrayList();
 
@@ -191,6 +202,10 @@ public class LobbyController extends AbstractController implements ISubject {
                 new LobbyData("The Cool Lobby", "test", "test", 2));
     }
 
+    /**
+     * Fills the last column in the table with a clickable button to join games.
+     * @author Joey Campbell
+     */
     private void addJoinButtonToTable() {
         TableColumn<LobbyData, Void> joinCol = new TableColumn("Join Game");
         joinCol.setResizable(false);

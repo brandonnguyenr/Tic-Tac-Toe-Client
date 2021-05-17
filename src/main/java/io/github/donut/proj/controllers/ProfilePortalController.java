@@ -16,6 +16,13 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Central hub that connects the main menu to the player history controller, the player stats controller,
+ * and the update account controller.
+ *
+ * @author Joey Campbell
+ * @version 0.1
+ */
 public class ProfilePortalController extends AbstractController implements Initializable, ISubject {
 
     @FXML
@@ -32,6 +39,12 @@ public class ProfilePortalController extends AbstractController implements Initi
 
     private final String theme = "theme_2";
 
+    /**
+     * Initializes the Profile Portal Controller after its root element
+     * has been completely processed.
+     * @param location Location
+     * @param resources Resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         backButton.setOnMouseClicked(this::onBackButtonClick);
@@ -51,6 +64,11 @@ public class ProfilePortalController extends AbstractController implements Initi
         profileSettingsButton.setOnMouseExited(this::onPlayerSettingsButtonExit);
     }
 
+    /**
+     * Event handler for history button click event
+     * @param mouseEvent mouseEvent
+     * @author Joey Campbell
+     */
     public void onHistoryButtonClick(MouseEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
         stage.setScene(AppController.getScenes().get(SceneName.HISTORY_PAGE).getScene(false, false));
@@ -70,6 +88,7 @@ public class ProfilePortalController extends AbstractController implements Initi
 
     /**
      * Sets the image on the history button to its regular image
+     * @param mouseEvent mouseEvent
      * @author Joey Campbell
      */
     public void onHistoryButtonExit(MouseEvent mouseEvent) {
@@ -86,6 +105,7 @@ public class ProfilePortalController extends AbstractController implements Initi
 
     /**
      * Sets the image on the stats button to its hover image
+     * @param mouseEvent mouseEvent
      * @author Joey Campbell
      */
     public void onStatsButtonHover(MouseEvent mouseEvent) {
@@ -98,6 +118,7 @@ public class ProfilePortalController extends AbstractController implements Initi
 
     /**
      * Sets the image on the stats button to its regular image
+     * @param mouseEvent mouseEvent
      * @author Joey Campbell
      */
     public void onStatsButtonExit(MouseEvent mouseEvent) {
@@ -108,6 +129,11 @@ public class ProfilePortalController extends AbstractController implements Initi
         ));
     }
 
+    /**
+     * Event handler for the player settings button click event. This method switches the scenes
+     * to the player settings page
+     * @param mouseEvent mouseEvent
+     */
     public void onPlayerSettingsButtonClick(MouseEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
         stage.setScene(AppController.getScenes().get(SceneName.UPDATE_ACCOUNT_PAGE).getScene(false, false));
