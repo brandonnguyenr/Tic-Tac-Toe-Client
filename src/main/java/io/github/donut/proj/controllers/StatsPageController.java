@@ -64,20 +64,26 @@ public class StatsPageController extends AbstractController implements ISubject 
 
 
         backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
 
     }
 
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
-        stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE), false));
+    //    stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE), false));
 
         if (api != null)
             api.removeEventListener(ac);
     }
 
+    public void onBackButtonEnter(MouseEvent mouseEvent) {
+        backButton.setImage(backButtonHover);
+    }
 
-
-
+    public void onBackButtonExit(MouseEvent mouseEvent) {
+        backButton.setImage(backButtonIdle);
+    }
 
 
 
