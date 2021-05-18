@@ -400,6 +400,7 @@
 /*==================================== TAB CSS =====================================*/
 .tab-pane > .tab-header-area > .headers-region > .tab:top {
     -fx-border-color: khaki;
+    -fx-border-width: 1 1 1 1;
     -fx-border-radius: 5 5 0 0;
     -fx-background-color: #1d1d1d;
     -fx-pref-height: 40px;
@@ -407,8 +408,12 @@
     -fx-font-family: "Chalkduster";
 }
 
-.tab-pane > .tab-header-area > .headers-region > .tab:selected:top {
-    -fx-border-color: #75a2e1 khaki khaki khaki;
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-border-color: khaki khaki khaki khaki;
     -fx-border-width: 5 1 1 1;
     -fx-border-radius: 5 5 0 0;
     -fx-background-color: #3b3939;

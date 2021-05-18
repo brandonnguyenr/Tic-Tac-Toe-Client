@@ -158,7 +158,7 @@ public class LobbyController extends AbstractController implements ISubject {
 
         multiplayerPage.setCenter(lobbyTableView);
 
-        lobbyTableView.setPadding(new Insets(0, 116, 30, 116));
+        lobbyTableView.setPadding(new Insets(0, 115, 30, 115));
         lobbyTableView.setSelectionModel(null);
         lobbyTableView.setId("lobbyTableView");
 
@@ -204,7 +204,7 @@ public class LobbyController extends AbstractController implements ISubject {
      * @author Joey Campbell
      */
     private void addJoinButtonToTable() {
-        TableColumn<LobbyData, Void> joinCol = new TableColumn("Join Game");
+        TableColumn<LobbyData, Void> joinCol = new TableColumn<>("Join Game");
         joinCol.setResizable(false);
         joinCol.setReorderable(false);
         joinCol.setSortable(false);

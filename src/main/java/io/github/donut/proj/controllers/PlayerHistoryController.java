@@ -115,7 +115,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
 
         playerHistoryTable.setItems(tvOList);
 
-        playerHistoryTable.setPadding(new Insets(0, 65.5, 30, 65.5));
+        playerHistoryTable.setPadding(new Insets(0, 60, 30, 60));
         playerHistoryTable.setSelectionModel(null);
 
         playerHistoryTable.getColumns().add(roomIdCol);
@@ -236,11 +236,11 @@ public class PlayerHistoryController extends AbstractController implements Initi
      * @author Joey Campbell
      */
     private void addMovesButtonToTable() {
-        TableColumn<RoomHistoryData, Void> movesCol = new TableColumn("Moves");
+        TableColumn<RoomHistoryData, Void> movesCol = new TableColumn<>("Moves");
         movesCol.setResizable(false);
         movesCol.setReorderable(false);
         movesCol.setSortable(false);
-        movesCol.setPrefWidth(100);
+        movesCol.setPrefWidth(110);
         Callback<TableColumn<RoomHistoryData, Void>, TableCell<RoomHistoryData, Void>> cellFactory =
                 new Callback<TableColumn<RoomHistoryData, Void>, TableCell<RoomHistoryData, Void>>() {
 
@@ -255,7 +255,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
                             System.out.println(Arrays.toString(data.getMoves()));
                         });
 
-                        btn.setPrefWidth(100);
+                        btn.setPrefWidth(110);
 
                         btn.styleProperty().bind(Bindings.when(btn.hoverProperty())
                                 .then("-fx-background-color: grey; " +

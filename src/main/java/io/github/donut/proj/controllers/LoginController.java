@@ -58,8 +58,6 @@ public class LoginController extends AbstractController implements ISubject {
     @FXML
     private PasswordField passwordEntry;
 
-    private AuthorizationCallback.LoginMessage messageList;     //message list that is replied for login related stuff
-
     @Setter
     private MessagingAPI api = null;                                   //instance of api
     @Setter

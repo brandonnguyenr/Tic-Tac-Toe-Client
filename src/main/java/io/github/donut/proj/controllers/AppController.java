@@ -2,7 +2,6 @@ package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
-import io.github.donut.music.MusicPlayer;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.proj.utils.FxmlInfo;
 import io.github.donut.proj.utils.Logger;
@@ -12,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +25,6 @@ public class AppController {
     private static final String PRODUCTION = "production";
 
     private MessagingAPI api;           //instance of the API this instance is universal for one client
-    public  Scene        mainScene;
     private final Stage  mainStage;
     @Getter
     private static final Map<SceneName, FxmlInfo> scenes = new HashMap<>();
@@ -79,23 +76,14 @@ public class AppController {
         return api;
     }
 
-    /**
-     * Sets the main scene for the main menu page as we use this scene as a cache for back buttons
-     * @param scene : the main menu scene
-     */
-    public void setMainScene(Scene scene) {
-        this.mainScene = scene;
-    }
-
     public static void updateScenes(SceneName sceneName, FxmlInfo info) {
         scenes.put(sceneName, info);
     }
     /**
      * Initializes starting page for app
-     * @throws IOException failure to initialize *.fxml loader files
      * @author Kord Boniadi
      */
-    public void startApp() throws IOException {
+    public void startApp() {
 //        MusicPlayer.getInstance();
         Scene scene = scenes.get(SceneName.START).getScene(true, false);
         scene.getRoot().requestFocus();
