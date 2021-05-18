@@ -46,7 +46,7 @@
     -fx-font-size: 40px;
 }
 
-#mainMenuPane {
+#mainMenuPane, #profilePortalPage {
     -fx-background-image: url("/io/github/donut/proj/images/theme_2/title_2.png");
     -fx-background-repeat: stretch;
     -fx-background-size: cover;
@@ -60,10 +60,10 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle, #createAccountTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 25px;
+    -fx-font-size: 35px;
     -fx-alignment: center;
     -fx-min-width: 600;
     -fx-min-height: 35;
@@ -111,19 +111,15 @@
     -fx-font-size: 20;
 }
 
-/*#vboxLobby {*/
-/*    -fx-border-color: red;*/
-/*    -fx-background-color: transparent;*/
-/*}*/
-
-
 #lobbyPage {
     -fx-background-color: transparent;
     -fx-border-color: khaki;
     /*-fx-background-image: url("../images/theme_1/gradient_bluegreen.png");*/
 }
 
-#usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2 {
+#usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2, #currentUserNameTab1, #newUserNameTab1,
+#confirmUserNameTab1, #userNameTab2, #firstNameEntryTab2, #lastNameEntryTab2, #userNameEntryTab3, #currentPasswordTab3,
+#newPasswordEntryTab3, #confirmPasswordEntryTab3 {
     -fx-background-color: black;
     -fx-border-color: khaki;
     -fx-text-fill: white;
@@ -135,6 +131,14 @@
     -fx-font-size: 15px;
     -fx-font-family: "Chalkduster";
 }
+
+#usernameTab1, #username2Tab1, #username3Tab1, #usernameTab2, #firstNameTab2, #lastNameTab2, #usernameTab3,
+#passwordTab3, #newPasswordTab3, #confirmPasswordTab3 {
+    -fx-font-family: "Chalkduster";
+    -fx-text-fill: khaki;
+    -fx-font-size: 20;
+}
+
 #emptyMessage, #passwordMessage {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
@@ -142,18 +146,20 @@
     -fx-font-size: 15px;
 }
 
-#registrationMessage {
+#registrationMessage, #successfulUpdateTab1, #successfulUpdateTab3, #successfulUpdateTab2 {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
     -fx-text-fill: #37c637;
-    -fx-font-size: 15px;
+    -fx-font-size: 20px;
 }
+
 #firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 15;
+    -fx-font-size: 20;
     -fx-text-fill: red;
 }
-#errorMessage {
+#errorMessage, #personalInfoError, #changePasswordError, #currentUsernameErrorTab1, #differentUsernameErrorTab1,
+#usernameErrorTab2, #differentPasswordErrorTab3, #usernameErrorTab3  {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20px;
     -fx-text-fill: red;
@@ -173,7 +179,7 @@
 #player1Label {
     -fx-font-family: "Chalkduster";
 }
-#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage {
+#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage, #playerHistoryPage, #updateAccountPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }
@@ -200,3 +206,242 @@
     -fx-font-size: 13;
     -fx-text-fill: #75a2e1;
 }
+
+/*================================= MENU BAR CSS =================================*/
+
+* {
+    -fx-my-menu-color: transparent;
+    -fx-my-menu-color-highlighted: transparent;
+    -fx-my-menu-font-color: transparent;
+    -fx-my-menu-font-color-highlighted: transparent;
+}
+
+/* MENU BAR + Top-level MENU BUTTONS */
+/*** The menu bar itself ***/
+.menu-bar {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+/*** Top-level menu itself (not selected / hovered) ***/
+.menu-bar > .container > .menu-button {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+/*** Top-level menu's label (not selected / hovered) ***/
+.menu-bar > .container > .menu-button > .label {
+    -fx-text-fill: -fx-my-menu-font-color;
+}
+
+/*** Top-level menu's label (disabled) ***/
+.menu-bar > .container > .menu-button > .label:disabled {
+    -fx-opacity: 1.0;
+}
+
+/*** Top-level menu itself (selected / hovered) ***/
+.menu-bar > .container > .menu-button:hover,
+.menu-bar > .container > .menu-button:focused,
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color: -fx-my-menu-color-highlighted;
+}
+
+/*** Top-level menu's label (selected / hovered) ***/
+.menu-bar > .container > .menu-button:hover > .label,
+.menu-bar > .container > .menu-button:focused > .label,
+.menu-bar > .container > .menu-button:showing > .label {
+    -fx-text-fill: -fx-my-menu-font-color-highlighted;
+}
+
+/* MENU ITEM (children of a MENU BUTTON) */
+/*** The item itself (not hovered / focused) ***/
+.menu-item {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+/*** The item's label (not hovered / focused) ***/
+.menu-item .label {
+    -fx-text-fill: -fx-my-menu-font-color;
+}
+
+/*** The item's label (disabled) ***/
+.menu-item .label:disabled {
+    -fx-opacity: 1.0;
+}
+
+/*** The item itself (hovered / focused) ***/
+.menu-item:focused, .menu-item:hovered {
+    -fx-background-color: -fx-my-menu-color-highlighted;
+}
+
+/*** The item's label (hovered / focused) ***/
+.menu-item:focused .label, .menu-item:hovered .label {
+    -fx-text-fill: -fx-my-menu-font-color-highlighted;
+}
+
+/* CONTEXT MENU */
+/*** The context menu that contains a menu's menu items ***/
+.context-menu {
+    -fx-background-color: -fx-my-menu-color;
+}
+
+/*================================ END MENU BAR CSS ================================*/
+
+/*================================= ROOM TABLE CSS =================================*/
+
+.table-view{
+    -fx-background-color: transparent;
+}
+
+.table-view .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view:focused{
+    -fx-background-color: transparent;
+}
+
+/* Spaltenköpfe
+    Struktur column-header-background -> column-header */
+
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+    -fx-background-radius: 7px 7px 0px 0px;
+    /*-fx-background-insets: 0 16px 0 0;*/
+    /*-fx-padding: 0 0 10px 0;*/
+}
+
+#lobbyTableView .column-header-background .label {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+}
+
+.table-view .column-header-background .label {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell {
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#lobbyTableView .table-cell {
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+
+.table-row-cell {
+    -fx-background-color: -fx-table-cell-border-color, #616161;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -fx-table-cell-border-color, #424242;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.table-view > .virtual-flow > .scroll-bar:vertical,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track-background,
+.table-view > .virtual-flow > .scroll-bar:horizontal,
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track,
+.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
+    -fx-padding: 0, 0, 0, 0;
+    -fx-background-color: transparent;
+}
+
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+
+.table-view .increment-button ,.table-view .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 2em;
+
+}
+
+/* The main scrollbar **track** CSS class  */
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color:derive( Grey,80%);
+
+    -fx-background-radius: 2em;
+    -fx-border-radius:2em;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: derive(Grey, 90%);
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+}
+
+
+/*=============================== END ROOM TABLE CSS ===============================*/
+
+/*==================================== TAB CSS =====================================*/
+.tab-pane > .tab-header-area > .headers-region > .tab:top {
+    -fx-border-color: khaki;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-radius: 5 5 0 0;
+    -fx-background-color: #1d1d1d;
+    -fx-pref-height: 40px;
+    -fx-background-insets: 0;
+    -fx-font-family: "Chalkduster";
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-border-color: khaki khaki khaki khaki;
+    -fx-border-width: 5 1 1 1;
+    -fx-border-radius: 5 5 0 0;
+    -fx-background-color: #3b3939;
+    -fx-pref-height: 40px;
+    -fx-background-insets: 0;
+}
+
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected > .tab-container > .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: khaki;
+    -fx-font-weight: bold;
+    -fx-font-family: "Chalkduster";
+}
+
+
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: khaki;
+    -fx-font-weight: bold;
+}
+
+
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color:transparent;
+    -fx-border-color: khaki;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-insets: 0;
+    -fx-pref-height: 45px;
+}
+/*=============================== END TAB CSS ===============================*/

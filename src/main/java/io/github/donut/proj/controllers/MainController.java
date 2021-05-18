@@ -1,14 +1,20 @@
 package io.github.donut.proj.controllers;
 
+import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
+import javax.swing.*;
 import java.util.Objects;
 
 /**
@@ -30,12 +36,26 @@ public class MainController extends AbstractController implements ISubject {
 
     private final String theme = "theme_2";
 
+    @FXML
+    private MenuBar playerMenuBar;
+
+    @FXML
+    private Menu playerMenu;
+
+    @FXML
+    private MenuItem playerInfo;
+
+    @FXML
+    private MenuItem signOut;
+
     /**
      * Is implicitly called when the main screen is being shown, currently does nothing
      * @author Kord Boniadi
      */
     @FXML
     public void initialize() {
+        initializeMenu();
+
         /*========================Action Events START=========================*/
         singlePlayerButton.setOnMouseClicked(this::onSinglePlayerButtonClick);
         singlePlayerButton.setOnMouseEntered(this::onSinglePlayerButtonHover);
@@ -48,6 +68,9 @@ public class MainController extends AbstractController implements ISubject {
         aboutUsRect.setOnMouseClicked(this::onAboutButtonClicked);
         aboutUsRect.setOnMouseEntered(this::onAboutRectEnter);
         aboutUsRect.setOnMouseExited(this::onAboutRectExit);
+
+        playerInfo.setOnAction(this::onProfileClicked);
+        signOut.setOnAction(this::onSignoutClicked);
         /*========================Action Events END=========================*/
     }
 
@@ -158,5 +181,46 @@ public class MainController extends AbstractController implements ISubject {
                 getResourceAsStream("io/github/donut/proj/images/" + theme + "/about_button.png"))
         ));
 
+    }
+
+    public void onProfileClicked (ActionEvent mouseEvent) {
+        EventSounds.getInstance().playButtonSound4();
+        stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false, true));
+    }
+
+    public void onSignoutClicked(ActionEvent mouseEvent) {
+        EventSounds.getInstance().playButtonSound4();
+        // TODO - Add sign out code here
+    }
+
+
+    /**
+     * Creates player menu in the top right by loading in images
+     * @author Joey Campbell
+     */
+    public void initializeMenu () {
+        String menuImagePath = "/io/github/donut/proj/images/common/menu_bars.png";
+        String profileImagePath = "/io/github/donut/proj/images/common/profile.png";
+        String signOutImagePath = "/io/github/donut/proj/images/common/sign_out.png";
+
+
+        ImageView playerMenuView = new ImageView(menuImagePath);
+        playerMenuView.setOnMouseExited((event)->{
+            playerMenu.hide();
+        });
+        playerMenu.setGraphic(playerMenuView);
+
+        ImageView playerInfoView = new ImageView(profileImagePath);
+        playerInfoView.setOnMouseEntered((event)->{
+//            playerMenu.show();
+        });
+
+        playerInfo.setGraphic(playerInfoView);
+
+        ImageView signOutView = new ImageView(signOutImagePath);
+        signOutView.setOnMouseEntered((event)->{
+//            playerMenu.show();
+        });
+        signOut.setGraphic(signOutView);
     }
 }
