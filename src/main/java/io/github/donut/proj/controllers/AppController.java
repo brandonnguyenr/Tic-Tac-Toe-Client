@@ -2,7 +2,6 @@ package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
-import io.github.donut.music.MusicPlayer;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.proj.utils.FxmlInfo;
 import io.github.donut.proj.utils.Logger;
@@ -12,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +25,6 @@ public class AppController {
     private static final String PRODUCTION = "production";
 
     private MessagingAPI api;           //instance of the API this instance is universal for one client
-    public  Scene        mainScene;
     private final Stage  mainStage;
     @Getter
     private static final Map<SceneName, FxmlInfo> scenes = new HashMap<>();
@@ -66,6 +63,9 @@ public class AppController {
         scenes.put(SceneName.SINGLEPLAYER_PAGE, new FxmlInfo(SceneName.SINGLEPLAYER_PAGE.toString(), STYLES, SceneName.SINGLEPLAYER_PAGE, mainStage));
         scenes.put(SceneName.LOBBY_PAGE, new FxmlInfo(SceneName.LOBBY_PAGE.toString(), STYLES, SceneName.LOBBY_PAGE, mainStage));
         scenes.put(SceneName.BOARD_PAGE, new FxmlInfo(SceneName.BOARD_PAGE.toString(), STYLES, SceneName.BOARD_PAGE, mainStage));
+        scenes.put(SceneName.PORTAL_PAGE, new FxmlInfo(SceneName.PORTAL_PAGE.toString(), STYLES, SceneName.PORTAL_PAGE, mainStage));
+        scenes.put(SceneName.HISTORY_PAGE, new FxmlInfo(SceneName.HISTORY_PAGE.toString(), STYLES, SceneName.HISTORY_PAGE, mainStage));
+        scenes.put(SceneName.UPDATE_ACCOUNT_PAGE, new FxmlInfo(SceneName.UPDATE_ACCOUNT_PAGE.toString(), STYLES, SceneName.UPDATE_ACCOUNT_PAGE, mainStage));
     }
 
     /**
@@ -76,24 +76,15 @@ public class AppController {
         return api;
     }
 
-    /**
-     * Sets the main scene for the main menu page as we use this scene as a cache for back buttons
-     * @param scene : the main menu scene
-     */
-    public void setMainScene(Scene scene) {
-        this.mainScene = scene;
-    }
-
     public static void updateScenes(SceneName sceneName, FxmlInfo info) {
         scenes.put(sceneName, info);
     }
     /**
      * Initializes starting page for app
-     * @throws IOException failure to initialize *.fxml loader files
      * @author Kord Boniadi
      */
-    public void startApp() throws IOException {
-        MusicPlayer.getInstance();
+    public void startApp() {
+//        MusicPlayer.getInstance();
         Scene scene = scenes.get(SceneName.START).getScene(true, false);
         scene.getRoot().requestFocus();
         mainStage.setScene(scene);

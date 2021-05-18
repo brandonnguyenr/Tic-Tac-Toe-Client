@@ -3,22 +3,28 @@ package io.github.donut.proj.controllers;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Lobby Screen in works
+ * Lobby Screen contains the lobby viewer table view which shows the active games.
+ * Will have functionality to join games.
  * @author Utsav Parajuli
- * @version 0.1
+ * @author Joey Campbell
+ * @version 0.2
  */
 public class LobbyController extends AbstractController implements ISubject {
 
@@ -26,16 +32,21 @@ public class LobbyController extends AbstractController implements ISubject {
     public Label title;
 
     @FXML
+    private BorderPane multiplayerPage;
+
+    @FXML
     public ImageView createLobbyButton;
 
     @FXML
     public ScrollPane lobbyPage;
 
-    @FXML
-    private ImageView backButton;
+    private TableView<LobbyData> lobbyTableView;
 
     @FXML
-    private VBox vboxLobby;
+    private ObservableList<LobbyData> tvOList;
+
+    @FXML
+    private ImageView backButton;
 
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
@@ -70,50 +81,89 @@ public class LobbyController extends AbstractController implements ISubject {
                     getResourceAsStream("io/github/donut/proj/images/icons/join_game.png")
     ));
 
-    @FXML
-    ImageView lobbyViewBg = new ImageView(lobbyBackground);
+    /**
+     * Static data class used for populating the tableview object
+     * @author Joey Campbell
+     */
+    public static class LobbyData {
+        private String lobbyName;
+        private String playersInvolved;
+        private Integer numOfPlayers;
 
+        public LobbyData() {
+            this.lobbyName = "My Lobby";
+            this.playersInvolved = "Player1 - Player2";
+            this.numOfPlayers = 1;
+        }
+
+        public LobbyData(String lobbyName, String player1Name, String player2Name, Integer numOfPlayers) {
+            this.lobbyName = lobbyName;
+            this.playersInvolved = player1Name + " - " + player2Name;
+            this.numOfPlayers = numOfPlayers;
+        }
+
+        public String getLobbyName() {
+            return lobbyName;
+        }
+
+        public String getPlayersInvolved() {
+            return playersInvolved;
+        }
+
+        public Integer getNumOfPlayers() {
+            return numOfPlayers;
+        }
+    }
 
     /**
      * Initializes a LobbyController object after its root element has been
-     * completely processed.
+     * completely processed. It also loads the tableview object
      *
      * @author Utsav Parajuli
+     * @author Joey Campbell
      */
     @FXML
     public void initialize() {
 
-        lobbyPage.setId("lobbyPage");
+        TableColumn<LobbyData, String> lobbyNameCol = new TableColumn<>("Lobby");
+        lobbyNameCol.setReorderable(false);
+        lobbyNameCol.setResizable(false);
+        lobbyNameCol.setSortable(false);
+        lobbyNameCol.setPrefWidth(150);
+        lobbyNameCol.setCellValueFactory(new PropertyValueFactory<>("lobbyName"));
 
-        createLobbyButton.setId("createLobbyButton");
+        TableColumn<LobbyData, String> playersCol = new TableColumn<>("Players");
+        playersCol.setReorderable(false);
+        playersCol.setResizable(false);
+        playersCol.setSortable(false);
+        playersCol.setPrefWidth(200);
+        playersCol.setCellValueFactory(new PropertyValueFactory<>("playersInvolved"));
 
-        //TODO: Will need to get the list of rooms (empty or full) and display
+        TableColumn<LobbyData, Integer> playerCountCol = new TableColumn<>("Count");
+        playerCountCol.setReorderable(false);
+        playerCountCol.setResizable(false);
+        playerCountCol.setSortable(false);
+        playerCountCol.setPrefWidth(80);
+        playerCountCol.setCellValueFactory(new PropertyValueFactory<>("numOfPlayers"));
 
-        VBox lobbyVbox = new VBox();
+        lobbyTableView = new TableView<>();
 
-        ArrayList<String> playerList = new ArrayList<>();
+        fillTableWithObservableData();
 
-        for (int j = 0; j < 50; j++) {
-            playerList.add("Currently Under Development!");
-        }
+        lobbyTableView.setItems(tvOList);
 
-        for (String s : playerList) {
-            Label name = new Label(s);
-            name.setStyle("-fx-text-fill: rgba(255,255,255,0.69)");
-            name.setStyle("-fx-font-size: 12");
+        lobbyTableView.getColumns().add(lobbyNameCol);
+        lobbyTableView.getColumns().add(playersCol);
+        lobbyTableView.getColumns().add(playerCountCol);
 
-            ImageView joinGame = new ImageView(joinGamePic);
-            joinGame.setFitHeight(20);
-            joinGame.setFitWidth(20);
+        multiplayerPage.setCenter(lobbyTableView);
 
+        lobbyTableView.setPadding(new Insets(0, 115, 30, 115));
+        lobbyTableView.setSelectionModel(null);
+        lobbyTableView.setId("lobbyTableView");
 
-            HBox game = new HBox(30, joinGame, name);
+        addJoinButtonToTable();
 
-            lobbyVbox.setSpacing(10);
-            lobbyVbox.getChildren().add(game);
-        }
-
-        lobbyPage.setContent(lobbyVbox);
 
         /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
@@ -125,6 +175,85 @@ public class LobbyController extends AbstractController implements ISubject {
         createLobbyButton.setOnMouseExited(this::onCreateLobbyButtonExit);
         /*========================Action Events END=========================*/
     }
+
+    /**
+     * Fills an observable array list with the LobbyData objects.
+     * @author Joey Campbell
+     */
+    private void fillTableWithObservableData() {
+        tvOList = FXCollections.observableArrayList();
+
+        tvOList.addAll(new LobbyData(),
+                new LobbyData(),
+                new LobbyData(),
+//                new LobbyData(),
+//                new LobbyData(),
+//                new LobbyData(),
+//                new LobbyData(),
+//                new LobbyData(),
+//                new LobbyData(),
+//                new LobbyData(),
+                new LobbyData("The Cool Lobby", "joe", "test", 2),
+                new LobbyData("The Cool Lobby", "test", "test", 2),
+                new LobbyData("The Cool Lobby", "test", "test", 2),
+                new LobbyData("The Cool Lobby", "test", "test", 2));
+    }
+
+    /**
+     * Fills the last column in the table with a clickable button to join games.
+     * @author Joey Campbell
+     */
+    private void addJoinButtonToTable() {
+        TableColumn<LobbyData, Void> joinCol = new TableColumn<>("Join Game");
+        joinCol.setResizable(false);
+        joinCol.setReorderable(false);
+        joinCol.setSortable(false);
+        joinCol.setPrefWidth(120);
+
+        Callback<TableColumn<LobbyData, Void>, TableCell<LobbyData, Void>> cellFactory =
+                new Callback<TableColumn<LobbyData, Void>, TableCell<LobbyData, Void>>() {
+
+                    @Override
+                    public TableCell<LobbyData, Void> call(final TableColumn<LobbyData, Void> param) {
+                        final TableCell<LobbyData, Void> cell = new TableCell<LobbyData, Void>() {
+
+                            private final Button btn = new Button("Join");
+                            {
+                                btn.setOnAction((ActionEvent event) -> {
+                                    LobbyData data = getTableView().getItems().get(getIndex());
+                                });
+
+                                btn.setPrefWidth(120);
+
+                                btn.styleProperty().bind(Bindings.when(btn.hoverProperty())
+                                        .then("-fx-background-color: grey; " +
+                                                "-fx-text-fill: khaki;" +
+                                                "-fx-font-weight: bold")
+                                        .otherwise("-fx-background-color: black; " +
+                                                "-fx-text-fill: khaki;" +
+                                                "-fx-font-weight: bold"));
+                            }
+
+//                  "io/github/donut/proj/images/icons/join_game.png"
+
+                            @Override
+                            public void updateItem(Void item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                } else {
+                                    setGraphic(btn);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        joinCol.setCellFactory(cellFactory);
+        lobbyTableView.getColumns().add(joinCol);
+    }
+
 
     /**
      * This method will start the game when the start button is clicked

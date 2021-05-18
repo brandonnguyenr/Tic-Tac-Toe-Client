@@ -7,13 +7,7 @@ import io.github.API.messagedata.MsgStatus;
 import io.github.API.utils.GsonWrapper;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.LoginResponseData;
-import io.github.donut.proj.controllers.CreateAccountController;
-import io.github.donut.proj.controllers.LoginController;
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * This class is the used as a callback that will have the data that is returned from the authentication service.
@@ -74,75 +68,5 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
 
     @Override
     public void rejected(Exception e) {
-    }
-
-    /**
-     * This class contains the appropriate display message and values if the createAccount message was successful or
-     * unsuccessful
-     * @author Utsav Parajuli
-     */
-    public static class CreateMessage {
-        private String  accountCreationSuccess;
-        private String  accountCreationUnSuccess;
-        private boolean accountCreation;
-
-        public String getAccountCreationSuccess() {
-            return accountCreationSuccess;
-        }
-
-        public void setAccountCreationSuccess(String accountCreationSuccess) {
-            this.accountCreationSuccess = accountCreationSuccess;
-        }
-
-        public String getAccountCreationUnSuccess() {
-            return accountCreationUnSuccess;
-        }
-
-        public void setAccountCreationUnSuccess(String accountCreationUnSuccess) {
-            this.accountCreationUnSuccess = accountCreationUnSuccess;
-        }
-
-        public boolean isAccountCreation() {
-            return accountCreation;
-        }
-
-        public void setAccountCreation(boolean accountCreation) {
-            this.accountCreation = accountCreation;
-        }
-    }
-
-    /**
-     * This class contains the appropriate display message and values if the login/validation message was successful or
-     * unsuccessful
-     * @author Utsav Parajuli
-     */
-    public static class LoginMessage {
-        private String loginSuccess;
-        private String loginUnSuccess;
-        private boolean loginValidation;
-
-        public boolean isLoginValidation() {
-            return loginValidation;
-        }
-
-        public void setLoginValidation(boolean loginValidation) {
-            this.loginValidation = loginValidation;
-        }
-
-        public String getLoginSuccess() {
-            return loginSuccess;
-        }
-
-        public void setLoginSuccess(String loginSuccess) {
-            this.loginSuccess = loginSuccess;
-        }
-
-        public String getLoginUnSuccess() {
-            return loginUnSuccess;
-        }
-
-        public void setLoginUnSuccess(String loginUnSuccess) {
-            this.loginUnSuccess = loginUnSuccess;
-        }
     }
 }

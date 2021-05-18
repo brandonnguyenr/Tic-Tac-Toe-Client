@@ -68,8 +68,6 @@ public class CreateAccountController extends AbstractController implements ISubj
     @FXML
     private PasswordField passwordEntry2;
 
-    private AuthorizationCallback.CreateMessage messageList;    //message list for the appropriate message to display
-
     @Setter
     private MessagingAPI api = null;                                   //instance of api
     @Setter
