@@ -5,23 +5,38 @@ import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.PlayerData;
 import lombok.NonNull;
 
-public class NetworkManager {
-    private static class InnerHolder {
-        private static final NetworkManager INSTANCE = new NetworkManager();
-    }
-
-    private NetworkManager() {
-        // don't delete
-    }
-
-    public static NetworkManager getInstance() {
-        return InnerHolder.INSTANCE;
-    }
-
+public class PlayerManager {
     private MessagingAPI api;
     private ISubscribeCallback currentCallback = null;
     private String[] currentChannels = null;
-    private PlayerData player;
+    private final PlayerData player;
+
+    private static class InnerHolder {
+        private static final PlayerManager INSTANCE = new PlayerManager();
+    }
+
+    private PlayerManager() {
+        player = new PlayerData();
+    }
+
+    public static PlayerManager getInstance() {
+        return InnerHolder.INSTANCE;
+    }
+
+
+    public String getPlayerID() {
+        return player.getPlayerID();
+    }
+    public PlayerData getPlayer(String channel) {
+        PlayerData result = new PlayerData(player);
+        result.setChannel(channel);
+        return result;
+    }
+
+    public void setUserName(String id, String username) {
+        player.setPlayerID(id);
+        player.setPlayerName(username);
+    }
 
     public void swapListener(@NonNull ISubscribeCallback callback, @NonNull String... channels) {
         api.addEventListener(callback);
@@ -38,7 +53,7 @@ public class NetworkManager {
         currentChannels = channels;
     }
 
-    public void clear() {
+    public void clearListener() {
         if (currentCallback != null)
             api.removeEventListener(currentCallback);
 
