@@ -52,7 +52,7 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
                     this.resolved.run();
                 } else if (response.getInfo().equalsIgnoreCase("VALIDATE")) {   //checking if message was login
                     this.resolved.run();
-                    mApi.removeEventListener(this);
+//                    mApi.removeEventListener(this);
                 }
 
             } else {                                                                 //else the login was unsuccessful
@@ -60,7 +60,7 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
                     this.rejected.run();
                 } else if (response.getInfo().equalsIgnoreCase("VALIDATE")) {   //checking if message was login
                     this.rejected.run();
-                    mApi.removeEventListener(this);
+//                    mApi.removeEventListener(this);
                 }
             }
         }

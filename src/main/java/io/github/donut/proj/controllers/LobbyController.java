@@ -1,5 +1,9 @@
 package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.RoomData;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
+import io.github.donut.proj.callbacks.RoomListCallback;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -15,9 +19,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import lombok.Setter;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Lobby Screen contains the lobby viewer table view which shows the active games.
@@ -28,6 +38,10 @@ import java.util.Objects;
  */
 public class LobbyController extends AbstractController implements ISubject {
 
+    @Setter
+    private Consumer<String> createHandler = null;
+    @Setter
+    private Consumer<String> joinHandler = null;
     @FXML
     public Label title;
 
@@ -40,10 +54,10 @@ public class LobbyController extends AbstractController implements ISubject {
     @FXML
     public ScrollPane lobbyPage;
 
-    private TableView<LobbyData> lobbyTableView;
+    private TableView<RoomData> lobbyTableView;
 
     @FXML
-    private ObservableList<LobbyData> tvOList;
+    private ObservableList<RoomData> tvOList;
 
     @FXML
     private ImageView backButton;
@@ -125,30 +139,30 @@ public class LobbyController extends AbstractController implements ISubject {
     @FXML
     public void initialize() {
 
-        TableColumn<LobbyData, String> lobbyNameCol = new TableColumn<>("Lobby");
+        TableColumn<RoomData, String> lobbyNameCol = new TableColumn<>("Lobby");
         lobbyNameCol.setReorderable(false);
         lobbyNameCol.setResizable(false);
         lobbyNameCol.setSortable(false);
         lobbyNameCol.setPrefWidth(150);
-        lobbyNameCol.setCellValueFactory(new PropertyValueFactory<>("lobbyName"));
+        lobbyNameCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<LobbyData, String> playersCol = new TableColumn<>("Players");
+        TableColumn<RoomData, String> playersCol = new TableColumn<>("Players");
         playersCol.setReorderable(false);
         playersCol.setResizable(false);
         playersCol.setSortable(false);
         playersCol.setPrefWidth(200);
-        playersCol.setCellValueFactory(new PropertyValueFactory<>("playersInvolved"));
+        playersCol.setCellValueFactory(new PropertyValueFactory<>("roomID"));
 
-        TableColumn<LobbyData, Integer> playerCountCol = new TableColumn<>("Count");
+        TableColumn<RoomData, Integer> playerCountCol = new TableColumn<>("Count");
         playerCountCol.setReorderable(false);
         playerCountCol.setResizable(false);
         playerCountCol.setSortable(false);
         playerCountCol.setPrefWidth(80);
-        playerCountCol.setCellValueFactory(new PropertyValueFactory<>("numOfPlayers"));
+        playerCountCol.setCellValueFactory(new PropertyValueFactory<>("playerCount"));
 
         lobbyTableView = new TableView<>();
 
-        fillTableWithObservableData();
+//        fillTableWithObservableData();
 
         lobbyTableView.setItems(tvOList);
 
@@ -174,53 +188,58 @@ public class LobbyController extends AbstractController implements ISubject {
         createLobbyButton.setOnMouseEntered(this::onCreateLobbyButtonEnter);
         createLobbyButton.setOnMouseExited(this::onCreateLobbyButtonExit);
         /*========================Action Events END=========================*/
+        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyList), Channels.ROOM_LIST.toString());
     }
 
-    /**
-     * Fills an observable array list with the LobbyData objects.
-     * @author Joey Campbell
-     */
-    private void fillTableWithObservableData() {
-        tvOList = FXCollections.observableArrayList();
-
-        tvOList.addAll(new LobbyData(),
-                new LobbyData(),
-                new LobbyData(),
-//                new LobbyData(),
-//                new LobbyData(),
-//                new LobbyData(),
-//                new LobbyData(),
-//                new LobbyData(),
-//                new LobbyData(),
-//                new LobbyData(),
-                new LobbyData("The Cool Lobby", "joe", "test", 2),
-                new LobbyData("The Cool Lobby", "test", "test", 2),
-                new LobbyData("The Cool Lobby", "test", "test", 2),
-                new LobbyData("The Cool Lobby", "test", "test", 2));
+    public void setLobbyList(List<RoomData> rooms) {
+        ObservableList<RoomData> list = FXCollections.observableArrayList(rooms);
+        lobbyTableView.setItems(list);
     }
+//    /**
+//     * Fills an observable array list with the LobbyData objects.
+//     * @author Joey Campbell
+//     */
+//    private void fillTableWithObservableData() {
+//        tvOList = FXCollections.observableArrayList();
+//
+//        tvOList.addAll(new LobbyData(),
+//                new LobbyData(),
+//                new LobbyData(),
+////                new LobbyData(),
+////                new LobbyData(),
+////                new LobbyData(),
+////                new LobbyData(),
+////                new LobbyData(),
+////                new LobbyData(),
+////                new LobbyData(),
+//                new LobbyData("The Cool Lobby", "joe", "test", 2),
+//                new LobbyData("The Cool Lobby", "test", "test", 2),
+//                new LobbyData("The Cool Lobby", "test", "test", 2),
+//                new LobbyData("The Cool Lobby", "test", "test", 2));
+//    }
 
     /**
      * Fills the last column in the table with a clickable button to join games.
      * @author Joey Campbell
      */
     private void addJoinButtonToTable() {
-        TableColumn<LobbyData, Void> joinCol = new TableColumn<>("Join Game");
+        TableColumn<RoomData, Void> joinCol = new TableColumn<>("Join Game");
         joinCol.setResizable(false);
         joinCol.setReorderable(false);
         joinCol.setSortable(false);
         joinCol.setPrefWidth(120);
 
-        Callback<TableColumn<LobbyData, Void>, TableCell<LobbyData, Void>> cellFactory =
-                new Callback<TableColumn<LobbyData, Void>, TableCell<LobbyData, Void>>() {
+        Callback<TableColumn<RoomData, Void>, TableCell<RoomData, Void>> cellFactory =
+                new Callback<TableColumn<RoomData, Void>, TableCell<RoomData, Void>>() {
 
                     @Override
-                    public TableCell<LobbyData, Void> call(final TableColumn<LobbyData, Void> param) {
-                        final TableCell<LobbyData, Void> cell = new TableCell<LobbyData, Void>() {
+                    public TableCell<RoomData, Void> call(final TableColumn<RoomData, Void> param) {
+                        final TableCell<RoomData, Void> cell = new TableCell<RoomData, Void>() {
 
                             private final Button btn = new Button("Join");
                             {
                                 btn.setOnAction((ActionEvent event) -> {
-                                    LobbyData data = getTableView().getItems().get(getIndex());
+                                    RoomData data = getTableView().getItems().get(getIndex());
                                 });
 
                                 btn.setPrefWidth(120);
@@ -264,6 +283,41 @@ public class LobbyController extends AbstractController implements ISubject {
      */
     public void onCreateLobbyButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
+        createRoomDialog();
+    }
+
+    private void createRoomDialog() {
+        Dialog<String> dialog = new Dialog<>();
+
+        dialog.setTitle("Room Setup");
+        dialog.initStyle(StageStyle.UTILITY);
+
+        ButtonType createButton = new ButtonType("Create", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(createButton, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField field = new TextField();
+        field.setPromptText("Lobby name..");
+
+        grid.add(field, 0, 0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(param -> {
+            if (param == createButton)
+                return field.getText();
+            return null;
+        });
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent((data) -> {
+            if (createHandler != null)
+                createHandler.accept(data);
+        });
     }
 
     /**

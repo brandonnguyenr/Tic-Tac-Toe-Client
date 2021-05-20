@@ -2,6 +2,8 @@ package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.PlayerData;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.proj.utils.FxmlInfo;
 import io.github.donut.proj.utils.Logger;
@@ -20,14 +22,29 @@ import java.util.Map;
  * @author Utsav Parajuli
  */
 public class AppController {
-    private static final String STYLES = "styles/styles.css";
-    private static final String PROPERTIES = "io/github/donut/proj/configs/logging.properties";
-    private static final String PRODUCTION = "production";
+    private final String STYLES = "styles/styles.css";
+    private final String PROPERTIES = "io/github/donut/proj/configs/logging.properties";
+    private final String PRODUCTION = "production";
 
-    private MessagingAPI api;           //instance of the API this instance is universal for one client
     private final Stage  mainStage;
     @Getter
     private static final Map<SceneName, FxmlInfo> scenes = new HashMap<>();
+
+    private static final PlayerData player = new PlayerData();
+
+    public static String getPlayerID() {
+        return player.getPlayerID();
+    }
+    public static PlayerData getPlayer(String channel) {
+        PlayerData result = new PlayerData(player);
+        result.setChannel(channel);
+        return result;
+    }
+
+    public static void setUserName(String id, String username) {
+        player.setPlayerID(id);
+        player.setPlayerName(username);
+    }
 
     /**
      * Constructor
@@ -38,14 +55,15 @@ public class AppController {
         Logger.init(PROPERTIES);
 //        Logger.init(PRODUCTION);
         this.mainStage = stage;
+        final MessagingAPI api = GlobalAPIManager.getInstance().getApi();
         //creating instance of api and subscribing to appropriate channels
-        api = new MessagingAPI();
+//        api = new MessagingAPI();
 
         //channels the api is subscribed to
-        api.subscribe()
-                .channels(Channels.PRIVATE + api.getUuid())
-                .execute();
-
+//        api.subscribe()
+//                .channels(Channels.PRIVATE + api.getUuid())
+//                .execute();
+//
         api.onclose(() -> {
             System.out.println("api is now dead.");
             Platform.runLater(mainStage::close);
@@ -69,14 +87,12 @@ public class AppController {
     }
 
     /**
-     * This method will return the instance of api
-     * @return api : the api
+     * @author Kord Boniadi
+     * @param sceneName name of scene (enum)
+     * @param info fxml info bundle
      */
-    public MessagingAPI getApi() {
-        return api;
-    }
-
     public static void updateScenes(SceneName sceneName, FxmlInfo info) {
+
         scenes.put(sceneName, info);
     }
     /**

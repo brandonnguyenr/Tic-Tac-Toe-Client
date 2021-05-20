@@ -1,6 +1,9 @@
 package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.messages.Channels;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
+import io.github.donut.proj.callbacks.RoomListCallback;
 import io.github.donut.proj.callbacks.UpdatesCallback;
 import io.github.donut.proj.model.SceneName;
 import javafx.application.Platform;
@@ -103,7 +106,11 @@ public final class ControllerFactory {
      * @return {@link LobbyController}
      */
     private static LobbyController createLobbyController() {
-        return new LobbyController();
+        LobbyController controller = new LobbyController();
+        controller.setCreateHandler((info) -> {
+
+        });
+        return controller;
     }
 
     /**
