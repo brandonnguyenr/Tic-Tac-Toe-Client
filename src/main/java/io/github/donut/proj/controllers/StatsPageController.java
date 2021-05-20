@@ -6,16 +6,20 @@ import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.input.MouseEvent;
 import lombok.Setter;
-
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.ResourceBundle;
 import java.util.Objects;
 
-public class StatsPageController extends AbstractController implements ISubject {
+public class StatsPageController extends AbstractController implements Initializable, ISubject {
 
     @FXML
     private Label statsPageTitle;
@@ -61,12 +65,6 @@ public class StatsPageController extends AbstractController implements ISubject 
         tiesLabel.setText            ("TIES");
         winLossRatioLabel.setText    ("WIN PERCENTAGE");
         totalGamesPlayedLabel.setText("TOTAL GAMES");
-
-
-        backButton.setOnMouseClicked(this::onBackButtonClick);
-        backButton.setOnMouseEntered(this::onBackButtonEnter);
-        backButton.setOnMouseExited(this::onBackButtonExit);
-
     }
 
     public void onBackButtonClick(MouseEvent actionEvent) {
@@ -85,7 +83,11 @@ public class StatsPageController extends AbstractController implements ISubject 
         backButton.setImage(backButtonIdle);
     }
 
-
-
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
+    }
 }
+ 
