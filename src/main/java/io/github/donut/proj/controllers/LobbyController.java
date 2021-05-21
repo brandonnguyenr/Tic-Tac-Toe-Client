@@ -162,6 +162,7 @@ public class LobbyController extends AbstractController implements ISubject {
     public void setLobbyList(List<RoomData> rooms) {
         ObservableList<RoomData> list = FXCollections.observableArrayList(rooms);
         lobbyTableView.setItems(list);
+
     }
 
     /**
