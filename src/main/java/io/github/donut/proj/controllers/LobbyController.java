@@ -1,12 +1,16 @@
 package io.github.donut.proj.controllers;
 
 import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.PlayerData;
 import io.github.coreutils.proj.messages.RoomData;
+import io.github.coreutils.proj.messages.RoomFactory;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.RoomListCallback;
+import io.github.donut.proj.callbacks.RoomRequestCallback;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,12 +26,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * Lobby Screen contains the lobby viewer table view which shows the active games.
@@ -37,11 +39,6 @@ import java.util.function.Consumer;
  * @version 0.2
  */
 public class LobbyController extends AbstractController implements ISubject {
-
-    @Setter
-    private Consumer<String> createHandler = null;
-    @Setter
-    private Consumer<String> joinHandler = null;
     @FXML
     public Label title;
 
@@ -96,40 +93,6 @@ public class LobbyController extends AbstractController implements ISubject {
     ));
 
     /**
-     * Static data class used for populating the tableview object
-     * @author Joey Campbell
-     */
-    public static class LobbyData {
-        private String lobbyName;
-        private String playersInvolved;
-        private Integer numOfPlayers;
-
-        public LobbyData() {
-            this.lobbyName = "My Lobby";
-            this.playersInvolved = "Player1 - Player2";
-            this.numOfPlayers = 1;
-        }
-
-        public LobbyData(String lobbyName, String player1Name, String player2Name, Integer numOfPlayers) {
-            this.lobbyName = lobbyName;
-            this.playersInvolved = player1Name + " - " + player2Name;
-            this.numOfPlayers = numOfPlayers;
-        }
-
-        public String getLobbyName() {
-            return lobbyName;
-        }
-
-        public String getPlayersInvolved() {
-            return playersInvolved;
-        }
-
-        public Integer getNumOfPlayers() {
-            return numOfPlayers;
-        }
-    }
-
-    /**
      * Initializes a LobbyController object after its root element has been
      * completely processed. It also loads the tableview object
      *
@@ -162,8 +125,6 @@ public class LobbyController extends AbstractController implements ISubject {
 
         lobbyTableView = new TableView<>();
 
-//        fillTableWithObservableData();
-
         lobbyTableView.setItems(tvOList);
 
         lobbyTableView.getColumns().add(lobbyNameCol);
@@ -178,7 +139,9 @@ public class LobbyController extends AbstractController implements ISubject {
 
         addJoinButtonToTable();
 
-
+        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyList),
+                Channels.REQUEST + Channels.ROOM_LIST.toString(),
+                Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
@@ -188,35 +151,18 @@ public class LobbyController extends AbstractController implements ISubject {
         createLobbyButton.setOnMouseEntered(this::onCreateLobbyButtonEnter);
         createLobbyButton.setOnMouseExited(this::onCreateLobbyButtonExit);
         /*========================Action Events END=========================*/
-        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyList), Channels.ROOM_LIST.toString());
+    }
+
+    public void setLobbyListAsync(List<RoomData> rooms) {
+        Platform.runLater(() -> {
+            setLobbyList(rooms);
+        });
     }
 
     public void setLobbyList(List<RoomData> rooms) {
         ObservableList<RoomData> list = FXCollections.observableArrayList(rooms);
         lobbyTableView.setItems(list);
     }
-//    /**
-//     * Fills an observable array list with the LobbyData objects.
-//     * @author Joey Campbell
-//     */
-//    private void fillTableWithObservableData() {
-//        tvOList = FXCollections.observableArrayList();
-//
-//        tvOList.addAll(new LobbyData(),
-//                new LobbyData(),
-//                new LobbyData(),
-////                new LobbyData(),
-////                new LobbyData(),
-////                new LobbyData(),
-////                new LobbyData(),
-////                new LobbyData(),
-////                new LobbyData(),
-////                new LobbyData(),
-//                new LobbyData("The Cool Lobby", "joe", "test", 2),
-//                new LobbyData("The Cool Lobby", "test", "test", 2),
-//                new LobbyData("The Cool Lobby", "test", "test", 2),
-//                new LobbyData("The Cool Lobby", "test", "test", 2));
-//    }
 
     /**
      * Fills the last column in the table with a clickable button to join games.
@@ -314,10 +260,21 @@ public class LobbyController extends AbstractController implements ISubject {
         });
         Optional<String> result = dialog.showAndWait();
 
-        result.ifPresent((data) -> {
-            if (createHandler != null)
-                createHandler.accept(data);
+        result.ifPresent(this::createRoomWorker);
+    }
+
+    private void createRoomWorker(String title) {
+        PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        RoomData room = RoomFactory.makeCreateRoom(title, player);
+        RoomRequestCallback callback = new RoomRequestCallback(room, player);
+        callback.setResolved((event) -> {
+
         });
+
+        callback.setRejected((event) -> {
+
+        });
+        GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
     }
 
     /**

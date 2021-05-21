@@ -314,16 +314,6 @@ public class CreateAccountController extends AbstractController implements ISubj
             GlobalAPIManager.getInstance().swapListener(ac, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
             GlobalAPIManager.getInstance().send(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
                     lastNameEntry.getText(), passwordEntry1.getText()), Channels.AUTHOR_CREATE.toString());
-
-//            if (api == null)
-//                api = ((AppController) stage.getUserData()).getApi();
-//            api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
-//            //sending the message
-//            api.publish()
-//                    .message(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
-//                            lastNameEntry.getText(), passwordEntry1.getText()))
-//                    .channel(Channels.AUTHOR_CREATE.toString())
-//                    .execute();
         }
     }
 }

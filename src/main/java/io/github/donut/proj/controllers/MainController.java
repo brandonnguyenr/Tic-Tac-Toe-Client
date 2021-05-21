@@ -1,6 +1,5 @@
 package io.github.donut.proj.controllers;
 
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -14,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-import javax.swing.*;
 import java.util.Objects;
 
 /**
@@ -116,7 +114,7 @@ public class MainController extends AbstractController implements ISubject {
      */
     public void onMultiPlayerButtonClick(MouseEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
-        stage.setScene(AppController.getScenes().get(SceneName.LOBBY_PAGE).getScene(false));
+        stage.setScene(AppController.getScenes().get(SceneName.LOBBY_PAGE).getScene(false, false));
     }
 
     /**

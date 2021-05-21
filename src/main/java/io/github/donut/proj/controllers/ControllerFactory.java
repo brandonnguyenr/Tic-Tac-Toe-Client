@@ -1,9 +1,6 @@
 package io.github.donut.proj.controllers;
 
-import io.github.coreutils.proj.messages.Channels;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
-import io.github.donut.proj.callbacks.GlobalAPIManager;
-import io.github.donut.proj.callbacks.RoomListCallback;
 import io.github.donut.proj.callbacks.UpdatesCallback;
 import io.github.donut.proj.model.SceneName;
 import javafx.application.Platform;
@@ -65,7 +62,7 @@ public final class ControllerFactory {
     private static LoginController createLoginController() {
         LoginController controller = new LoginController();
 
-        controller.setAc(new AuthorizationCallback(() -> {
+        controller.setAuthorizationHandler(new AuthorizationCallback(() -> {
             Platform.runLater(() -> {
                 Scene scene = AppController.getScenes().get(SceneName.Main).getScene(createMainController());
                 controller.stage.setScene(scene);
@@ -107,9 +104,6 @@ public final class ControllerFactory {
      */
     private static LobbyController createLobbyController() {
         LobbyController controller = new LobbyController();
-        controller.setCreateHandler((info) -> {
-
-        });
         return controller;
     }
 

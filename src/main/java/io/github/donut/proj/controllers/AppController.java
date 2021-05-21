@@ -43,7 +43,7 @@ public class AppController {
 
     public static void setUserName(String id, String username) {
         player.setPlayerID(id);
-        player.setPlayerName(username);
+        player.setPlayerUserName(username);
     }
 
     /**
@@ -86,15 +86,14 @@ public class AppController {
         scenes.put(SceneName.UPDATE_ACCOUNT_PAGE, new FxmlInfo(SceneName.UPDATE_ACCOUNT_PAGE.toString(), STYLES, SceneName.UPDATE_ACCOUNT_PAGE, mainStage));
     }
 
-    /**
-     * @author Kord Boniadi
-     * @param sceneName name of scene (enum)
-     * @param info fxml info bundle
-     */
-    public static void updateScenes(SceneName sceneName, FxmlInfo info) {
-
-        scenes.put(sceneName, info);
-    }
+//    /**
+//     * @author Kord Boniadi
+//     * @param sceneName name of scene (enum)
+//     * @param info fxml info bundle
+//     */
+//    public static void updateScenes(SceneName sceneName, FxmlInfo info) {
+//        scenes.put(sceneName, info);
+//    }
     /**
      * Initializes starting page for app
      * @author Kord Boniadi

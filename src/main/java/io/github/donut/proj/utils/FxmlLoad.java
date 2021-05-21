@@ -65,6 +65,7 @@ public final class FxmlLoad {
      */
     public static Scene load(FxmlInfo info, AbstractController controller, boolean isFxml) throws IOException {
         if (info.isCached()) {
+            System.out.println("this should probably not be seen: Scene load()");
             return info.getScene();
         }
 
@@ -77,8 +78,8 @@ public final class FxmlLoad {
         }
 
         Scene scene = new Scene(loader.load(), Util.APP_WIDTH, Util.APP_HEIGHT);
-        info.setScene(scene);
-        AppController.updateScenes(info.getSceneName(), info);
+//        info.setScene(scene);
+//        AppController.updateScenes(info.getSceneName(), info);
         Stageable refController = loader.getController();
         if (refController != null) {
             refController.setStage(info.getStage());
