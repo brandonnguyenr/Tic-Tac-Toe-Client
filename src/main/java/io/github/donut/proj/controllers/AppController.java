@@ -11,6 +11,7 @@ import io.github.donut.proj.utils.Util;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
 
@@ -28,23 +29,49 @@ public class AppController {
     private final String PRODUCTION = "production";
 
     private final Stage  mainStage;
+
+    @Getter
+    private static final Stage reactivatePopUp = new Stage();       //pop up window used for reactivation
+
     @Getter
     private static final Map<SceneName, FxmlInfo> scenes = new HashMap<>();
 
-    private static final PlayerData player = new PlayerData();
+    private static final PlayerData player = new PlayerData();      //player data
 
+    /**
+     * This method will return the playerID of player
+     * @return playerID
+     */
     public static String getPlayerID() {
         return player.getPlayerID();
     }
+
+    /**
+     * This method will return the PlayerData
+     * @return PlayerData
+     */
     public static PlayerData getPlayer(String channel) {
         PlayerData result = new PlayerData(player);
         result.setChannel(channel);
         return result;
     }
 
+    /**
+     * This method will set the username of player
+     */
     public static void setUserName(String username) {
         player.setPlayerUserName(username);
     }
+
+
+    /**
+     * This method will return the username of player
+     * @return username
+     */
+    public static String getUserName() {
+        return player.getPlayerUserName();
+    }
+
 
     /**
      * Constructor
@@ -84,6 +111,21 @@ public class AppController {
         scenes.put(SceneName.PORTAL_PAGE, new FxmlInfo(SceneName.PORTAL_PAGE.toString(), STYLES, SceneName.PORTAL_PAGE, mainStage));
         scenes.put(SceneName.HISTORY_PAGE, new FxmlInfo(SceneName.HISTORY_PAGE.toString(), STYLES, SceneName.HISTORY_PAGE, mainStage));
         scenes.put(SceneName.UPDATE_ACCOUNT_PAGE, new FxmlInfo(SceneName.UPDATE_ACCOUNT_PAGE.toString(), STYLES, SceneName.UPDATE_ACCOUNT_PAGE, mainStage));
+        scenes.put(SceneName.REACTIVATE_ACCOUNT_PAGE, new FxmlInfo(SceneName.REACTIVATE_ACCOUNT_PAGE.toString(), STYLES, SceneName.REACTIVATE_ACCOUNT_PAGE, mainStage));
+        scenes.put(SceneName.WAITING_PAGE, new FxmlInfo(SceneName.WAITING_PAGE.toString(), STYLES, SceneName.WAITING_PAGE, mainStage));
+
+        //settings for popup page
+        initializeReactivatePopUp();
+    }
+
+    private void initializeReactivatePopUp() {
+        reactivatePopUp.initOwner(mainStage);
+        reactivatePopUp.initModality(Modality.APPLICATION_MODAL);
+        reactivatePopUp.setHeight(200);
+        reactivatePopUp.setWidth(480);
+        reactivatePopUp.centerOnScreen();
+        reactivatePopUp.setTitle("Re-activate Account");
+        reactivatePopUp.setResizable(false);
     }
 
 //    /**
