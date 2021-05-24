@@ -151,8 +151,6 @@ public class LobbyController extends AbstractController implements ISubject {
         createLobbyButton.setOnMouseEntered(this::onCreateLobbyButtonEnter);
         createLobbyButton.setOnMouseExited(this::onCreateLobbyButtonExit);
         /*========================Action Events END=========================*/
-
-        WaitingRoomController.setPlayer("");
     }
 
     public void setLobbyListAsync(List<RoomData> rooms) {
@@ -270,20 +268,22 @@ public class LobbyController extends AbstractController implements ISubject {
     private void joinRoomWorker(RoomData data) {
         PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         data.addPlayer(player);
-        RoomRequestCallback callback = new RoomRequestCallback(data, player);
-        callback.setResolved((event) -> {
 
-            WaitingRoomController.setPlayer("");
-            WaitingRoomController.setPlayer(event.getPlayer1().getPlayerUserName() + " has joined!");
-            WaitingRoomController.setWaitingMsg("Game will start soon...");
+        WaitingRoomController waitingRoom = new WaitingRoomController();
+
+        RoomRequestCallback callback = new RoomRequestCallback(data, player);
+
+        callback.setResolved((event) -> {
+            System.out.println(event.getPlayer1().getPlayerUserName());
+
+            Platform.runLater(() -> {
+                waitingRoom.getPlayerName().setText("");
+                waitingRoom.getPlayerName().setText(event.getPlayer1().getPlayerUserName() + " is in the room!");
+                waitingRoom.getWaitingPageMessage().setText("");
+                waitingRoom.getJoinMessage().setText("Game will start shortly...");
+            });
 
             Timer timer = new Timer();
-
-//            try {
-//                timer.wait(5000L);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
 
             TimerTask playerJoin = new TimerTask() {
                 @Override
@@ -293,12 +293,14 @@ public class LobbyController extends AbstractController implements ISubject {
                         stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
                         game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
                         game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+                        waitingRoom.getJoinMessage().setText("");
+                        waitingRoom.getWaitingPageMessage().setText("Waiting for another player to join your lobby");
                     });
+                    timer.cancel();
                 }
             };
 
-            timer.schedule(playerJoin, 7000L);
-
+            timer.schedule(playerJoin, 8000L);
         });
 
         callback.setRejected((event) -> {
@@ -309,29 +311,33 @@ public class LobbyController extends AbstractController implements ISubject {
             });
         });
         GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+
         // TODO: launch waiting room page here
-        stage.setScene(AppController.getScenes().get(SceneName.WAITING_PAGE).getScene(false, false));
+        stage.setScene(AppController.getScenes().get(SceneName.WAITING_PAGE).getScene(waitingRoom, false));
+
     }
 
     private void createRoomWorker(String title) {
         PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         RoomData room = RoomFactory.makeCreateRoom(title, player);
         RoomRequestCallback callback = new RoomRequestCallback(room, player);
+
+        WaitingRoomController waitingRoom = new WaitingRoomController();
+
         callback.setResolved((event) -> {
-            WaitingRoomController.setPlayer("");
-            WaitingRoomController.setPlayer(event.getPlayer2().getPlayerUserName() + " has joined!");
-            WaitingRoomController.setWaitingMsg("Game will start soon...");
+            System.out.println(event.getPlayer2().getPlayerUserName());
+
+            Platform.runLater(() -> {
+                waitingRoom.getPlayerName().setText("");
+                waitingRoom.getPlayerName().setText(event.getPlayer2().getPlayerUserName() + " has joined!");
+                waitingRoom.getWaitingPageMessage().setText("");
+                waitingRoom.getJoinMessage().setText("Game will start shortly...");
+            });
 
             Timer timer = new Timer();
 
-//            try {
-//                timer.wait(5000L);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-
-
             TimerTask playerCreate = new TimerTask() {
+
                 @Override
                 public void run() {
                     Platform.runLater(() -> {
@@ -340,13 +346,11 @@ public class LobbyController extends AbstractController implements ISubject {
                         game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
                         game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
                     });
+
+                    timer.cancel();
                 }
             };
-
-            timer.schedule(playerCreate, 7000L);
-
-
-
+            timer.schedule(playerCreate, 8000L);
         });
 
         callback.setRejected((event) -> {
@@ -357,8 +361,11 @@ public class LobbyController extends AbstractController implements ISubject {
             });
         });
         GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+
         // TODO: launch waiting room page here
-        stage.setScene(AppController.getScenes().get(SceneName.WAITING_PAGE).getScene(false, false));
+        stage.setScene(AppController.getScenes().get(SceneName.WAITING_PAGE).getScene(waitingRoom, false));
+        waitingRoom.getJoinMessage().setText("");
+        waitingRoom.getWaitingPageMessage().setText("Waiting for another player to join your lobby");
     }
 
     /**

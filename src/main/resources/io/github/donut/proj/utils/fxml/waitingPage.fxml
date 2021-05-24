@@ -14,29 +14,23 @@
     <center>
         <VBox alignment="CENTER" maxHeight="300.0" prefHeight="300.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" spacing="15.0" translateY="-40.0">
                <children>
-                  <Label fx:id="playerName"/>
+                  <Label fx:id="playerName" />
                </children>
             </HBox>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0" translateY="-40.0">
                     <children>
-                        <Label fx:id="waitingPageMessage" text="Waiting for another player to join your lobby" />
+                        <Label fx:id="waitingPageMessage" />
+                        <Label fx:id="joinMessage" />
                     </children>
                 </HBox>
                   <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                       <image>
-                          <Image url="@../../images/icons/loading_4.gif" />
+                          <Image url="@../../images/icons/loading_5.gif" />
                       </image>
                   </ImageView>
             </children>
         </VBox>
     </center>
-    <bottom>
-        <ImageView fx:id="cancelButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-            <image>
-                <Image url="@../../images/icons/signup.png" />
-            </image>
-        </ImageView>
-    </bottom>
 </BorderPane>

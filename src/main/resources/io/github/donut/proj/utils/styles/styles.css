@@ -69,7 +69,7 @@
     -fx-min-height: 35;
 }
 
-#reactivateLabel, #waitingPageMessage {
+#reactivateLabel, #waitingPageMessage, #joinMessage {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20px;
@@ -166,7 +166,7 @@
     -fx-font-size: 15px;
 }
 
-#registrationMessage, #successfulUpdateTab1, #successfulUpdateTab3, #successfulUpdateTab2, #successfulUpdateTab4 {
+#registrationMessage, #successfulUpdateTab1, #successfulUpdateTab3, #successfulUpdateTab2, #successfulUpdateTab4, #playerName {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
     -fx-text-fill: #37c637;

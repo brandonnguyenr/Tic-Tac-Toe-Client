@@ -14,20 +14,15 @@ import lombok.Setter;
 
 import java.util.Objects;
 
+@Getter
 public class WaitingRoomController extends AbstractController implements ISubject {
 
     @FXML
-
     private Label   waitingPageTitle;
-
     @FXML
     private Label waitingPageMessage;
-
-    @Setter
-    private static String waitingMsg = "Waiting for another player to join your lobby";
-
-//    @FXML
-//    private ProgressIndicator progressIndicator;
+    @FXML
+    private Label joinMessage;
 
     @FXML
     private Label playerName;
@@ -38,8 +33,6 @@ public class WaitingRoomController extends AbstractController implements ISubjec
     @FXML
     private ImageView loadingGif;
 
-    @Setter
-    private static String player;
 
     /**
      * Initialize the class.
@@ -48,23 +41,12 @@ public class WaitingRoomController extends AbstractController implements ISubjec
     @FXML
     public void initialize() {
         //empty
-
-        playerName.setText(player);
-        waitingPageMessage.setText(waitingMsg);
-        cancelButton.setOnMouseClicked(this::onCancelClick);
-//        progressIndicator.setVisible(true);
-//        progressIndicator.indeterminateProperty();
     }
 
-    private void onCancelClick(MouseEvent mouseEvent) {
-        EventSounds.getInstance().playButtonSound4();
-        stage.setScene(AppController.getScenes().get(SceneName.LOBBY_PAGE).getScene(false));
-    }
-
-    //delete account button hover
-    private final Image countDown = new Image(Objects.requireNonNull(
-            getClass().
-                    getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/icons/counter.gif")
-    ));
+//    //delete account button hover
+//    private final Image countDown = new Image(Objects.requireNonNull(
+//            getClass().
+//                    getClassLoader().
+//                    getResourceAsStream("io/github/donut/proj/images/icons/counter.gif")
+//    ));
 }
