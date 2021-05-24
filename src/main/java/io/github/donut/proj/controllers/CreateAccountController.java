@@ -4,6 +4,7 @@ import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.LoginData;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -68,8 +69,8 @@ public class CreateAccountController extends AbstractController implements ISubj
     @FXML
     private PasswordField passwordEntry2;
 
-    @Setter
-    private MessagingAPI api = null;                                   //instance of api
+//    @Setter
+//    private MessagingAPI api = null;                                   //instance of api
     @Setter
     private AuthorizationCallback ac;
 
@@ -164,8 +165,8 @@ public class CreateAccountController extends AbstractController implements ISubj
         stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE), false));
         clearScreen();
 
-        if (api != null)
-            api.removeEventListener(ac);
+//        if (api != null)
+//            api.removeEventListener(ac);
     }
 
     /**
@@ -310,15 +311,9 @@ public class CreateAccountController extends AbstractController implements ISubj
                 !(usernameEntry.getText().trim().isEmpty()) && !(passwordEntry1.getText().trim().isEmpty()) &&
                 !(passwordEntry2.getText().trim().isEmpty())) {
 
-            if (api == null)
-                api = ((AppController) stage.getUserData()).getApi();
-            api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
-            //sending the message
-            api.publish()
-                    .message(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
-                            lastNameEntry.getText(), passwordEntry1.getText()))
-                    .channel(Channels.AUTHOR_CREATE.toString())
-                    .execute();
+            GlobalAPIManager.getInstance().swapListener(ac, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+            GlobalAPIManager.getInstance().send(new LoginData(usernameEntry.getText(), firstNameEntry.getText(),
+                    lastNameEntry.getText(), passwordEntry1.getText()), Channels.AUTHOR_CREATE.toString());
         }
     }
 }

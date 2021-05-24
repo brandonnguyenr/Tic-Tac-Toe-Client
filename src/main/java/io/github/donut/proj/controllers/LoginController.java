@@ -1,9 +1,9 @@
 package io.github.donut.proj.controllers;
 
-import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.LoginData;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -59,9 +59,7 @@ public class LoginController extends AbstractController implements ISubject {
     private PasswordField passwordEntry;
 
     @Setter
-    private MessagingAPI api = null;                                   //instance of api
-    @Setter
-    private AuthorizationCallback ac;
+    private AuthorizationCallback authorizationHandler;
 
     //login button idle
     private final Image loginButtonIdle = new Image(Objects.requireNonNull(
@@ -166,14 +164,8 @@ public class LoginController extends AbstractController implements ISubject {
             errorMessage.setText("Incorrect username/password. Try again!");
         }
 
-        if (api == null)
-            api = ((AppController) stage.getUserData()).getApi();
-        api.addEventListener(ac, Channels.PRIVATE + api.getUuid());
-        //sending the message through the api
-        api.publish()
-                .message(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()))
-                .channel(Channels.AUTHOR_VALIDATE.toString())
-                .execute();
+        GlobalAPIManager.getInstance().swapListener(authorizationHandler, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        GlobalAPIManager.getInstance().send(new LoginData(usernameEntry.getText(), null, null, passwordEntry.getText()), Channels.AUTHOR_VALIDATE.toString());
     }
     /*=============================HELPER END==========================================*/
 
@@ -207,8 +199,6 @@ public class LoginController extends AbstractController implements ISubject {
     public void onGuestLoginClicked(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
         stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(ControllerFactory.getController(SceneName.Main)));
-        if (api != null)
-            api.removeEventListener(ac);
     }
 
     /**
@@ -219,8 +209,6 @@ public class LoginController extends AbstractController implements ISubject {
     public void onCreateAccountClicked(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
         stage.setScene(AppController.getScenes().get(SceneName.CREATEACCOUNT_PAGE).getScene(ControllerFactory.getController(SceneName.CREATEACCOUNT_PAGE), false));
-        if (api != null)
-            api.removeEventListener(ac);
     }
 
     /**

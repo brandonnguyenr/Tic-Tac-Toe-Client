@@ -2,7 +2,9 @@ package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.LoginData;
 import io.github.coreutils.proj.messages.UpdateData;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.UpdatesCallback;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
@@ -89,8 +91,8 @@ public class UpdateAccountController extends AbstractController implements ISubj
     @FXML
     private TabPane tabPane;
 
-    @Setter
-    private MessagingAPI api = null;                            //instance of api
+//    @Setter
+//    private MessagingAPI api = null;                            //instance of api
 
     @Setter
     private UpdatesCallback uc;                                //instance of updates callback
@@ -370,15 +372,20 @@ public class UpdateAccountController extends AbstractController implements ISubj
         if(!(currentUserNameTab1.getText().trim().isEmpty()) && !(newUserNameTab1.getText().trim().isEmpty()) &&
                 !(confirmUserNameTab1.getText().trim().isEmpty()) &&
                 newUserNameTab1.getText().equals(confirmUserNameTab1.getText())) {
-            if (api == null)
-                api = ((AppController) stage.getUserData()).getApi();
-            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
-            //sending the message
-            api.publish()
-                    .message(new UpdateData(currentUserNameTab1.getText(), null, null, null,
-                            newUserNameTab1.getText(), null))
-                    .channel(Channels.UPDATE_USERNAME.toString())
-                    .execute();
+
+            GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+            GlobalAPIManager.getInstance().send(new UpdateData(currentUserNameTab1.getText(), null, null, null,
+                    newUserNameTab1.getText(), null), Channels.UPDATE_USERNAME.toString());
+
+//            if (api == null)
+//                api = ((AppController) stage.getUserData()).getApi();
+//            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
+//            //sending the message
+//            api.publish()
+//                    .message(new UpdateData(currentUserNameTab1.getText(), null, null, null,
+//                            newUserNameTab1.getText(), null))
+//                    .channel(Channels.UPDATE_USERNAME.toString())
+//                    .execute();
 
         }
     }
@@ -423,15 +430,20 @@ public class UpdateAccountController extends AbstractController implements ISubj
         //checks if all the fields are entered and makes a call to the api
         if(!(userNameTab2.getText().trim().isEmpty()) && !(firstNameEntryTab2.getText().trim().isEmpty()) &&
                 !(lastNameEntryTab2.getText().trim().isEmpty())) {
-            if (api == null)
-                api = ((AppController) stage.getUserData()).getApi();
-            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
 
-            api.publish()
-                    .message(new UpdateData(userNameTab2.getText(), null, firstNameEntryTab2.getText(),
-                            lastNameEntryTab2.getText(), null, null))
-                    .channel(Channels.UPDATE_PERSONAL_INFO.toString())
-                    .execute();
+            GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+            GlobalAPIManager.getInstance().send(new UpdateData(userNameTab2.getText(), null, firstNameEntryTab2.getText(),
+                    lastNameEntryTab2.getText(), null, null), Channels.UPDATE_PERSONAL_INFO.toString());
+
+//            if (api == null)
+//                api = ((AppController) stage.getUserData()).getApi();
+//            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
+//
+//            api.publish()
+//                    .message(new UpdateData(userNameTab2.getText(), null, firstNameEntryTab2.getText(),
+//                            lastNameEntryTab2.getText(), null, null))
+//                    .channel(Channels.UPDATE_PERSONAL_INFO.toString())
+//                    .execute();
         }
     }
 
@@ -442,7 +454,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
      */
     private void passwordChange() {
         //checking if any of the fields are empty
-        if(userNameEntryTab3.getText().trim().isEmpty() || currentPasswordTab3.getText().trim().isEmpty() ||
+        if (userNameEntryTab3.getText().trim().isEmpty() || currentPasswordTab3.getText().trim().isEmpty() ||
                 newPasswordEntryTab3.getText().trim().isEmpty() ||
                 confirmPasswordEntryTab3.getText().trim().isEmpty()) {
 
@@ -491,15 +503,19 @@ public class UpdateAccountController extends AbstractController implements ISubj
                 !(confirmPasswordEntryTab3.getText().trim().isEmpty()) &&
                 (newPasswordEntryTab3.getText().equals(confirmPasswordEntryTab3.getText()))) {
 
-            if (api == null)
-                api = ((AppController) stage.getUserData()).getApi();
-            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
+            GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+            GlobalAPIManager.getInstance().send(new UpdateData(userNameEntryTab3.getText(), currentPasswordTab3.getText(), null,
+                    null, null, newPasswordEntryTab3.getText()), Channels.UPDATE_PASSWORD.toString());
 
-            api.publish()
-                    .message(new UpdateData(userNameEntryTab3.getText(), currentPasswordTab3.getText(), null,
-                            null, null, newPasswordEntryTab3.getText()))
-                    .channel(Channels.UPDATE_PASSWORD.toString())
-                    .execute();
+//            if (api == null)
+//                api = ((AppController) stage.getUserData()).getApi();
+//            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
+//
+//            api.publish()
+//                    .message(new UpdateData(userNameEntryTab3.getText(), currentPasswordTab3.getText(), null,
+//                            null, null, newPasswordEntryTab3.getText()))
+//                    .channel(Channels.UPDATE_PASSWORD.toString())
+//                    .execute();
         }
     }
 

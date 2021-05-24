@@ -268,12 +268,12 @@
 }
 
 /*** The item itself (hovered / focused) ***/
-.menu-item:focused, .menu-item:hovered {
+.menu-item:focused, .menu-item:hover {
     -fx-background-color: -fx-my-menu-color-highlighted;
 }
 
 /*** The item's label (hovered / focused) ***/
-.menu-item:focused .label, .menu-item:hovered .label {
+.menu-item:focused .label, .menu-item:hover .label {
     -fx-text-fill: -fx-my-menu-font-color-highlighted;
 }
 

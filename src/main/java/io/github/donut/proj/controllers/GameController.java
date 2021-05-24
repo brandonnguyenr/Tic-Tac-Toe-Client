@@ -170,6 +170,7 @@ public class GameController implements ISubject, IObserver {
         return swap;
     }
 
+
     /**
      * makes initial connections needed for the start
      * of a game

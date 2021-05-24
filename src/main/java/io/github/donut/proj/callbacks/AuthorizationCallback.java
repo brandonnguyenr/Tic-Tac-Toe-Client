@@ -9,6 +9,8 @@ import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.LoginResponseData;
 import io.github.donut.proj.listener.ISubject;
 
+import java.util.function.Consumer;
+
 /**
  * This class is the used as a callback that will have the data that is returned from the authentication service.
  * This class implements the {@code}ISubject class as we need to pass the data back to the controllers using the
@@ -17,14 +19,14 @@ import io.github.donut.proj.listener.ISubject;
  */
 public class AuthorizationCallback implements ISubscribeCallback, ISubject{
 
-    private final Runnable resolved;
+    private final Consumer<LoginResponseData> resolved;
     private final Runnable rejected;
     /**
      * Constructor for the AuthorizationCallback class. Register the instance of CreateAccountController, and
      * LoginController as those methods are listening from this method.
      * @author Utsav Parajuli
      */
-    public AuthorizationCallback(Runnable resolved, Runnable rejected) {
+    public AuthorizationCallback(Consumer<LoginResponseData> resolved, Runnable rejected) {
         this.resolved = resolved;
         this.rejected = rejected;
     }
@@ -49,10 +51,9 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
 
             if (response.isLoginSuccess()) {                                        //if the login/create was successful
                 if (response.getInfo().equalsIgnoreCase("CREATE")) {    //checking if the message was create
-                    this.resolved.run();
+                    this.resolved.accept(response);
                 } else if (response.getInfo().equalsIgnoreCase("VALIDATE")) {   //checking if message was login
-                    this.resolved.run();
-                    mApi.removeEventListener(this);
+                    this.resolved.accept(response);
                 }
 
             } else {                                                                 //else the login was unsuccessful
@@ -60,7 +61,6 @@ public class AuthorizationCallback implements ISubscribeCallback, ISubject{
                     this.rejected.run();
                 } else if (response.getInfo().equalsIgnoreCase("VALIDATE")) {   //checking if message was login
                     this.rejected.run();
-                    mApi.removeEventListener(this);
                 }
             }
         }
