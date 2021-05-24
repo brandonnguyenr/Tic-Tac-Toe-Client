@@ -21,6 +21,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -28,6 +30,7 @@ import java.util.Objects;
  * This class handles the game board page UI
  * @author Kord Boniadi
  */
+@Getter
 public class BoardPageController extends AbstractController implements IObserver, ISubject {
     @FXML
     private Label playerNameLeft;
@@ -55,6 +58,7 @@ public class BoardPageController extends AbstractController implements IObserver
 
     private final BoardUI board;
     private final GameController game;
+    private final boolean isMultiplayer;
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
             getClassLoader().
@@ -66,6 +70,12 @@ public class BoardPageController extends AbstractController implements IObserver
             getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
     ));
 
+    public BoardPageController(BoardUI board) {
+        this.board = board;
+        this.game = null;
+        this.isMultiplayer = true;
+    }
+
     /**
      * Constructor
      * @param board instance of boardUI
@@ -75,6 +85,7 @@ public class BoardPageController extends AbstractController implements IObserver
     public BoardPageController(BoardUI board, GameController game) {
         this.board = board;
         this.game = game;
+        this.isMultiplayer = false;
         EventManager.register(game, this);
     }
 
@@ -85,8 +96,10 @@ public class BoardPageController extends AbstractController implements IObserver
      */
     @FXML
     public void initialize() {
-        playerNameLeft.setText(game.getPlayer1().getPlayerName());
-        playerNameRight.setText(game.getPlayer2().getPlayerName());
+        if (game != null) {
+            playerNameLeft.setText(game.getPlayer1().getPlayerName());
+            playerNameRight.setText(game.getPlayer2().getPlayerName());
+        }
         playerNameLeft.setPrefWidth(150);
         playerNameRight.setPrefWidth(150);
 
@@ -97,7 +110,8 @@ public class BoardPageController extends AbstractController implements IObserver
         borderPane.setOnKeyReleased(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 EventSounds.getInstance().playButtonSound4();
-                EventManager.cleanup();
+                if (!isMultiplayer)
+                    EventManager.cleanup();
                 AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
                 stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
             }
@@ -120,10 +134,12 @@ public class BoardPageController extends AbstractController implements IObserver
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
-        EventManager.removeAllObserver(game);
-        EventManager.removeAllObserver(game.getPlayer1());
-        EventManager.removeAllObserver(game.getPlayer2());
-        EventManager.removeAllObserver(board);
+        if (!isMultiplayer) {
+            EventManager.removeAllObserver(game);
+            EventManager.removeAllObserver(game.getPlayer1());
+            EventManager.removeAllObserver(game.getPlayer2());
+            EventManager.removeAllObserver(board);
+        }
         AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
         stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
     }

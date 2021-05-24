@@ -7,6 +7,7 @@ import io.github.coreutils.proj.messages.RoomFactory;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.RoomListCallback;
 import io.github.donut.proj.callbacks.RoomRequestCallback;
+import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -186,7 +187,8 @@ public class LobbyController extends AbstractController implements ISubject {
                             private final Button btn = new Button("Join");
                             {
                                 btn.setOnAction((ActionEvent event) -> {
-                                    RoomData data = getTableView().getItems().get(getIndex());
+//                                    RoomData data = getTableView().getItems().get(getIndex());
+                                    joinRoomWorker(getTableView().getItems().get(getIndex()));
                                 });
 
                                 btn.setPrefWidth(120);
@@ -264,18 +266,52 @@ public class LobbyController extends AbstractController implements ISubject {
         result.ifPresent(this::createRoomWorker);
     }
 
+    private void joinRoomWorker(RoomData data) {
+        PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        data.addPlayer(player);
+        RoomRequestCallback callback = new RoomRequestCallback(data, player);
+        callback.setResolved((event) -> {
+            Platform.runLater(() -> {
+                BoardPageController game = new BoardPageController(new BoardUI());
+                stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
+                game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
+                game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+            });
+        });
+
+        callback.setRejected((event) -> {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("There was a problem that room... It may be full.");
+                alert.show();
+            });
+        });
+        GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        // TODO: launch waiting room page here
+    }
+
     private void createRoomWorker(String title) {
         PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         RoomData room = RoomFactory.makeCreateRoom(title, player);
         RoomRequestCallback callback = new RoomRequestCallback(room, player);
         callback.setResolved((event) -> {
-
+            Platform.runLater(() -> {
+                BoardPageController game = new BoardPageController(new BoardUI());
+                stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
+                game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
+                game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+            });
         });
 
         callback.setRejected((event) -> {
-
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("There was a problem creating the room... Please try again later.");
+                alert.show();
+            });
         });
         GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        // TODO: launch waiting room page here
     }
 
     /**

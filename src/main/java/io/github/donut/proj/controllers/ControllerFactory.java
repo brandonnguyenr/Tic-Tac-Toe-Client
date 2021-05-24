@@ -62,8 +62,9 @@ public final class ControllerFactory {
     private static LoginController createLoginController() {
         LoginController controller = new LoginController();
 
-        controller.setAuthorizationHandler(new AuthorizationCallback(() -> {
+        controller.setAuthorizationHandler(new AuthorizationCallback((event) -> {
             Platform.runLater(() -> {
+                AppController.setUserName(event.getData().getUsername());
                 Scene scene = AppController.getScenes().get(SceneName.Main).getScene(createMainController());
                 controller.stage.setScene(scene);
                 //clears fields
@@ -242,7 +243,7 @@ public final class ControllerFactory {
     private static CreateAccountController createCreateAccountController() {
         CreateAccountController controller = new CreateAccountController();
 
-        controller.setAc(new AuthorizationCallback(() -> {
+        controller.setAc(new AuthorizationCallback((event) -> {
             Platform.runLater(() -> {
                 controller.getUsernameEntry().setStyle("-fx-border-color: khaki");
                 controller.getEmptyMessage().setText("");

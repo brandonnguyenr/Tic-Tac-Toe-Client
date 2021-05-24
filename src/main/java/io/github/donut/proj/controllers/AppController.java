@@ -10,6 +10,7 @@ import io.github.donut.proj.utils.Logger;
 import io.github.donut.proj.utils.Util;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import lombok.Getter;
 
@@ -41,8 +42,7 @@ public class AppController {
         return result;
     }
 
-    public static void setUserName(String id, String username) {
-        player.setPlayerID(id);
+    public static void setUserName(String username) {
         player.setPlayerUserName(username);
     }
 
