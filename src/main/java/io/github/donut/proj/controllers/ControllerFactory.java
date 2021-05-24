@@ -54,7 +54,7 @@ public final class ControllerFactory {
             case REACTIVATE_ACCOUNT_PAGE:
                 yield createReactivateController();
             case WAITING_PAGE:
-                yield createWaitingController();
+                yield createWaitingRoomController();
             default:
                 throw new IllegalArgumentException("A factory has not been created yet for that controller");
         };
@@ -122,7 +122,7 @@ public final class ControllerFactory {
         //sets the popup window
         //controller.setReactivatePopUp(popUp);
 
-        controller.setUc(new UpdatesCallback((event) -> {
+        controller.setUpdateHandler(new UpdatesCallback((event) -> {
             Platform.runLater(() -> {
                 AppController.getReactivatePopUp().close();
 
