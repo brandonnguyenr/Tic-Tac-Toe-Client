@@ -90,7 +90,7 @@ public final class ControllerFactory {
                     controller.getUsernameEntry().clear();
                     controller.getPasswordEntry().clear();
 
-                } else if(!(event.getIsDeleted().equalsIgnoreCase("FALSE"))) {           //if login was successful switch to menu page
+                } else if((event.getIsDeleted().equalsIgnoreCase("FALSE"))) {           //if login was successful switch to menu page
                     Scene scene = AppController.getScenes().get(SceneName.Main).getScene(createMainController());
                     controller.stage.setScene(scene);
                     //clears fields
