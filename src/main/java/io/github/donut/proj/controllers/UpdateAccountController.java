@@ -101,8 +101,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
     @FXML
     private TabPane tabPane;
 
-//    @Setter
-//    private MessagingAPI api = null;                            //instance of api
 
     @Setter
     private UpdatesCallback uc;                                //instance of updates callback
@@ -426,17 +424,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
             GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
             GlobalAPIManager.getInstance().send(new UpdateData(currentUserNameTab1.getText(), null, null, null,
                     newUserNameTab1.getText(), null, "false"), Channels.UPDATE_USERNAME.toString());
-
-//            if (api == null)
-//                api = ((AppController) stage.getUserData()).getApi();
-//            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
-//            //sending the message
-//            api.publish()
-//                    .message(new UpdateData(currentUserNameTab1.getText(), null, null, null,
-//                            newUserNameTab1.getText(), null))
-//                    .channel(Channels.UPDATE_USERNAME.toString())
-//                    .execute();
-
         }
     }
 
@@ -484,16 +471,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
             GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
             GlobalAPIManager.getInstance().send(new UpdateData(userNameTab2.getText(), null, firstNameEntryTab2.getText(),
                     lastNameEntryTab2.getText(), null, null, "false"), Channels.UPDATE_PERSONAL_INFO.toString());
-
-//            if (api == null)
-//                api = ((AppController) stage.getUserData()).getApi();
-//            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
-//
-//            api.publish()
-//                    .message(new UpdateData(userNameTab2.getText(), null, firstNameEntryTab2.getText(),
-//                            lastNameEntryTab2.getText(), null, null))
-//                    .channel(Channels.UPDATE_PERSONAL_INFO.toString())
-//                    .execute();
         }
     }
 
@@ -556,16 +533,6 @@ public class UpdateAccountController extends AbstractController implements ISubj
             GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
             GlobalAPIManager.getInstance().send(new UpdateData(userNameEntryTab3.getText(), currentPasswordTab3.getText(), null,
                     null, null, newPasswordEntryTab3.getText(), "false"), Channels.UPDATE_PASSWORD.toString());
-
-//            if (api == null)
-//                api = ((AppController) stage.getUserData()).getApi();
-//            api.addEventListener(uc, Channels.PRIVATE + api.getUuid());
-//
-//            api.publish()
-//                    .message(new UpdateData(userNameEntryTab3.getText(), currentPasswordTab3.getText(), null,
-//                            null, null, newPasswordEntryTab3.getText()))
-//                    .channel(Channels.UPDATE_PASSWORD.toString())
-//                    .execute();
         }
     }
 

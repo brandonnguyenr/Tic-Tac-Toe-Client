@@ -1,6 +1,5 @@
 package io.github.donut.proj.controllers;
 
-import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.UpdateData;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
@@ -36,9 +35,8 @@ public class ReactivateController extends AbstractController implements ISubject
 
     @Setter
     @Getter
-    private UpdatesCallback updateHandler;                                 //callback class
+    private UpdatesCallback updateHandler;                                //callback class
 
-    @Setter
     @Getter
     private Stage reactivatePopUp;                                        //the stage
 

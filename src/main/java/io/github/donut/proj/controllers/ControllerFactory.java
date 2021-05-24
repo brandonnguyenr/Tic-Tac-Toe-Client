@@ -1,6 +1,5 @@
 package io.github.donut.proj.controllers;
 
-import io.github.API.MessagingAPI;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.callbacks.UpdatesCallback;
 import io.github.donut.proj.model.SceneName;
@@ -63,6 +62,7 @@ public final class ControllerFactory {
     /**
      * LoginController Helper
      * @author Kord Boniadi
+     * @author Utsav Parajuli
      * @return {@link LoginController}
      */
     private static LoginController createLoginController() {
@@ -113,29 +113,25 @@ public final class ControllerFactory {
 
     /**
      * Reactivate Controller Helper
-     * //@param popUp: the stage for reactivatePopUp window
-     * @return ReactivateController
+     * @author Utsav Parajuli
+     * @return {@link AboutUsController}
      */
     private static ReactivateController createReactivateController() {
         ReactivateController controller = new ReactivateController();
 
-        //sets the popup window
-        //controller.setReactivatePopUp(popUp);
-
         controller.setUpdateHandler(new UpdatesCallback((event) -> {
+            //if account reactivation was successful will close the popup page
             Platform.runLater(() -> {
                 AppController.getReactivatePopUp().close();
 
-                //TODO: Doing this works ask team how to fix
-//                MessagingAPI api = ((AppController) controller.stage.getUserData()).getApi();
-//                api.removeEventListener(controller.getUc());
-//                controller.getReactivatePopUp().close();
+//                //showing confirmation
 //                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Account was re-activated");
 //                alert.setHeaderText("Confirmation");
 //
 //                alert.show();
             });
         }, (event) -> {
+            //if reactivation was not successful we display an error message
             Platform.runLater(() -> {
                 AppController.getReactivatePopUp().close();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -170,6 +166,11 @@ public final class ControllerFactory {
         return controller;
     }
 
+    /**
+     * LobbyController Helper
+     * @author Utsav Parajuli
+     * @return {@link WaitingRoomController}
+     */
     private static WaitingRoomController createWaitingRoomController() {
         return new WaitingRoomController();
     }
@@ -273,6 +274,7 @@ public final class ControllerFactory {
                 } else if (event.getType().equalsIgnoreCase("DELETE")) {       //deletion successful
                     controller.getErrorTab4().setText("");
                     controller.getSuccessfulUpdateTab4().setText("ACCOUNT IS DELETED");
+                    //TODO: sign the player out after account is deleted
                 }
             });
 
@@ -299,7 +301,7 @@ public final class ControllerFactory {
                     controller.getDifferentPasswordErrorTab3().setText("");
                     controller.getSuccessfulUpdateTab3().setText("");
                     controller.getUsernameErrorTab3().setText("Username/Password do not match");
-                } else if (event.getType().equalsIgnoreCase("DELETE")) {
+                } else if (event.getType().equalsIgnoreCase("DELETE")) {        //deletion error
                     controller.getErrorTab4().setText("Username does not exist");
                     controller.getSuccessfulUpdateTab4().setText("");
                 }

@@ -28,50 +28,14 @@ public class AppController {
     private final String PROPERTIES = "io/github/donut/proj/configs/logging.properties";
     private final String PRODUCTION = "production";
 
-    private final Stage  mainStage;
-
+    private final Stage  mainStage;                                 //main stage for the application
     @Getter
-    private static final Stage reactivatePopUp = new Stage();       //pop up window used for reactivation
+    private static final Stage reactivatePopUp = new Stage();       //pop up window used for reactivation page
 
     @Getter
     private static final Map<SceneName, FxmlInfo> scenes = new HashMap<>();
 
     private static final PlayerData player = new PlayerData();      //player data
-
-    /**
-     * This method will return the playerID of player
-     * @return playerID
-     */
-    public static String getPlayerID() {
-        return player.getPlayerID();
-    }
-
-    /**
-     * This method will return the PlayerData
-     * @return PlayerData
-     */
-    public static PlayerData getPlayer(String channel) {
-        PlayerData result = new PlayerData(player);
-        result.setChannel(channel);
-        return result;
-    }
-
-    /**
-     * This method will set the username of player
-     */
-    public static void setUserName(String username) {
-        player.setPlayerUserName(username);
-    }
-
-
-    /**
-     * This method will return the username of player
-     * @return username
-     */
-    public static String getUserName() {
-        return player.getPlayerUserName();
-    }
-
 
     /**
      * Constructor
@@ -83,14 +47,7 @@ public class AppController {
 //        Logger.init(PRODUCTION);
         this.mainStage = stage;
         final MessagingAPI api = GlobalAPIManager.getInstance().getApi();
-        //creating instance of api and subscribing to appropriate channels
-//        api = new MessagingAPI();
 
-        //channels the api is subscribed to
-//        api.subscribe()
-//                .channels(Channels.PRIVATE + api.getUuid())
-//                .execute();
-//
         api.onclose(() -> {
             System.out.println("api is now dead.");
             Platform.runLater(mainStage::close);
@@ -136,6 +93,7 @@ public class AppController {
 //    public static void updateScenes(SceneName sceneName, FxmlInfo info) {
 //        scenes.put(sceneName, info);
 //    }
+
     /**
      * Initializes starting page for app
      * @author Kord Boniadi
@@ -150,5 +108,39 @@ public class AppController {
         mainStage.setResizable(false);
         mainStage.show();
         Logger.log("program started..");
+    }
+
+    /**
+     * This method will return the playerID of player
+     * @return playerID
+     */
+    public static String getPlayerID() {
+        return player.getPlayerID();
+    }
+
+    /**
+     * This method will return the PlayerData
+     * @return PlayerData
+     */
+    public static PlayerData getPlayer(String channel) {
+        PlayerData result = new PlayerData(player);
+        result.setChannel(channel);
+        return result;
+    }
+
+    /**
+     * This method will set the username of player
+     */
+    public static void setUserName(String username) {
+        player.setPlayerUserName(username);
+    }
+
+
+    /**
+     * This method will return the username of player
+     * @return username
+     */
+    public static String getUserName() {
+        return player.getPlayerUserName();
     }
 }
