@@ -14,18 +14,18 @@
     <center>
         <VBox alignment="CENTER" maxHeight="300.0" prefHeight="300.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" spacing="15.0" translateY="-40.0">
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="70.0" prefWidth="200.0" spacing="15.0" translateY="-70.0">
                <children>
                   <Label fx:id="playerName" />
                </children>
             </HBox>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0" translateY="-40.0">
+                <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0" spacing="15.0" translateY="-65.0">
                     <children>
                         <Label fx:id="waitingPageMessage" />
                         <Label fx:id="joinMessage" />
                     </children>
                 </HBox>
-                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" translateY="-20.0">
                       <image>
                           <Image url="@../../images/icons/loading_5.gif" />
                       </image>
