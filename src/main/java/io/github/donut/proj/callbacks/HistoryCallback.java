@@ -10,16 +10,13 @@ import io.github.coreutils.proj.messages.RoomResponse;
 import io.github.donut.proj.listener.ISubject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class HistoryCallback implements ISubscribeCallback, ISubject {
 
-    private final Runnable resolved;
-    private final Runnable rejected;
-
-    public HistoryCallback(Runnable resolved, Runnable rejected) {
-        this.resolved = resolved;
-        this.rejected = rejected;
-    }
+    Consumer<List<RoomResponse>> updateHandler = null;
 
     @Override
     public void status(MessagingAPI messagingAPI, MsgStatus msgStatus) {
@@ -29,7 +26,9 @@ public class HistoryCallback implements ISubscribeCallback, ISubject {
     @Override
     public void resolved(MessagingAPI messagingAPI, MsgResultAPI msgResultAPI) {
         if (msgResultAPI.getChannel().equals(Channels.PRIVATE + messagingAPI.getUuid())) {
-            ArrayList<RoomResponse> response = GsonWrapper.fromJson(msgResultAPI.getMessage(), RoomResponse.class);
+            List<RoomResponse> response = Arrays.asList(GsonWrapper.fromJson(msgResultAPI.getMessage(), RoomResponse[].class));
+
+            updateHandler.accept(response);
         }
     }
 
