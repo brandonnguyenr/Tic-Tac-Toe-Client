@@ -1,10 +1,12 @@
 package io.github.donut.proj.controllers;
 
+import io.github.API.MessagingAPI;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.callbacks.UpdatesCallback;
 import io.github.donut.proj.model.SceneName;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 
 /**
  * Controller Factory class
@@ -49,6 +51,10 @@ public final class ControllerFactory {
                 yield createPlayerHistoryController();
             case UPDATE_ACCOUNT_PAGE:
                 yield createUpdateAccountController();
+            case REACTIVATE_ACCOUNT_PAGE:
+                yield createReactivateController();
+            case WAITING_PAGE:
+                yield createWaitingController();
             default:
                 throw new IllegalArgumentException("A factory has not been created yet for that controller");
         };
@@ -64,12 +70,33 @@ public final class ControllerFactory {
 
         controller.setAuthorizationHandler(new AuthorizationCallback((event) -> {
             Platform.runLater(() -> {
+                //setting the username of player
                 AppController.setUserName(event.getData().getUsername());
-                Scene scene = AppController.getScenes().get(SceneName.Main).getScene(createMainController());
-                controller.stage.setScene(scene);
-                //clears fields
-                controller.getUsernameEntry().clear();
-                controller.getPasswordEntry().clear();
+
+                //checking if the player's account is deleted
+                if(event.getIsDeleted().equalsIgnoreCase("TRUE")) {
+                    controller.getErrorMessage().setText("");
+                    controller.getUsernameEntry().setStyle("-fx-border-color: khaki");
+                    controller.getPasswordEntry().setStyle("-fx-border-color: khaki");
+
+                    //getting the scene of reactivate page
+                    Scene scene = AppController.getScenes().get(SceneName.REACTIVATE_ACCOUNT_PAGE).getScene
+                            (createReactivateController());
+
+                    //gets the popup and sets the new stage
+                    AppController.getReactivatePopUp().setScene(scene);
+                    AppController.getReactivatePopUp().show();
+
+                    controller.getUsernameEntry().clear();
+                    controller.getPasswordEntry().clear();
+
+                } else if(!(event.getIsDeleted().equalsIgnoreCase("FALSE"))) {           //if login was successful switch to menu page
+                    Scene scene = AppController.getScenes().get(SceneName.Main).getScene(createMainController());
+                    controller.stage.setScene(scene);
+                    //clears fields
+                    controller.getUsernameEntry().clear();
+                    controller.getPasswordEntry().clear();
+                }
             });
         }, () -> {
             Platform.runLater(() -> {
@@ -79,6 +106,41 @@ public final class ControllerFactory {
                 //clears fields
                 controller.getUsernameEntry().clear();
                 controller.getPasswordEntry().clear();
+            });
+        }));
+        return controller;
+    }
+
+    /**
+     * Reactivate Controller Helper
+     * //@param popUp: the stage for reactivatePopUp window
+     * @return ReactivateController
+     */
+    private static ReactivateController createReactivateController() {
+        ReactivateController controller = new ReactivateController();
+
+        //sets the popup window
+        //controller.setReactivatePopUp(popUp);
+
+        controller.setUc(new UpdatesCallback((event) -> {
+            Platform.runLater(() -> {
+                AppController.getReactivatePopUp().close();
+
+                //TODO: Doing this works ask team how to fix
+//                MessagingAPI api = ((AppController) controller.stage.getUserData()).getApi();
+//                api.removeEventListener(controller.getUc());
+//                controller.getReactivatePopUp().close();
+//                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Account was re-activated");
+//                alert.setHeaderText("Confirmation");
+//
+//                alert.show();
+            });
+        }, (event) -> {
+            Platform.runLater(() -> {
+                AppController.getReactivatePopUp().close();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("RE-ACTIVATION Error");
+                alert.show();
             });
         }));
         return controller;
@@ -106,6 +168,10 @@ public final class ControllerFactory {
     private static LobbyController createLobbyController() {
         LobbyController controller = new LobbyController();
         return controller;
+    }
+
+    private static WaitingRoomController createWaitingRoomController() {
+        return new WaitingRoomController();
     }
 
     /**
@@ -162,6 +228,8 @@ public final class ControllerFactory {
             //runs if the state was resolved
             Platform.runLater(() -> {
                 if (event.getType().equalsIgnoreCase("USERNAME")) {             //username update successful
+                    //setting the new username
+                    AppController.setUserName(controller.getNewUserNameTab1().getText());
                     controller.getCurrentUserNameTab1().setStyle("-fx-border-color: khaki");
                     controller.getNewUserNameTab1().setStyle("-fx-border-color: khaki");
                     controller.getConfirmUserNameTab1().setStyle("-fx-border-color: khaki");
@@ -202,6 +270,9 @@ public final class ControllerFactory {
                     controller.getCurrentPasswordTab3().clear();
                     controller.getNewPasswordEntryTab3().clear();
                     controller.getConfirmPasswordEntryTab3().clear();
+                } else if (event.getType().equalsIgnoreCase("DELETE")) {       //deletion successful
+                    controller.getErrorTab4().setText("");
+                    controller.getSuccessfulUpdateTab4().setText("ACCOUNT IS DELETED");
                 }
             });
 
@@ -228,6 +299,9 @@ public final class ControllerFactory {
                     controller.getDifferentPasswordErrorTab3().setText("");
                     controller.getSuccessfulUpdateTab3().setText("");
                     controller.getUsernameErrorTab3().setText("Username/Password do not match");
+                } else if (event.getType().equalsIgnoreCase("DELETE")) {
+                    controller.getErrorTab4().setText("Username does not exist");
+                    controller.getSuccessfulUpdateTab4().setText("");
                 }
             });
         })));

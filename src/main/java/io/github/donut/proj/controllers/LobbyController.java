@@ -312,6 +312,7 @@ public class LobbyController extends AbstractController implements ISubject {
         });
         GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         // TODO: launch waiting room page here
+        stage.setScene(AppController.getScenes().get(SceneName.WAITING_PAGE).getScene(false, false));
     }
 
     /**

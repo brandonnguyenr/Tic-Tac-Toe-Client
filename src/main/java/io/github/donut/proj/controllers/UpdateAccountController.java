@@ -39,6 +39,8 @@ public class UpdateAccountController extends AbstractController implements ISubj
     private ImageView personalInfoButton;
     @FXML
     private ImageView userNameChangeButton;
+    @FXML
+    private ImageView deleteAccountButton;
 
     @FXML
     private TextField currentUserNameTab1;
@@ -83,11 +85,19 @@ public class UpdateAccountController extends AbstractController implements ISubj
     private Label usernameErrorTab3;
 
     @FXML
+    private Label successfulUpdateTab4;
+    @FXML
+    private Label errorTab4;
+
+    @FXML
     private Tab updateUsernameTitle;
     @FXML
     private Tab updatePersonalInfoTitle;
     @FXML
     private Tab changePasswordTitle;
+    @FXML
+    private Tab deleteAccountTitle;
+
     @FXML
     private TabPane tabPane;
 
@@ -114,14 +124,18 @@ public class UpdateAccountController extends AbstractController implements ISubj
         userNameChangeButton.setOnMouseEntered(this::onUpdateEnter);
         personalInfoButton.setOnMouseEntered(this::onUpdateEnter);
         passwordChangeButton.setOnMouseEntered(this::onUpdateEnter);
+        deleteAccountButton.setOnMouseEntered(this::onDeleteEnter);
 
         userNameChangeButton.setOnMouseExited(this::onUpdateExit);
         personalInfoButton.setOnMouseExited(this::onUpdateExit);
         passwordChangeButton.setOnMouseExited(this::onUpdateExit);
+        deleteAccountButton.setOnMouseExited(this::onDeleteExit);
 
         userNameChangeButton.setOnMouseClicked(this::onUserNameChangeClick);
         personalInfoButton.setOnMouseClicked(this::onPersonalInfoClick);
         passwordChangeButton.setOnMouseClicked(this::onPasswordChangeClick);
+        deleteAccountButton.setOnMouseClicked(this::onDeleteAccountClick);
+
 
         currentUserNameTab1.setOnKeyPressed(this::onUserNameChangeEnterPressed);
         newUserNameTab1.setOnKeyPressed(this::onUserNameChangeEnterPressed);
@@ -139,6 +153,8 @@ public class UpdateAccountController extends AbstractController implements ISubj
         updateUsernameTitle.setOnSelectionChanged(this::onTabClosed);
         updatePersonalInfoTitle.setOnSelectionChanged(this::onTabClosed);
         changePasswordTitle.setOnSelectionChanged(this::onTabClosed);
+        deleteAccountTitle.setOnSelectionChanged(this::onTabClosed);
+
         /*========================Action Events END=========================*/
 
         clearScreen();
@@ -183,6 +199,9 @@ public class UpdateAccountController extends AbstractController implements ISubj
         usernameErrorTab3.setText("");
         successfulUpdateTab3.setText("");
         differentPasswordErrorTab3.setText("");
+
+        successfulUpdateTab4.setText("");
+        errorTab4.setText("");
 
         currentUserNameTab1.clear();
         newUserNameTab1.clear();
@@ -256,6 +275,26 @@ public class UpdateAccountController extends AbstractController implements ISubj
     }
 
     /**
+     * Event handler for delete button hover
+     *
+     * @param mouseEvent mouse event
+     * @author Utsav Parajuli
+     */
+    public void onDeleteEnter(MouseEvent mouseEvent) {
+        deleteAccountButton.setImage(deleteButtonHover);
+    }
+
+    /**
+     * Event handler for delete exit
+     *
+     * @param mouseEvent: mouse event
+     * @author Utsav Parajuli
+     */
+    public void onDeleteExit(MouseEvent mouseEvent) {
+        deleteAccountButton.setImage(deleteButtonIdle);
+    }
+
+    /**
      * Event handler for ENTER pressed on the username update tab
      * @param keyEvent : key pressed
      */
@@ -322,6 +361,17 @@ public class UpdateAccountController extends AbstractController implements ISubj
     }
 
     /**
+     * Event handler for delete account button clicked
+     *
+     * @param actionEvent on click
+     * @author Utsav Parajuli
+     */
+    private void onDeleteAccountClick(MouseEvent actionEvent) {
+        EventSounds.getInstance().playButtonSound4();
+        deleteAccount();
+    }
+
+    /**
      * This method will update the username of the player. Will ask for current username and the new username
      * two times to update. New usernames should match. Will also publish via the api
      *
@@ -375,7 +425,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
 
             GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
             GlobalAPIManager.getInstance().send(new UpdateData(currentUserNameTab1.getText(), null, null, null,
-                    newUserNameTab1.getText(), null), Channels.UPDATE_USERNAME.toString());
+                    newUserNameTab1.getText(), null, "false"), Channels.UPDATE_USERNAME.toString());
 
 //            if (api == null)
 //                api = ((AppController) stage.getUserData()).getApi();
@@ -433,7 +483,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
 
             GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
             GlobalAPIManager.getInstance().send(new UpdateData(userNameTab2.getText(), null, firstNameEntryTab2.getText(),
-                    lastNameEntryTab2.getText(), null, null), Channels.UPDATE_PERSONAL_INFO.toString());
+                    lastNameEntryTab2.getText(), null, null, "false"), Channels.UPDATE_PERSONAL_INFO.toString());
 
 //            if (api == null)
 //                api = ((AppController) stage.getUserData()).getApi();
@@ -505,7 +555,7 @@ public class UpdateAccountController extends AbstractController implements ISubj
 
             GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
             GlobalAPIManager.getInstance().send(new UpdateData(userNameEntryTab3.getText(), currentPasswordTab3.getText(), null,
-                    null, null, newPasswordEntryTab3.getText()), Channels.UPDATE_PASSWORD.toString());
+                    null, null, newPasswordEntryTab3.getText(), "false"), Channels.UPDATE_PASSWORD.toString());
 
 //            if (api == null)
 //                api = ((AppController) stage.getUserData()).getApi();
@@ -517,6 +567,16 @@ public class UpdateAccountController extends AbstractController implements ISubj
 //                    .channel(Channels.UPDATE_PASSWORD.toString())
 //                    .execute();
         }
+    }
+
+    /**
+     * This method will delete the account of the player that's logged in
+     * @author Utsav Parajuli
+     */
+    private void deleteAccount() {
+        GlobalAPIManager.getInstance().swapListener(uc, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        GlobalAPIManager.getInstance().send(new UpdateData(AppController.getUserName(), null, null,
+                null, null, null, "true"), Channels.UPDATE_DELETE.toString());
     }
 
     //back button idle image
@@ -546,5 +606,20 @@ public class UpdateAccountController extends AbstractController implements ISubj
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/icons/update_button_select.png")
+    ));
+
+
+    //delete account button idle
+    private final Image deleteButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/delete_button.png")
+    ));
+
+    //delete account button hover
+    private final Image deleteButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/icons/delete_button_hover.png")
     ));
 }
