@@ -28,9 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Lobby Screen contains the lobby viewer table view which shows the active games.
@@ -59,6 +57,7 @@ public class LobbyController extends AbstractController implements ISubject {
 
     @FXML
     private ImageView backButton;
+
 
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
@@ -152,6 +151,8 @@ public class LobbyController extends AbstractController implements ISubject {
         createLobbyButton.setOnMouseEntered(this::onCreateLobbyButtonEnter);
         createLobbyButton.setOnMouseExited(this::onCreateLobbyButtonExit);
         /*========================Action Events END=========================*/
+
+        WaitingRoomController.setPlayer("");
     }
 
     public void setLobbyListAsync(List<RoomData> rooms) {
@@ -271,12 +272,33 @@ public class LobbyController extends AbstractController implements ISubject {
         data.addPlayer(player);
         RoomRequestCallback callback = new RoomRequestCallback(data, player);
         callback.setResolved((event) -> {
-            Platform.runLater(() -> {
-                BoardPageController game = new BoardPageController(new BoardUI());
-                stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
-                game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
-                game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
-            });
+
+            WaitingRoomController.setPlayer("");
+            WaitingRoomController.setPlayer(event.getPlayer1().getPlayerUserName() + " has joined!");
+            WaitingRoomController.setWaitingMsg("Game will start soon...");
+
+            Timer timer = new Timer();
+
+//            try {
+//                timer.wait(5000L);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
+            TimerTask playerJoin = new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        BoardPageController game = new BoardPageController(new BoardUI());
+                        stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
+                        game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
+                        game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+                    });
+                }
+            };
+
+            timer.schedule(playerJoin, 7000L);
+
         });
 
         callback.setRejected((event) -> {
@@ -288,6 +310,7 @@ public class LobbyController extends AbstractController implements ISubject {
         });
         GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         // TODO: launch waiting room page here
+        stage.setScene(AppController.getScenes().get(SceneName.WAITING_PAGE).getScene(false, false));
     }
 
     private void createRoomWorker(String title) {
@@ -295,12 +318,35 @@ public class LobbyController extends AbstractController implements ISubject {
         RoomData room = RoomFactory.makeCreateRoom(title, player);
         RoomRequestCallback callback = new RoomRequestCallback(room, player);
         callback.setResolved((event) -> {
-            Platform.runLater(() -> {
-                BoardPageController game = new BoardPageController(new BoardUI());
-                stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
-                game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
-                game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
-            });
+            WaitingRoomController.setPlayer("");
+            WaitingRoomController.setPlayer(event.getPlayer2().getPlayerUserName() + " has joined!");
+            WaitingRoomController.setWaitingMsg("Game will start soon...");
+
+            Timer timer = new Timer();
+
+//            try {
+//                timer.wait(5000L);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
+
+            TimerTask playerCreate = new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        BoardPageController game = new BoardPageController(new BoardUI());
+                        stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
+                        game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
+                        game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+                    });
+                }
+            };
+
+            timer.schedule(playerCreate, 7000L);
+
+
+
         });
 
         callback.setRejected((event) -> {

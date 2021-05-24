@@ -12,18 +12,23 @@
         <Label fx:id="waitingPageTitle" text="Waiting Room" BorderPane.alignment="CENTER" />
     </top>
     <center>
-        <VBox maxHeight="300.0" prefHeight="300.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" maxHeight="300.0" prefHeight="300.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0" translateY="90.0">
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+               <children>
+                  <Label fx:id="playerName"/>
+               </children>
+            </HBox>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                     <children>
                         <Label fx:id="waitingPageMessage" text="Waiting for another player to join your lobby" />
-                        <ImageView fitHeight="33.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../images/icons/loading_gif.gif" />
-                            </image>
-                        </ImageView>
                     </children>
                 </HBox>
+                  <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                          <Image url="@../../images/icons/loading_4.gif" />
+                      </image>
+                  </ImageView>
             </children>
         </VBox>
     </center>
