@@ -1,13 +1,9 @@
  package io.github.donut.proj.controllers;
 
-import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
-import io.github.coreutils.proj.messages.MoveData;
-import io.github.coreutils.proj.messages.RoomData;
 import io.github.coreutils.proj.messages.RoomResponse;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
-import io.github.donut.proj.callbacks.HistoryCallback;
-import io.github.donut.proj.listener.EventManager;
+import io.github.donut.proj.callbacks.RoomHistoryCallback;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -29,12 +25,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -146,7 +138,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
         playerHistoryPage.setCenter(playerHistoryTable);
         addMovesButtonToTable();
 
-        GlobalAPIManager.getInstance().swapListener(new HistoryCallback(this::setLobbyListAsync),
+        GlobalAPIManager.getInstance().swapListener(new RoomHistoryCallback(this::setLobbyListAsync),
                 Channels.REQUEST + Channels.GET_ROOMS_DATA.toString(),
                 Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
     }
