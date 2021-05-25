@@ -164,11 +164,15 @@ public class PlayerHistoryController extends AbstractController implements Initi
      */
     private void fillTableWithObservableData() {
         tvOList = FXCollections.observableArrayList();
-
     }
 
-    public void setRoomMoves(List<MoveData> roomMoves) {
+    public void setAndDisplayRoomMoves(List<MoveData> roomMoves) {
         this.roomMoves = roomMoves;
+        showMoves();
+    }
+
+    private void showMoves() {
+        System.out.println(roomMoves);
     }
 
     /**
@@ -194,6 +198,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
                             RoomResponse data = getTableView().getItems().get(getIndex());
                             RoomData tempData = new RoomData();
                             tempData.setRoomID(Integer.parseInt(data.getRoomID()));
+                            System.out.println(tempData.getRoomID());
                             GlobalAPIManager.getInstance().swapListener(new MoveHistoryCallback(this::setRoomMovesAsync, tempData),
                                     Channels.REQUEST + Channels.GET_MOVES_DATA.toString(),
                                     Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
@@ -213,7 +218,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
                     // HAD TO PUT THIS METHOD IN HERE
                     private void setRoomMovesAsync(List<MoveData> moveData) {
                         Platform.runLater(() -> {
-                            setRoomMoves(roomMoves);
+                            setAndDisplayRoomMoves(moveData);
                         });
                     }
 
