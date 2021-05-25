@@ -1,13 +1,17 @@
  package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
+import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.MoveData;
+import io.github.coreutils.proj.messages.RoomData;
 import io.github.coreutils.proj.messages.RoomResponse;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.HistoryCallback;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +35,7 @@ import lombok.ToString;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -51,11 +56,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
     @FXML
     private ObservableList<RoomResponse> tvOList;
 
-    @Setter
-    private MessagingAPI api = null;
-
-    @Setter
-    private HistoryCallback hc;
 
     /**
      * Sets all action events and loads the table view object
@@ -65,9 +65,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
-
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
@@ -148,80 +145,22 @@ public class PlayerHistoryController extends AbstractController implements Initi
 
         playerHistoryPage.setCenter(playerHistoryTable);
         addMovesButtonToTable();
+
+        GlobalAPIManager.getInstance().swapListener(new HistoryCallback(this::setLobbyListAsync),
+                Channels.REQUEST + Channels.GET_ROOMS_DATA.toString(),
+                Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
     }
 
-//    /**
-//     * Static data object for populating the table view.
-//     * @author Joey Campbell
-//     */
-//    @Getter
-//    @Setter
-//    @ToString
-//    public static class RoomHistoryData {
-//        private String roomId;
-//        private String playerId;
-//        private String winLossTie;
-//        private String playersInvolved;
-//        private String startTime;
-//        private String endTime;
-//        private String startingPlayer;
-//        private String[] moves;
-//        private Image movesImage;
-//
-//        public RoomHistoryData() {
-//            this.roomId = "10";
-//            this.winLossTie = "TIE";
-//            this.playersInvolved = "JOEY" + " - " + "UTS";
-//            this.startTime = "8:30 AM";
-//            this.endTime = "8:35 AM";
-//            this.startingPlayer = "JOEY";
-//            this.moves = new String[] {"(1,1),(2,2),(3,3)"};
-//        }
-//
-//        public RoomHistoryData(String roomId, String winnerId, String player1Id, String player1Name, String player2Id,
-//                               String player2Name, String startTime, String endTime, String startingPlayer,
-//                               String[] moves) {
-//            this.roomId = roomId;
-//            this.winLossTie = "TIE"; // TODO - determine if the client's result for the game is a win or not
-//            this.playersInvolved = player1Name + " - " + player2Name;
-//            this.startTime = startTime; // TODO - convert time from millis to actual time
-//            this.endTime = endTime; // TODO - convert time from millis to actual time
-//            this.startingPlayer = startingPlayer;
-//            this.moves = new String[] {"(1,1),(2,2),(3,3)"}; // TODO - get moves as an actual array (have to query)
-//        }
-//
-//        public String getRoomId() {
-//            return roomId;
-//        }
-//
-//        public String getPlayerId() {
-//            return playerId;
-//        }
-//
-//        public String getWinLossTie() {
-//            return winLossTie;
-//        }
-//
-//        public String getPlayersInvolved() {
-//            return playersInvolved;
-//        }
-//
-//        public String getStartTime() {
-//            return startTime;
-//        }
-//
-//        public String getEndTime() {
-//            return endTime;
-//        }
-//
-//        public String getStartingPlayer() {
-//            return startingPlayer;
-//        }
-//
-//        public String[] getMoves() {
-//            return moves;
-//        }
-//    }
+    public void setLobbyListAsync(List<RoomResponse> rooms) {
+        Platform.runLater(() -> {
+            setLobbyList(rooms);
+        });
+    }
+
+    public void setLobbyList(List<RoomResponse> rooms) {
+        ObservableList<RoomResponse> list = FXCollections.observableArrayList(rooms);
+        playerHistoryTable.setItems(list);
+    }
 
     /**
      * Loads the observable array list with RoomHistoryData objects
@@ -230,22 +169,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
     private void fillTableWithObservableData() {
         tvOList = FXCollections.observableArrayList();
 
-//        tvOList.addAll(new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData(),
-//                new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}),
-//                new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}),
-//                new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}),
-//                new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}));
     }
 
     /**
