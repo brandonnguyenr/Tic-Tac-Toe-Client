@@ -149,6 +149,7 @@ public class LobbyController extends AbstractController implements ISubject {
         GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyListAsync),
                 Channels.REQUEST + Channels.ROOM_LIST.toString(),
                 Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+
         /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
@@ -169,7 +170,6 @@ public class LobbyController extends AbstractController implements ISubject {
     public void setLobbyList(List<RoomData> rooms) {
         ObservableList<RoomData> list = FXCollections.observableArrayList(rooms);
         lobbyTableView.setItems(list);
-
     }
 
     /**

@@ -1,4 +1,4 @@
-package io.github.donut.proj.controllers;
+ package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.MoveData;
