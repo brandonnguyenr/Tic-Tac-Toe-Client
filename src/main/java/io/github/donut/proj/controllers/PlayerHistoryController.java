@@ -169,20 +169,25 @@ public class PlayerHistoryController extends AbstractController implements Initi
     }
 
     private void showMoves() {
-        ArrayList<String> moves = new ArrayList<>();
+        StringBuilder movesSB = new StringBuilder();
 
         DateFormat df = new SimpleDateFormat();
         Date tempDate;
 
         for (MoveData m : roomMoves) {
             tempDate = new Date(m.getTime());
-            moves.add("[" + m.getX() + ", " + m.getY() + "] -> " + df.format(tempDate));
+            movesSB.append("[" + m.getX() + ", " + m.getY() + "] -> " + df.format(tempDate) + "\n");
         }
 
-        for (String move : moves)
-            System.out.println(move);
-
         Dialog<String> dialog = new Dialog<String>();
+
+        ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+
+        dialog.getDialogPane().getButtonTypes().add(closeButton);
+
+        dialog.setContentText(movesSB.toString());
+
+        dialog.show();
     }
 
     /**
