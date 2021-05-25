@@ -289,13 +289,10 @@ public class LobbyController extends AbstractController implements ISubject {
                 String results;
                 if (moveRequestData.getWinningToken() == Token.X) {
                     results = moveRequestData.getRoomData().getPlayer1().getPlayerUserName() + " won!!";
-                    System.out.println(Token.X + " Player: " + moveRequestData.getRoomData().getPlayer1().getPlayerUserName() + " won!!");
                 } else if (moveRequestData.getWinningToken() == Token.O) {
                     results = moveRequestData.getRoomData().getPlayer2().getPlayerUserName() + " won!!";
-                    System.out.println(Token.O + " Player: " + moveRequestData.getRoomData().getPlayer2().getPlayerUserName() + " has won");
                 } else {
                     results = "It's a Draw";
-                    System.out.println("It's a Draw");
                 }
 
                 Platform.runLater(() -> {
@@ -312,7 +309,6 @@ public class LobbyController extends AbstractController implements ISubject {
                     game.getOverlayPane().setVisible(true);
                 });
             } else if (moveRequestData.getCurrentPlayer().equals(player.getPlayerUserName())) {
-                System.out.println("your turn");
                 game.toggleTurn();
                 if (moveRequestData.getRoomData().getPlayer1().getPlayerUserName().equals(player.getPlayerUserName())) {
                     game.getPlayerNameLeft().setBorder(new Border(new BorderStroke(
@@ -334,7 +330,6 @@ public class LobbyController extends AbstractController implements ISubject {
                     game.getPlayerNameLeft().setBorder(null);
                 }
             } else {
-                System.out.println("not your turn");
                 if (moveRequestData.getRoomData().getPlayer1().getPlayerUserName().equals(player.getPlayerUserName())) {
                     game.getPlayerNameRight().setBorder(new Border(new BorderStroke(
                             Color.GOLD,
