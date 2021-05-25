@@ -98,10 +98,6 @@ public class BoardPageController extends AbstractController implements IObserver
         }
 
         this.boardUI.setMoveHandler((col, row) -> {
-            System.out.println("col: " + col + "\nrow: " + row);
-            System.out.println(myTurn);
-            System.out.println("Token present: " + this.board.getToken(col, row));
-            System.out.println("Token present: " + (this.board.getToken(col, row) == Token.BLANK));
             if (this.board.getToken(col, row) == Token.BLANK && myTurn) {
                 myTurn = false;
                 this.board.updateToken(col, row, myToken);
