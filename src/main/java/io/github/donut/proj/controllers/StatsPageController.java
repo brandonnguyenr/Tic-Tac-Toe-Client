@@ -1,6 +1,7 @@
 package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
+import io.github.donut.proj.controllers.GameController;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
@@ -14,10 +15,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.Objects;
+
 
 public class StatsPageController extends AbstractController implements Initializable, ISubject {
 
@@ -33,6 +33,8 @@ public class StatsPageController extends AbstractController implements Initializ
     private Label winLossRatioLabel;
     @FXML
     private Label totalGamesPlayedLabel;
+    @FXML
+    private Label playerName;
 
     @FXML
     private BorderPane statsPage;
@@ -40,54 +42,59 @@ public class StatsPageController extends AbstractController implements Initializ
     @FXML
     private ImageView backButton;
 
-    @Setter
-    private MessagingAPI api = null;                                   //instance of api
-    @Setter
-    private AuthorizationCallback ac;
+    public void initialize(URL location, ResourceBundle resources) {
+        backButton.setOnMouseClicked(this::onBackButtonClick);
+        backButton.setOnMouseEntered(this::onBackButtonEnter);
+        backButton.setOnMouseExited(this::onBackButtonExit);
+    }
 
+    /**
+     * Event handler for back button idle effect
+     * @author Kord Boniadi
+     */
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
     ));
 
+    /**
+     * Event handler for back button hover effect
+     * @author Kord Boniadi
+     */
     private final Image backButtonHover = new Image(Objects.requireNonNull(
             getClass().
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
     ));
 
-    @FXML
-    public void initialize() {
-        statsPageTitle.setText       ("STATS PAGE");
-        winsLabel.setText            ("WINS");
-        lossesLabel.setText          ("LOSSES");
-        tiesLabel.setText            ("TIES");
-        winLossRatioLabel.setText    ("WIN PERCENTAGE");
-        totalGamesPlayedLabel.setText("TOTAL GAMES");
-    }
-
-    public void onBackButtonClick(MouseEvent actionEvent) {
-        EventSounds.getInstance().playButtonSound1();
-    //    stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE), false));
-
-        if (api != null)
-            api.removeEventListener(ac);
-    }
-
-    public void onBackButtonEnter(MouseEvent mouseEvent) {
+    /**
+     * Event handler for back button hover effect
+     *
+     * @author Kord Boniadi
+     */
+    public void onBackButtonEnter(MouseEvent actionEvent) {
         backButton.setImage(backButtonHover);
     }
 
-    public void onBackButtonExit(MouseEvent mouseEvent) {
+    /**
+     * Event handler for back button idle effect
+     *
+     * @author Kord Boniadi
+     */
+    public void onBackButtonExit(MouseEvent actionEvent) {
         backButton.setImage(backButtonIdle);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        backButton.setOnMouseClicked(this::onBackButtonClick);
-        backButton.setOnMouseEntered(this::onBackButtonEnter);
-        backButton.setOnMouseExited(this::onBackButtonExit);
+    /**
+     * Event handler for back button
+     *
+     * @param actionEvent mouse event
+     * @author Joey Campbell
+     */
+    public void onBackButtonClick(MouseEvent actionEvent) {
+        EventSounds.getInstance().playButtonSound1();
+        stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false));
     }
 }
  
