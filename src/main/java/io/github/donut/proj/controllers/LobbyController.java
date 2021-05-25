@@ -288,10 +288,10 @@ public class LobbyController extends AbstractController implements ISubject {
             if (moveRequestData.getCurrentPlayer() == null) {
                 String results;
                 if (moveRequestData.getWinningToken() == Token.X) {
-                    results = Token.X + " Player: " + moveRequestData.getRoomData().getPlayer1().getPlayerUserName() + " has won";
-                    System.out.println(Token.X + " Player: " + moveRequestData.getRoomData().getPlayer1().getPlayerUserName() + " has won");
+                    results = moveRequestData.getRoomData().getPlayer1().getPlayerUserName() + " won!!";
+                    System.out.println(Token.X + " Player: " + moveRequestData.getRoomData().getPlayer1().getPlayerUserName() + " won!!");
                 } else if (moveRequestData.getWinningToken() == Token.O) {
-                    results = Token.O + " Player: " + moveRequestData.getRoomData().getPlayer2().getPlayerUserName() + " has won";
+                    results = moveRequestData.getRoomData().getPlayer2().getPlayerUserName() + " won!!";
                     System.out.println(Token.O + " Player: " + moveRequestData.getRoomData().getPlayer2().getPlayerUserName() + " has won");
                 } else {
                     results = "It's a Draw";
