@@ -33,8 +33,6 @@ public class GameCallback implements ISubscribeCallback {
     public void resolved(MessagingAPI mAPI, MsgResultAPI message) {
         if (message.getChannel().equals(room.getRoomChannel())) {
             MoveRequestData data = GsonWrapper.fromJson(message.getMessage(), MoveRequestData.class);
-            System.out.println(Arrays.deepToString(data.getBoard().getUnderlyingBoard()));
-            System.out.println(message.getMessage());
             boardHandler.accept(data);
 //            if (data.getCurrentPlayer() == null) {
 //                if (boardHandler != null)
