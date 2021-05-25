@@ -84,25 +84,25 @@ public class PlayerHistoryController extends AbstractController implements Initi
         roomIdCol.setPrefWidth(50);
         roomIdCol.setCellValueFactory(new PropertyValueFactory<>("roomID"));
 
-        TableColumn<RoomResponse, String> winLossTieCol  = new TableColumn<>("W L T");
-        winLossTieCol.setReorderable(false);
-        winLossTieCol.setResizable(false);
-        winLossTieCol.setSortable(false);
-        winLossTieCol.setPrefWidth(50);
-        winLossTieCol.setCellValueFactory(new PropertyValueFactory<>("winningPlayer"));
+        TableColumn<RoomResponse, String> resultCol  = new TableColumn<>("W L T");
+        resultCol.setReorderable(false);
+        resultCol.setResizable(false);
+        resultCol.setSortable(false);
+        resultCol.setPrefWidth(50);
+        resultCol.setCellValueFactory(new PropertyValueFactory<>("result"));
 
-        TableColumn<RoomResponse, String> player1Col     = new TableColumn<>("Player 1");
+        TableColumn<RoomResponse, String> player1Col     = new TableColumn<>("Me");
         player1Col.setReorderable(false);
         player1Col.setResizable(false);
         player1Col.setSortable(false);
-        player1Col.setPrefWidth(200);
+        player1Col.setPrefWidth(100);
         player1Col.setCellValueFactory(new PropertyValueFactory<>("perspectivePlayer"));
 
-        TableColumn<RoomResponse, String> player2Col     = new TableColumn<>("Player 2");
+        TableColumn<RoomResponse, String> player2Col     = new TableColumn<>("Other");
         player2Col.setReorderable(false);
         player2Col.setResizable(false);
         player2Col.setSortable(false);
-        player2Col.setPrefWidth(200);
+        player2Col.setPrefWidth(100);
         player2Col.setCellValueFactory(new PropertyValueFactory<>("otherPlayer"));
 
         TableColumn<RoomResponse, String> startTimeCol   = new TableColumn<>("Start Time");
@@ -136,7 +136,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
         playerHistoryTable.setSelectionModel(null);
 
         playerHistoryTable.getColumns().add(roomIdCol);
-        playerHistoryTable.getColumns().add(winLossTieCol);
+        playerHistoryTable.getColumns().add(resultCol);
         playerHistoryTable.getColumns().add(player1Col);
         playerHistoryTable.getColumns().add(player2Col);
         playerHistoryTable.getColumns().add(startTimeCol);
