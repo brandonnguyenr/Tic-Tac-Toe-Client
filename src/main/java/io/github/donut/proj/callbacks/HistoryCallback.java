@@ -4,8 +4,10 @@ import io.github.API.ISubscribeCallback;
 import io.github.API.MessagingAPI;
 import io.github.API.messagedata.MsgResultAPI;
 import io.github.API.messagedata.MsgStatus;
+import io.github.API.messagedata.MsgStatusCategory;
 import io.github.API.utils.GsonWrapper;
 import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.PlayerData;
 import io.github.coreutils.proj.messages.RoomResponse;
 import io.github.donut.proj.listener.ISubject;
 
@@ -18,18 +20,26 @@ public class HistoryCallback implements ISubscribeCallback, ISubject {
 
     Consumer<List<RoomResponse>> updateHandler = null;
 
+    public HistoryCallback(Consumer<List<RoomResponse>> updateHandler) {
+        this.updateHandler = updateHandler;
+    }
+
     @Override
     public void status(MessagingAPI messagingAPI, MsgStatus msgStatus) {
-
+        if (msgStatus.getCategory() == MsgStatusCategory.MsgConnectedCategory) {
+            messagingAPI.publish()
+                    .message(new PlayerData("granttest1b", null))
+                    .channel(Channels.GET_ROOMS_DATA.toString())
+                    .execute();
+        }
     }
 
     @Override
     public void resolved(MessagingAPI messagingAPI, MsgResultAPI msgResultAPI) {
-        if (msgResultAPI.getChannel().equals(Channels.PRIVATE + messagingAPI.getUuid())) {
-            List<RoomResponse> response = Arrays.asList(GsonWrapper.fromJson(msgResultAPI.getMessage(), RoomResponse[].class));
+            List<RoomResponse> list = Arrays.asList(GsonWrapper.fromJson(msgResultAPI.getMessage(), RoomResponse[].class));
 
-            updateHandler.accept(response);
-        }
+            if (updateHandler != null)
+                updateHandler.accept(list);
     }
 
     @Override
