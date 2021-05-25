@@ -16,11 +16,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class HistoryCallback implements ISubscribeCallback, ISubject {
+public class RoomHistoryCallback implements ISubscribeCallback, ISubject {
 
     Consumer<List<RoomResponse>> updateHandler = null;
 
-    public HistoryCallback(Consumer<List<RoomResponse>> updateHandler) {
+    public RoomHistoryCallback(Consumer<List<RoomResponse>> updateHandler) {
         this.updateHandler = updateHandler;
     }
 
