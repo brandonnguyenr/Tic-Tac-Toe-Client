@@ -1,8 +1,11 @@
  package io.github.donut.proj.controllers;
 
 import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.MoveData;
+import io.github.coreutils.proj.messages.RoomData;
 import io.github.coreutils.proj.messages.RoomResponse;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
+import io.github.donut.proj.callbacks.MoveHistoryCallback;
 import io.github.donut.proj.callbacks.RoomHistoryCallback;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
@@ -48,6 +51,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
     @FXML
     private ObservableList<RoomResponse> tvOList;
 
+    private List<MoveData> roomMoves;
 
     /**
      * Sets all action events and loads the table view object
@@ -163,6 +167,10 @@ public class PlayerHistoryController extends AbstractController implements Initi
 
     }
 
+    public void setRoomMoves(List<MoveData> roomMoves) {
+        this.roomMoves = roomMoves;
+    }
+
     /**
      * Fills the last column in the table with a clickable button to join games.
      * @author Joey Campbell
@@ -184,7 +192,11 @@ public class PlayerHistoryController extends AbstractController implements Initi
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             RoomResponse data = getTableView().getItems().get(getIndex());
-//                            System.out.println(Arrays.toString(data.getMoves()));
+                            RoomData tempData = new RoomData();
+                            tempData.setRoomID(Integer.parseInt(data.getRoomID()));
+                            GlobalAPIManager.getInstance().swapListener(new MoveHistoryCallback(this::setRoomMovesAsync, tempData),
+                                    Channels.REQUEST + Channels.GET_MOVES_DATA.toString(),
+                                    Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
                         });
 
                         btn.setPrefWidth(110);
@@ -196,6 +208,13 @@ public class PlayerHistoryController extends AbstractController implements Initi
                                 .otherwise("-fx-background-color: black; " +
                                         "-fx-text-fill: khaki;" +
                                         "-fx-font-weight: bold"));
+                    }
+
+                    // HAD TO PUT THIS METHOD IN HERE
+                    private void setRoomMovesAsync(List<MoveData> moveData) {
+                        Platform.runLater(() -> {
+                            setRoomMoves(roomMoves);
+                        });
                     }
 
                     @Override
