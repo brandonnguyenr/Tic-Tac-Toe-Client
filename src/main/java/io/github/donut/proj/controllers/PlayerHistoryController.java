@@ -89,7 +89,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
         winLossTieCol.setResizable(false);
         winLossTieCol.setSortable(false);
         winLossTieCol.setPrefWidth(50);
-        winLossTieCol.setCellValueFactory(new PropertyValueFactory<>("winLossTie"));
+        winLossTieCol.setCellValueFactory(new PropertyValueFactory<>("winningPlayer"));
 
         TableColumn<RoomResponse, String> player1Col     = new TableColumn<>("Player 1");
         player1Col.setReorderable(false);
@@ -98,12 +98,12 @@ public class PlayerHistoryController extends AbstractController implements Initi
         player1Col.setPrefWidth(200);
         player1Col.setCellValueFactory(new PropertyValueFactory<>("perspectivePlayer"));
 
-        TableColumn<RoomResponse, String> player2Col     = new TableColumn<>("Player 1");
+        TableColumn<RoomResponse, String> player2Col     = new TableColumn<>("Player 2");
         player2Col.setReorderable(false);
         player2Col.setResizable(false);
         player2Col.setSortable(false);
         player2Col.setPrefWidth(200);
-        player2Col.setCellValueFactory(new PropertyValueFactory<>("startingPlayer"));
+        player2Col.setCellValueFactory(new PropertyValueFactory<>("otherPlayer"));
 
         TableColumn<RoomResponse, String> startTimeCol   = new TableColumn<>("Start Time");
         startTimeCol.setReorderable(false);
