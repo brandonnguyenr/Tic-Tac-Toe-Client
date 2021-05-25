@@ -18,10 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,15 +27,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-/**
- * PlayerHistoryController contains the table view object for the player to see their past games.
- * @author Joey Campbell
- * @version 0.1
- */
+ /**
+  * PlayerHistoryController contains the table view object for the player to see their past games.
+  * @author Joey Campbell
+  * @version 0.1
+  */
 public class PlayerHistoryController extends AbstractController implements Initializable, ISubject {
     @FXML
     private ImageView backButton;
@@ -172,7 +169,20 @@ public class PlayerHistoryController extends AbstractController implements Initi
     }
 
     private void showMoves() {
-        System.out.println(roomMoves);
+        ArrayList<String> moves = new ArrayList<>();
+
+        DateFormat df = new SimpleDateFormat();
+        Date tempDate;
+
+        for (MoveData m : roomMoves) {
+            tempDate = new Date(m.getTime());
+            moves.add("[" + m.getX() + ", " + m.getY() + "] -> " + df.format(tempDate));
+        }
+
+        for (String move : moves)
+            System.out.println(move);
+
+        Dialog<String> dialog = new Dialog<String>();
     }
 
     /**
