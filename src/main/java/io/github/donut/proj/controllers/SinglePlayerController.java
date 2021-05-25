@@ -1,12 +1,12 @@
 package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.donut.proj.PlayerType.Human;
 import io.github.donut.proj.PlayerType.IPlayerType;
 import io.github.donut.proj.PlayerType.NPCEasyMode;
 import io.github.donut.proj.PlayerType.NPCHardMode;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.common.Player;
-import io.github.donut.proj.common.Token;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
@@ -29,8 +29,8 @@ import javafx.util.Duration;
 
 import java.util.Objects;
 
-import static io.github.donut.proj.common.Token.O;
-import static io.github.donut.proj.common.Token.X;
+import static io.github.coreutils.proj.enginedata.Token.O;
+import static io.github.coreutils.proj.enginedata.Token.X;
 
 /**
  * Intermediate Screen controller class where the player can enter their name

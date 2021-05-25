@@ -1,5 +1,6 @@
 package io.github.donut.proj;
 
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.controllers.AppController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -25,6 +26,26 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         new AppController(stage).startApp();
+    }
+
+    /**
+     * This method is called when the application should stop, and provides a
+     * convenient place to prepare for application exit and destroy resources.
+     *
+     * <p>
+     * The implementation of this method provided by the Application class does nothing.
+     * </p>
+     *
+     * <p>
+     * NOTE: This method is called on the JavaFX Application Thread.
+     * </p>
+     *
+     * @throws Exception if something goes wrong
+     */
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        GlobalAPIManager.getInstance().close();
     }
 
     public static void main(String[] args) {

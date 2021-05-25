@@ -1,16 +1,22 @@
 package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.PlayerData;
 import io.github.coreutils.proj.messages.RoomData;
 import io.github.coreutils.proj.messages.RoomFactory;
+import io.github.donut.proj.callbacks.GameCallback;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.RoomListCallback;
 import io.github.donut.proj.callbacks.RoomRequestCallback;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
+import io.github.donut.proj.utils.Logger;
 import io.github.donut.sounds.EventSounds;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -23,10 +29,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import javafx.util.Duration;
 
 import java.util.*;
 
@@ -139,7 +146,7 @@ public class LobbyController extends AbstractController implements ISubject {
 
         addJoinButtonToTable();
 
-        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyList),
+        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyListAsync),
                 Channels.REQUEST + Channels.ROOM_LIST.toString(),
                 Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         /*========================Action Events START=========================*/
@@ -177,16 +184,15 @@ public class LobbyController extends AbstractController implements ISubject {
         joinCol.setPrefWidth(120);
 
         Callback<TableColumn<RoomData, Void>, TableCell<RoomData, Void>> cellFactory =
-                new Callback<TableColumn<RoomData, Void>, TableCell<RoomData, Void>>() {
-
+                new Callback<>() {
                     @Override
                     public TableCell<RoomData, Void> call(final TableColumn<RoomData, Void> param) {
-                        final TableCell<RoomData, Void> cell = new TableCell<RoomData, Void>() {
+                        final TableCell<RoomData, Void> cell = new TableCell<>() {
 
                             private final Button btn = new Button("Join");
+
                             {
                                 btn.setOnAction((ActionEvent event) -> {
-//                                    RoomData data = getTableView().getItems().get(getIndex());
                                     joinRoomWorker(getTableView().getItems().get(getIndex()));
                                 });
 
@@ -200,8 +206,6 @@ public class LobbyController extends AbstractController implements ISubject {
                                                 "-fx-text-fill: khaki;" +
                                                 "-fx-font-weight: bold"));
                             }
-
-//                  "io/github/donut/proj/images/icons/join_game.png"
 
                             @Override
                             public void updateItem(Void item, boolean empty) {
@@ -269,6 +273,91 @@ public class LobbyController extends AbstractController implements ISubject {
         result.ifPresent(this::createRoomWorker);
     }
 
+    private void matchWorker(RoomData room, PlayerData player) {
+        BoardPageController game = new BoardPageController(new BoardUI(), room);
+        Platform.runLater(() -> {
+            stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game, false));
+            game.getPlayerNameLeft().setText(room.getPlayer1().getPlayerUserName());
+            game.getPlayerNameRight().setText(room.getPlayer2().getPlayerUserName());
+        });
+
+        GameCallback gameCallback = new GameCallback(room);
+        GlobalAPIManager.getInstance().swapListener(gameCallback, room.getRoomChannel());
+        gameCallback.setBoardHandler((moveRequestData) -> {
+            game.updatedBoard(moveRequestData.getBoard());
+            if (moveRequestData.getCurrentPlayer() == null) {
+                String results;
+                if (moveRequestData.getWinningToken() == Token.X) {
+                    results = Token.X + " Player: " + moveRequestData.getRoomData().getPlayer1().getPlayerUserName() + " has won";
+                    System.out.println(Token.X + " Player: " + moveRequestData.getRoomData().getPlayer1().getPlayerUserName() + " has won");
+                } else if (moveRequestData.getWinningToken() == Token.O) {
+                    results = Token.O + " Player: " + moveRequestData.getRoomData().getPlayer2().getPlayerUserName() + " has won";
+                    System.out.println(Token.O + " Player: " + moveRequestData.getRoomData().getPlayer2().getPlayerUserName() + " has won");
+                } else {
+                    results = "It's a Draw";
+                    System.out.println("It's a Draw");
+                }
+
+                Platform.runLater(() -> {
+                    game.getExitPrompt().setText("Press ENTER to return to main menu...");
+                    Timeline timeline = new Timeline(
+                            new KeyFrame(Duration.seconds(0.6), evt -> game.getExitPrompt().setVisible(false)),
+                            new KeyFrame(Duration.seconds(1.2), evt -> game.getExitPrompt().setVisible(true))
+                    );
+                    timeline.setCycleCount(Animation.INDEFINITE);
+                    timeline.play();
+
+                    game.getWinnerLabel().setText(results);
+                    game.getBorderPane().requestFocus();
+                    game.getOverlayPane().setVisible(true);
+                });
+            } else if (moveRequestData.getCurrentPlayer().equals(player.getPlayerUserName())) {
+                System.out.println("your turn");
+                game.toggleTurn();
+                if (moveRequestData.getRoomData().getPlayer1().getPlayerUserName().equals(player.getPlayerUserName())) {
+                    game.getPlayerNameLeft().setBorder(new Border(new BorderStroke(
+                            Color.GOLD,
+                            BorderStrokeStyle.SOLID,
+                            null,
+                            BorderStroke.THIN,
+                            Insets.EMPTY
+                    )));
+                    game.getPlayerNameRight().setBorder(null);
+                } else if (moveRequestData.getRoomData().getPlayer2().getPlayerUserName().equals(player.getPlayerUserName())) {
+                    game.getPlayerNameRight().setBorder(new Border(new BorderStroke(
+                            Color.GOLD,
+                            BorderStrokeStyle.SOLID,
+                            null,
+                            BorderStroke.THIN,
+                            Insets.EMPTY
+                    )));
+                    game.getPlayerNameLeft().setBorder(null);
+                }
+            } else {
+                System.out.println("not your turn");
+                if (moveRequestData.getRoomData().getPlayer1().getPlayerUserName().equals(player.getPlayerUserName())) {
+                    game.getPlayerNameRight().setBorder(new Border(new BorderStroke(
+                            Color.GOLD,
+                            BorderStrokeStyle.SOLID,
+                            null,
+                            BorderStroke.THIN,
+                            Insets.EMPTY
+                    )));
+                    game.getPlayerNameLeft().setBorder(null);
+                } else if (moveRequestData.getRoomData().getPlayer2().getPlayerUserName().equals(player.getPlayerUserName())) {
+                    game.getPlayerNameLeft().setBorder(new Border(new BorderStroke(
+                            Color.GOLD,
+                            BorderStrokeStyle.SOLID,
+                            null,
+                            BorderStroke.THIN,
+                            Insets.EMPTY
+                    )));
+                    game.getPlayerNameRight().setBorder(null);
+                }
+            }
+        });
+    }
+
     /**
      * This is a helper method that will take the player to the waiting room from where the game will start
      * @param data: The Room data
@@ -289,11 +378,11 @@ public class LobbyController extends AbstractController implements ISubject {
         RoomRequestCallback callback = new RoomRequestCallback(data, player);
 
         //executes after the callback was resolved
-        callback.setResolved((event) -> {
+        callback.setResolved((roomData) -> {
             //the message is displayed to the wait room
             Platform.runLater(() -> {
                 waitingRoom.getPlayerName().setText("");
-                waitingRoom.getPlayerName().setText(event.getPlayer1().getPlayerUserName() + " is in the room!");
+                waitingRoom.getPlayerName().setText(roomData.getPlayer1().getPlayerUserName() + " is in the room!");
                 waitingRoom.getWaitingPageMessage().setText("");
                 waitingRoom.getJoinMessage().setText("Game will start shortly...");
             });
@@ -304,12 +393,8 @@ public class LobbyController extends AbstractController implements ISubject {
             TimerTask playerJoin = new TimerTask() {
                 @Override
                 public void run() {
+                    matchWorker(roomData, player);
                     Platform.runLater(() -> {
-                        BoardPageController game = new BoardPageController(new BoardUI());
-                        stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
-                        game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
-                        game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
-
                         waitingRoom.getJoinMessage().setText("");
                         waitingRoom.getWaitingPageMessage().setText("Waiting for another player to join your lobby");
                     });
@@ -322,10 +407,10 @@ public class LobbyController extends AbstractController implements ISubject {
         });
 
         //executes in the case that there was error joining the room
-        callback.setRejected((event) -> {
+        callback.setRejected((roomData) -> {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("There was a problem that room... It may be full.");
+                alert.setContentText("There was a problem joining that room... It may be full.");
                 alert.show();
             });
         });
@@ -356,11 +441,11 @@ public class LobbyController extends AbstractController implements ISubject {
         WaitingRoomController waitingRoom = new WaitingRoomController();
 
         //will execute after someone has joined the room
-        callback.setResolved((event) -> {
+        callback.setResolved((roomData) -> {
             //will alert the creator that someone has joined the room
             Platform.runLater(() -> {
                 waitingRoom.getPlayerName().setText("");
-                waitingRoom.getPlayerName().setText(event.getPlayer2().getPlayerUserName() + " has joined!");
+                waitingRoom.getPlayerName().setText(roomData.getPlayer2().getPlayerUserName() + " has joined!");
                 waitingRoom.getWaitingPageMessage().setText("");
                 waitingRoom.getJoinMessage().setText("Game will start shortly...");
             });
@@ -372,12 +457,7 @@ public class LobbyController extends AbstractController implements ISubject {
             TimerTask playerCreate = new TimerTask() {
                 @Override
                 public void run() {
-                    Platform.runLater(() -> {
-                        BoardPageController game = new BoardPageController(new BoardUI());
-                        stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
-                        game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
-                        game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
-                    });
+                    matchWorker(roomData, player);
                     //freeing up the thread
                     timer.cancel();
                 }
@@ -387,7 +467,7 @@ public class LobbyController extends AbstractController implements ISubject {
         });
 
         //will run if there was problem creating a room
-        callback.setRejected((event) -> {
+        callback.setRejected((roomData) -> {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("There was a problem creating the room... Please try again later.");

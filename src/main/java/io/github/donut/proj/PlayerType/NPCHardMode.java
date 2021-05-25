@@ -1,11 +1,11 @@
 package io.github.donut.proj.PlayerType;
 
-import static io.github.donut.proj.common.Token.*;
-
-import io.github.donut.proj.common.Board;
-import io.github.donut.proj.common.Token;
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.utils.DataValidation;
+
+import static io.github.coreutils.proj.enginedata.Token.BLANK;
 
 /**
  * Implementation of Homi mode for the tic tac toe AI.

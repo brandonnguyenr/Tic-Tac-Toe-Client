@@ -1,13 +1,10 @@
 package io.github.donut.proj;
 
-import static io.github.donut.proj.common.Token.*;
-
+import io.github.coreutils.proj.enginedata.Board;
 import io.github.donut.proj.PlayerType.NPCEasyMode;
-import io.github.donut.proj.common.Board;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static io.github.coreutils.proj.enginedata.Token.*;
 
 /**
  * Testing for PlayerType Easy Mode

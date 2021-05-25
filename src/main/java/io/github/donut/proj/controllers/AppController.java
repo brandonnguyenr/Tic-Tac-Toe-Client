@@ -47,15 +47,10 @@ public class AppController {
         Logger.init(PROPERTIES);
 //        Logger.init(PRODUCTION);
         this.mainStage = stage;
-        final MessagingAPI api = GlobalAPIManager.getInstance().getApi();
 
-        api.onclose(() -> {
+        GlobalAPIManager.getInstance().getApi().onclose(() -> {
             System.out.println("api is now dead.");
             Platform.runLater(mainStage::close);
-        });
-
-        this.mainStage.setOnCloseRequest((event) -> {
-            api.free();
         });
 
         scenes.put(SceneName.Main, new FxmlInfo(SceneName.Main.toString(), STYLES, SceneName.Main, mainStage));
@@ -111,16 +106,6 @@ public class AppController {
         Logger.log("program started..");
     }
 
-//    /**
-//     * This method will return the PlayerData
-//     * @return PlayerData
-//     */
-//    public static PlayerData getPlayer(String channel) {
-//        PlayerData result = new PlayerData(player);
-//        result.setChannel(channel);
-//        return result;
-//    }
-
     /**
      * This method will set the channel for the Player
      */
@@ -144,13 +129,6 @@ public class AppController {
     }
 
     /**
-     * Default player info
-     */
-    public static void setPlayerDefault() {
-        player.setPlayerUserName("");
-        player.setPlayerToken(Token.BLANK);
-    }
-    /**
      * This method will return the username of player
      * @return username
      */
@@ -158,6 +136,11 @@ public class AppController {
         return player.getPlayerUserName();
     }
 
+
+    public static void setPlayerDefault() {
+        player.setPlayerUserName("");
+        player.setPlayerToken(Token.BLANK);
+    }
     /**
      * This method will clear all the cache of scene
      * @author Utsav Parajuli
@@ -166,5 +149,4 @@ public class AppController {
         scenes.forEach((key, value) -> {
             value.clearCache();
         });
-    }
-}
+    }}
