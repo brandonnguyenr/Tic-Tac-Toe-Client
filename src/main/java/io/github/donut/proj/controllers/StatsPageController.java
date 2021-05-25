@@ -33,8 +33,6 @@ public class StatsPageController extends AbstractController implements Initializ
     private Label winLossRatioLabel;
     @FXML
     private Label totalGamesPlayedLabel;
-    @FXML
-    private Label playerName;
 
     @FXML
     private BorderPane statsPage;
@@ -43,9 +41,19 @@ public class StatsPageController extends AbstractController implements Initializ
     private ImageView backButton;
 
     public void initialize(URL location, ResourceBundle resources) {
+
+        statsPageTitle.setText       ("MY STATS");
+        winsLabel.setText            ("WINS");
+        lossesLabel.setText          ("LOSSES");
+        tiesLabel.setText            ("TIES");
+        winLossRatioLabel.setText    ("WIN PERCENTAGE");
+        totalGamesPlayedLabel.setText("TOTAL GAMES");
+
+        /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
+        /*========================Action Events END=========================*/
     }
 
     /**
