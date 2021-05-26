@@ -5,7 +5,6 @@ import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -54,17 +53,16 @@ public class MainController extends AbstractController implements ISubject {
      */
     @FXML
     public void initialize() {
-
         initializeMenu();
 
+        //checking if the user logged in a guest
         if (AppController.getUserName().equals("")) {
             multiPlayerButton.setDisable(true);
             ColorAdjust colorAdjust = new ColorAdjust();
-//            colorAdjust.setSaturation(-1);
             colorAdjust.setBrightness(-0.7);
             multiPlayerButton.setEffect(colorAdjust);
             playerInfo.setDisable(true);
-        } else {
+        } else {        //not guest login
             multiPlayerButton.setOnMouseClicked(this::onMultiPlayerButtonClick);
             playerInfo.setOnAction(this::onProfileClicked);
             multiPlayerButton.setOnMouseEntered(this::onMultiPlayerButtonHover);
@@ -81,7 +79,7 @@ public class MainController extends AbstractController implements ISubject {
         aboutUsRect.setOnMouseEntered(this::onAboutRectEnter);
         aboutUsRect.setOnMouseExited(this::onAboutRectExit);
 
-        signOut.setOnAction(this::onSignoutClicked);
+        signOut.setOnAction(this::onSignOutClicked);
         /*========================Action Events END=========================*/
     }
 
@@ -194,20 +192,27 @@ public class MainController extends AbstractController implements ISubject {
 
     }
 
+    /**
+     * Handles the event on profile button clicked
+     * @param mouseEvent event
+     */
     public void onProfileClicked (ActionEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
         stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false, true));
     }
 
-    public void onSignoutClicked(ActionEvent mouseEvent) {
+    /**
+     * Handles the event on sign out button clicked
+     * @param mouseEvent mouse event
+     * @author Utsav Parajuli
+     */
+    public void onSignOutClicked(ActionEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
-        // TODO - Add sign out code here
-        //stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(false, false));
         stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE)));
 
         //have to clear all the cache for controllers
         AppController.clearAllScenes();
-
+        //setting the player info back to default
         AppController.setPlayerDefault();
 
     }

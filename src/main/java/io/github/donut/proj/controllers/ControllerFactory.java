@@ -275,6 +275,7 @@ public final class ControllerFactory {
                     controller.getErrorTab4().setText("");
                     controller.getSuccessfulUpdateTab4().setText("ACCOUNT IS DELETED");
 
+                    //signs the player out
                     AppController.clearAllScenes();
                     AppController.setPlayerDefault();
 
@@ -285,8 +286,6 @@ public final class ControllerFactory {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Account was deleted");
                     alert.setHeaderText("Confirmation");
                     alert.show();
-
-                    //TODO: sign the player out after account is deleted
 
                 }
             });
