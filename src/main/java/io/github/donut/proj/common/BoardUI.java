@@ -228,8 +228,6 @@ public class BoardUI extends GridPane implements ISubject, IObserver {
                 int x = GridPane.getColumnIndex(n);
                 int y = GridPane.getRowIndex(n);
 
-                System.out.println(currState.getToken(x, y));
-
                 switch (currState.getToken(x, y)) {
                 case X -> image.setImage(xImage);
                 case O -> image.setImage(oImage);
