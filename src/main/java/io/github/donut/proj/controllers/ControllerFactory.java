@@ -54,6 +54,8 @@ public final class ControllerFactory {
                 yield createReactivateController();
             case WAITING_PAGE:
                 yield createWaitingRoomController();
+            case MOVE_HISTORY_PAGE:
+                yield createMoveHistoryController();
             default:
                 throw new IllegalArgumentException("A factory has not been created yet for that controller");
         };
@@ -355,5 +357,9 @@ public final class ControllerFactory {
             });
         }));
         return controller;
+    }
+
+    private static MoveHistoryController createMoveHistoryController() {
+        return new MoveHistoryController();
     }
 }

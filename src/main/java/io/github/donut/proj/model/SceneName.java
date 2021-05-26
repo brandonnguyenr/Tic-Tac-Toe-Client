@@ -13,7 +13,8 @@ public enum SceneName {
     HISTORY_PAGE("fxml/playerHistoryPage.fxml"),
     UPDATE_ACCOUNT_PAGE("fxml/accountUpdate.fxml"),
     REACTIVATE_ACCOUNT_PAGE("fxml/reactivatePage.fxml"),
-    WAITING_PAGE("fxml/waitingPage.fxml");
+    WAITING_PAGE("fxml/waitingPage.fxml"),
+    MOVE_HISTORY_PAGE("fxml/moveHistoryPage.fxml");
 
     private final String value;
 
