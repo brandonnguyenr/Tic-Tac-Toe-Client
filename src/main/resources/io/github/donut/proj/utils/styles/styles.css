@@ -173,6 +173,12 @@
     -fx-font-size: 20px;
 }
 
+#playerNameLoop {
+    -fx-font-family: "Chalkduster";
+    -fx-alignment: center;
+    -fx-text-fill: khaki;
+    -fx-font-size: 25px;
+}
 #firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20;
@@ -212,14 +218,15 @@
 
 #difficultyLevelTitle, #tokenSelectorTitle {
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 16;
+    -fx-font-size: 20;
 }
 
 #tokenO, #tokenX, #easyMode, #hardMode,
 #tokenXP1, #tokenOP1, #tokenXP2, #tokenOP2 {
     -fx-font-family: "Chalkduster";
-    -fx-font-size: 13;
+    -fx-font-size: 16;
     -fx-text-fill: #75a2e1;
+    /*-fx-text-fill: khaki;*/
 }
 
 #contributors, #copyright {

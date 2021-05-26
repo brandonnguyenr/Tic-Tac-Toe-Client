@@ -275,6 +275,9 @@ public final class ControllerFactory {
                     controller.getErrorTab4().setText("");
                     controller.getSuccessfulUpdateTab4().setText("ACCOUNT IS DELETED");
 
+                    AppController.clearAllScenes();
+                    AppController.setPlayerDefault();
+
                     Scene scene = AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(createLoginController());
                     controller.stage.setScene(scene);
 
@@ -284,7 +287,6 @@ public final class ControllerFactory {
                     alert.show();
 
                     //TODO: sign the player out after account is deleted
-                    AppController.setPlayerDefault();
 
                 }
             });

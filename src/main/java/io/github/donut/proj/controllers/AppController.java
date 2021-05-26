@@ -157,4 +157,19 @@ public class AppController {
     public static String getUserName() {
         return player.getPlayerUserName();
     }
+
+    public static void clearAllScenes() {
+        scenes.get(SceneName.Main).clearCache();
+        scenes.get(SceneName.LOGIN_PAGE).clearCache();
+        scenes.get(SceneName.CREATEACCOUNT_PAGE).clearCache();
+        scenes.get(SceneName.BOARD_PAGE).clearCache();
+        scenes.get(SceneName.WAITING_PAGE).clearCache();
+        scenes.get(SceneName.ABOUT).clearCache();
+        scenes.get(SceneName.REACTIVATE_ACCOUNT_PAGE).clearCache();
+        scenes.get(SceneName.HISTORY_PAGE).clearCache();
+        scenes.get(SceneName.LOBBY_PAGE).clearCache();
+        scenes.get(SceneName.PORTAL_PAGE).clearCache();
+        scenes.get(SceneName.SINGLEPLAYER_PAGE).clearCache();
+        scenes.get(SceneName.UPDATE_ACCOUNT_PAGE).clearCache();
+    }
 }

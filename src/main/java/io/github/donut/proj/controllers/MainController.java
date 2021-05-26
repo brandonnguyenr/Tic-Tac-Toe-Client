@@ -202,9 +202,13 @@ public class MainController extends AbstractController implements ISubject {
     public void onSignoutClicked(ActionEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
         // TODO - Add sign out code here
-        AppController.setPlayerDefault();
         //stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(false, false));
-        stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE), false));
+        stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE)));
+
+        //have to clear all the cache for controllers
+        AppController.clearAllScenes();
+
+        AppController.setPlayerDefault();
 
     }
 

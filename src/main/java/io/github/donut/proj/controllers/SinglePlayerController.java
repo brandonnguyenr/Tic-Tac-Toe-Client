@@ -12,6 +12,9 @@ import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.proj.utils.RestrictiveTextField;
 import io.github.donut.sounds.EventSounds;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -22,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 import java.util.Objects;
 
@@ -37,6 +41,9 @@ public class SinglePlayerController extends AbstractController implements ISubje
 
     @FXML
     public Label singlePlayerTitle;
+
+    @FXML
+    public Label playerNameLoop;
 
     @FXML
     public ImageView startButton;
@@ -61,6 +68,8 @@ public class SinglePlayerController extends AbstractController implements ISubje
 
     @FXML
     private RadioButton hardMode;
+
+    private String userName;
 
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
@@ -93,12 +102,23 @@ public class SinglePlayerController extends AbstractController implements ISubje
     @FXML
     public void initialize() {
 
+        this.userName = AppController.getUserName();
+        if (userName.equals(""))
+            userName = "Guest";
         //title screen
         singlePlayerTitle.setText("Single Player Mode");
         singlePlayerTitle.setAlignment(Pos.TOP_CENTER);
 
         //start button
         startButton.setId("startButton");
+
+        playerNameLoop.setText("WELCOME BACK " + userName + "!!");
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.6), evt -> playerNameLoop.setVisible(false)),
+                new KeyFrame(Duration.seconds(1.2), evt -> playerNameLoop.setVisible(true))
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
 
         //difficulty level option
         difficultyLevelTitle.setText("Difficulty: ");
@@ -210,7 +230,7 @@ public class SinglePlayerController extends AbstractController implements ISubje
         EventSounds.getInstance().playButtonSound1();
         easyMode.setSelected(true);
         tokenX.setSelected(true);
-        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false, false));
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
     }
 
     /**
