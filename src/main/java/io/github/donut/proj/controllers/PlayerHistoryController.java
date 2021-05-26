@@ -235,7 +235,8 @@ public class PlayerHistoryController extends AbstractController implements Initi
                                     Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
 
                             EventSounds.getInstance().playButtonSound4();
-                            stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(false, false));
+//                            stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(false, false));
+                            stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(new MoveHistoryController(Integer.parseInt(data.getRoomID())), false));
                         });
 
                         btn.setPrefWidth(110);
