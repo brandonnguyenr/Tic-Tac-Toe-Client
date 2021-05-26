@@ -36,6 +36,8 @@ public class MoveHistoryController  extends AbstractController implements Initia
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
+
+        moveHistoryPage.setCenter(boardUI);
     }
 
     public MoveHistoryController() {
@@ -44,9 +46,7 @@ public class MoveHistoryController  extends AbstractController implements Initia
     public MoveHistoryController(Board board) {
         moveHistoryPage = new BorderPane();
         boardUI = new BoardUI();
-        System.out.println(board == null);
-//        (moveHistoryPage.getCenter()).getChildren().add(boardUI);
-        moveHistoryPage.setCenter(boardUI);
+        //((VBox) moveHistoryPage.getCenter()).getChildren().add(boardUI);
         boardUI.drawBoard(board);
     }
 
