@@ -12,13 +12,14 @@ import io.github.donut.proj.callbacks.RoomRequestCallback;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
-import io.github.donut.proj.utils.Logger;
 import io.github.donut.sounds.EventSounds;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -116,12 +117,12 @@ public class LobbyController extends AbstractController implements ISubject {
         lobbyNameCol.setPrefWidth(150);
         lobbyNameCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<RoomData, String> playersCol = new TableColumn<>("Players");
+        TableColumn<RoomData, String> playersCol = new TableColumn<>("Creator");
         playersCol.setReorderable(false);
         playersCol.setResizable(false);
         playersCol.setSortable(false);
         playersCol.setPrefWidth(200);
-        playersCol.setCellValueFactory(new PropertyValueFactory<>("roomID"));
+        playersCol.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayer1().getPlayerUserName()));
 
         TableColumn<RoomData, Integer> playerCountCol = new TableColumn<>("Count");
         playerCountCol.setReorderable(false);
@@ -295,6 +296,7 @@ public class LobbyController extends AbstractController implements ISubject {
                     results = "It's a Draw";
                 }
 
+                GlobalAPIManager.getInstance().send(RoomFactory.makeDisconnectRoom(room.getPlayer1()), Channels.ROOM_REQUEST.toString());
                 Platform.runLater(() -> {
                     game.getExitPrompt().setText("Press ENTER to return to main menu...");
                     Timeline timeline = new Timeline(

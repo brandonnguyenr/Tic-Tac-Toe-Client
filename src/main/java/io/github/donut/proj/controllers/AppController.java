@@ -140,6 +140,7 @@ public class AppController {
         player.setPlayerUserName("");
         player.setPlayerToken(Token.BLANK);
     }
+
     /**
      * This method will clear all the cache of scene
      * @author Utsav Parajuli
