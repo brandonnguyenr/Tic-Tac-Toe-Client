@@ -11,7 +11,6 @@ import io.github.donut.proj.utils.Logger;
 import io.github.donut.proj.utils.Util;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
