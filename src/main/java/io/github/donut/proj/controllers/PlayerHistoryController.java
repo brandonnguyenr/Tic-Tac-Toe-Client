@@ -1,5 +1,7 @@
  package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.MoveData;
 import io.github.coreutils.proj.messages.RoomData;
@@ -7,8 +9,6 @@ import io.github.coreutils.proj.messages.RoomResponse;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.MoveHistoryCallback;
 import io.github.donut.proj.callbacks.RoomHistoryCallback;
-import io.github.donut.proj.common.Board;
-import io.github.donut.proj.common.Token;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
