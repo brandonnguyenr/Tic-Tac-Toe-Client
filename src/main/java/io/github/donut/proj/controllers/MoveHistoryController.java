@@ -1,5 +1,6 @@
 package io.github.donut.proj.controllers;
 
+import io.github.donut.proj.common.Board;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
@@ -9,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.Objects;
@@ -18,6 +21,11 @@ public class MoveHistoryController  extends AbstractController implements Initia
 
     @FXML
     private ImageView backButton;
+
+    @FXML
+    private BorderPane moveHistoryPage;
+
+    private BoardUI boardUI;
 
 //    private final BoardUI boardUI;
 
@@ -33,8 +41,13 @@ public class MoveHistoryController  extends AbstractController implements Initia
     public MoveHistoryController() {
     }
 
-    public MoveHistoryController(int id) {
-
+    public MoveHistoryController(Board board) {
+        moveHistoryPage = new BorderPane();
+        boardUI = new BoardUI();
+        System.out.println(board == null);
+//        (moveHistoryPage.getCenter()).getChildren().add(boardUI);
+        moveHistoryPage.setCenter(boardUI);
+        boardUI.drawBoard(board);
     }
 
     /**
