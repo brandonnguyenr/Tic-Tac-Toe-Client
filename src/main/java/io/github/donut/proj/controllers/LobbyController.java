@@ -311,43 +311,51 @@ public class LobbyController extends AbstractController implements ISubject {
             } else if (moveRequestData.getCurrentPlayer().equals(player.getPlayerUserName())) {
                 game.toggleTurn();
                 if (moveRequestData.getRoomData().getPlayer1().getPlayerUserName().equals(player.getPlayerUserName())) {
-                    game.getPlayerNameLeft().setBorder(new Border(new BorderStroke(
-                            Color.GOLD,
-                            BorderStrokeStyle.SOLID,
-                            null,
-                            BorderStroke.THIN,
-                            Insets.EMPTY
-                    )));
-                    game.getPlayerNameRight().setBorder(null);
+                    Platform.runLater(() -> {
+                        game.getPlayerNameLeft().setBorder(new Border(new BorderStroke(
+                                Color.GOLD,
+                                BorderStrokeStyle.SOLID,
+                                null,
+                                BorderStroke.THIN,
+                                Insets.EMPTY
+                        )));
+                        game.getPlayerNameRight().setBorder(null);
+                    });
                 } else if (moveRequestData.getRoomData().getPlayer2().getPlayerUserName().equals(player.getPlayerUserName())) {
-                    game.getPlayerNameRight().setBorder(new Border(new BorderStroke(
-                            Color.GOLD,
-                            BorderStrokeStyle.SOLID,
-                            null,
-                            BorderStroke.THIN,
-                            Insets.EMPTY
-                    )));
-                    game.getPlayerNameLeft().setBorder(null);
+                    Platform.runLater(() -> {
+                        game.getPlayerNameRight().setBorder(new Border(new BorderStroke(
+                                Color.GOLD,
+                                BorderStrokeStyle.SOLID,
+                                null,
+                                BorderStroke.THIN,
+                                Insets.EMPTY
+                        )));
+                        game.getPlayerNameLeft().setBorder(null);
+                    });
                 }
             } else {
                 if (moveRequestData.getRoomData().getPlayer1().getPlayerUserName().equals(player.getPlayerUserName())) {
-                    game.getPlayerNameRight().setBorder(new Border(new BorderStroke(
-                            Color.GOLD,
-                            BorderStrokeStyle.SOLID,
-                            null,
-                            BorderStroke.THIN,
-                            Insets.EMPTY
-                    )));
-                    game.getPlayerNameLeft().setBorder(null);
+                    Platform.runLater(() -> {
+                        game.getPlayerNameRight().setBorder(new Border(new BorderStroke(
+                                Color.GOLD,
+                                BorderStrokeStyle.SOLID,
+                                null,
+                                BorderStroke.THIN,
+                                Insets.EMPTY
+                        )));
+                        game.getPlayerNameLeft().setBorder(null);
+                    });
                 } else if (moveRequestData.getRoomData().getPlayer2().getPlayerUserName().equals(player.getPlayerUserName())) {
-                    game.getPlayerNameLeft().setBorder(new Border(new BorderStroke(
-                            Color.GOLD,
-                            BorderStrokeStyle.SOLID,
-                            null,
-                            BorderStroke.THIN,
-                            Insets.EMPTY
-                    )));
-                    game.getPlayerNameRight().setBorder(null);
+                    Platform.runLater(() -> {
+                        game.getPlayerNameLeft().setBorder(new Border(new BorderStroke(
+                                Color.GOLD,
+                                BorderStrokeStyle.SOLID,
+                                null,
+                                BorderStroke.THIN,
+                                Insets.EMPTY
+                        )));
+                        game.getPlayerNameRight().setBorder(null);
+                    });
                 }
             }
         });
@@ -377,7 +385,7 @@ public class LobbyController extends AbstractController implements ISubject {
             //the message is displayed to the wait room
             Platform.runLater(() -> {
                 waitingRoom.getPlayerName().setText("");
-                waitingRoom.getPlayerName().setText(roomData.getPlayer1().getPlayerUserName() + " is in the room!");
+                waitingRoom.getPlayerName().setText("You've joined " + roomData.getPlayer1().getPlayerUserName() + "'s lobby");
                 waitingRoom.getWaitingPageMessage().setText("");
                 waitingRoom.getJoinMessage().setText("Game will start shortly...");
             });
@@ -398,7 +406,7 @@ public class LobbyController extends AbstractController implements ISubject {
                 }
             };
             //scheduling the wait time to be 8 seconds
-            timer.schedule(playerJoin, 8000L);
+            timer.schedule(playerJoin, 3000L);
         });
 
         //executes in the case that there was error joining the room
@@ -458,7 +466,7 @@ public class LobbyController extends AbstractController implements ISubject {
                 }
             };
             //schedule the players to wait 8 seconds after join
-            timer.schedule(playerCreate, 8000L);
+            timer.schedule(playerCreate, 3000L);
         });
 
         //will run if there was problem creating a room

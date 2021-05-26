@@ -4,9 +4,11 @@ import io.github.API.ISubscribeCallback;
 import io.github.API.MessagingAPI;
 import io.github.API.messagedata.MsgResultAPI;
 import io.github.API.messagedata.MsgStatus;
+import io.github.API.messagedata.MsgStatusCategory;
 import io.github.API.utils.GsonWrapper;
 import io.github.coreutils.proj.enginedata.Board;
 import io.github.coreutils.proj.enginedata.Token;
+import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.MoveRequestData;
 import io.github.coreutils.proj.messages.RoomData;
 import lombok.Setter;
@@ -26,7 +28,12 @@ public class GameCallback implements ISubscribeCallback {
 
     @Override
     public void status(MessagingAPI mAPI, MsgStatus status) {
-
+        if (status.getCategory().equals(MsgStatusCategory.MsgConnectedCategory)) {
+            mAPI.publish()
+                    .message(room)
+                    .channel(Channels.REQUEST_MOVE.toString())
+                    .execute();
+        }
     }
 
     @Override
