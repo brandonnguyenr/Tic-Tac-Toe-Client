@@ -60,7 +60,7 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle, #waitingPageTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle, #waitingPageTitle, #moveHistoryTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 35px;

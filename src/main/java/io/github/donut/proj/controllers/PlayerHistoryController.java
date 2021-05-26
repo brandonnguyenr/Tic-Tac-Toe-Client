@@ -180,21 +180,21 @@ public class PlayerHistoryController extends AbstractController implements Initi
             tempDate = new Date(m.getTime());
             movesSB.append("[" + m.getX() + ", " + m.getY() + "] -> " + df.format(tempDate) + "\n");
         }
-
-        System.out.println(movesSB);
-
-        Dialog<String> dialog = new Dialog<String>();
-//        dialog.getDialogPane().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-//        dialog.getDialogPane().getStyleClass().add("myDialog");
-
-        ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
-
+//
+//        System.out.println(movesSB);
+//
+//        Dialog<String> dialog = new Dialog<String>();
+////        dialog.getDialogPane().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+////        dialog.getDialogPane().getStyleClass().add("myDialog");
+//
+//        ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+//
+////        dialog.getDialogPane().getButtonTypes().add(closeButton);
 //        dialog.getDialogPane().getButtonTypes().add(closeButton);
-        dialog.getDialogPane().getButtonTypes().add(closeButton);
-
-        dialog.setContentText(movesSB.toString());
-
-        dialog.show();
+//
+//        dialog.setContentText(movesSB.toString());
+//
+//        dialog.show();
 
 //        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 //        alert.setTitle("Confirmation Dialog");
