@@ -5,9 +5,11 @@ import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -52,22 +54,33 @@ public class MainController extends AbstractController implements ISubject {
      */
     @FXML
     public void initialize() {
+
         initializeMenu();
+
+        if (AppController.getUserName().equals("")) {
+            multiPlayerButton.setDisable(true);
+            ColorAdjust colorAdjust = new ColorAdjust();
+//            colorAdjust.setSaturation(-1);
+            colorAdjust.setBrightness(-0.7);
+            multiPlayerButton.setEffect(colorAdjust);
+            playerInfo.setDisable(true);
+        } else {
+            multiPlayerButton.setOnMouseClicked(this::onMultiPlayerButtonClick);
+            playerInfo.setOnAction(this::onProfileClicked);
+            multiPlayerButton.setOnMouseEntered(this::onMultiPlayerButtonHover);
+            multiPlayerButton.setOnMouseExited(this::onMultiPlayerButtonExit);
+        }
 
         /*========================Action Events START=========================*/
         singlePlayerButton.setOnMouseClicked(this::onSinglePlayerButtonClick);
         singlePlayerButton.setOnMouseEntered(this::onSinglePlayerButtonHover);
         singlePlayerButton.setOnMouseExited(this::onSinglePlayerButtonExit);
 
-        multiPlayerButton.setOnMouseClicked(this::onMultiPlayerButtonClick);
-        multiPlayerButton.setOnMouseEntered(this::onMultiPlayerButtonHover);
-        multiPlayerButton.setOnMouseExited(this::onMultiPlayerButtonExit);
 
         aboutUsRect.setOnMouseClicked(this::onAboutButtonClicked);
         aboutUsRect.setOnMouseEntered(this::onAboutRectEnter);
         aboutUsRect.setOnMouseExited(this::onAboutRectExit);
 
-        playerInfo.setOnAction(this::onProfileClicked);
         signOut.setOnAction(this::onSignoutClicked);
         /*========================Action Events END=========================*/
     }
@@ -189,6 +202,10 @@ public class MainController extends AbstractController implements ISubject {
     public void onSignoutClicked(ActionEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
         // TODO - Add sign out code here
+        AppController.setPlayerDefault();
+        //stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(false, false));
+        stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE), false));
+
     }
 
 

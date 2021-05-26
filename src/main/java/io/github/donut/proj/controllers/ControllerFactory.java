@@ -69,10 +69,9 @@ public final class ControllerFactory {
         LoginController controller = new LoginController();
 
         controller.setAuthorizationHandler(new AuthorizationCallback((event) -> {
+            //setting the username of player
+            AppController.setUserName(event.getData().getUsername());
             Platform.runLater(() -> {
-                //setting the username of player
-                AppController.setUserName(event.getData().getUsername());
-
                 //checking if the player's account is deleted
                 if(event.getIsDeleted().equalsIgnoreCase("TRUE")) {
                     controller.getErrorMessage().setText("");
@@ -91,7 +90,7 @@ public final class ControllerFactory {
                     controller.getPasswordEntry().clear();
 
                 } else if((event.getIsDeleted().equalsIgnoreCase("FALSE"))) {           //if login was successful switch to menu page
-                    Scene scene = AppController.getScenes().get(SceneName.Main).getScene(createMainController());
+                    Scene scene = AppController.getScenes().get(SceneName.Main).getScene(createMainController(), false);
                     controller.stage.setScene(scene);
                     //clears fields
                     controller.getUsernameEntry().clear();
@@ -123,6 +122,7 @@ public final class ControllerFactory {
             //if account reactivation was successful will close the popup page
             Platform.runLater(() -> {
                 AppController.getReactivatePopUp().close();
+                AppController.setPlayerDefault();
 
 //                //showing confirmation
 //                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Account was re-activated");
@@ -274,7 +274,18 @@ public final class ControllerFactory {
                 } else if (event.getType().equalsIgnoreCase("DELETE")) {       //deletion successful
                     controller.getErrorTab4().setText("");
                     controller.getSuccessfulUpdateTab4().setText("ACCOUNT IS DELETED");
+
+                    Scene scene = AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(createLoginController());
+                    controller.stage.setScene(scene);
+
+                    //showing confirmation
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Account was deleted");
+                    alert.setHeaderText("Confirmation");
+                    alert.show();
+
                     //TODO: sign the player out after account is deleted
+                    AppController.setPlayerDefault();
+
                 }
             });
 

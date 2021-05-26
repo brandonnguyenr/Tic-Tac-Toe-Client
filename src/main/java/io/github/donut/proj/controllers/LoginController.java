@@ -198,7 +198,8 @@ public class LoginController extends AbstractController implements ISubject {
      */
     public void onGuestLoginClicked(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound4();
-        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(ControllerFactory.getController(SceneName.Main)));
+        AppController.setPlayerDefault();
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(ControllerFactory.getController(SceneName.Main), false));
     }
 
     /**

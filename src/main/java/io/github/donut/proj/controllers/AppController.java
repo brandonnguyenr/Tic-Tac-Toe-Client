@@ -36,7 +36,7 @@ public class AppController {
     @Getter
     private static final Map<SceneName, FxmlInfo> scenes = new HashMap<>();
 
-    private static final PlayerData player = new PlayerData("Guest", Token.BLANK);      //player data
+    private static final PlayerData player = new PlayerData("", Token.BLANK);      //player data
 
     /**
      * Constructor
@@ -147,7 +147,7 @@ public class AppController {
      * Default player info
      */
     public static void setPlayerDefault() {
-        player.setPlayerUserName("Guest");
+        player.setPlayerUserName("");
         player.setPlayerToken(Token.BLANK);
     }
     /**
