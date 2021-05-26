@@ -24,6 +24,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.net.URL;
@@ -228,10 +230,12 @@ public class PlayerHistoryController extends AbstractController implements Initi
                             RoomResponse data = getTableView().getItems().get(getIndex());
                             RoomData tempData = new RoomData();
                             tempData.setRoomID(Integer.parseInt(data.getRoomID()));
-                            System.out.println(tempData.getRoomID());
                             GlobalAPIManager.getInstance().swapListener(new MoveHistoryCallback(this::setRoomMovesAsync, tempData),
                                     Channels.REQUEST + Channels.GET_MOVES_DATA.toString(),
                                     Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+
+                            EventSounds.getInstance().playButtonSound4();
+                            stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(false, false));
                         });
 
                         btn.setPrefWidth(110);

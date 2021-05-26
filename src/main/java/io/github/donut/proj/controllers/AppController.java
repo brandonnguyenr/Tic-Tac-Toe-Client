@@ -63,6 +63,7 @@ public class AppController {
         scenes.put(SceneName.UPDATE_ACCOUNT_PAGE, new FxmlInfo(SceneName.UPDATE_ACCOUNT_PAGE.toString(), STYLES, SceneName.UPDATE_ACCOUNT_PAGE, mainStage));
         scenes.put(SceneName.REACTIVATE_ACCOUNT_PAGE, new FxmlInfo(SceneName.REACTIVATE_ACCOUNT_PAGE.toString(), STYLES, SceneName.REACTIVATE_ACCOUNT_PAGE, mainStage));
         scenes.put(SceneName.WAITING_PAGE, new FxmlInfo(SceneName.WAITING_PAGE.toString(), STYLES, SceneName.WAITING_PAGE, mainStage));
+        scenes.put(SceneName.MOVE_HISTORY_PAGE, new FxmlInfo(SceneName.MOVE_HISTORY_PAGE.toString(), STYLES, SceneName.MOVE_HISTORY_PAGE, mainStage));
 
         //settings for popup page
         initializeReactivatePopUp();
