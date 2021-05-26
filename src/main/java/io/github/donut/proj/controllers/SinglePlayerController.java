@@ -39,12 +39,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
     public Label singlePlayerTitle;
 
     @FXML
-    public Label title;
-
-    @FXML
-    public RestrictiveTextField nameEntry;
-
-    @FXML
     public ImageView startButton;
 
     @FXML
@@ -103,16 +97,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
         singlePlayerTitle.setText("Single Player Mode");
         singlePlayerTitle.setAlignment(Pos.TOP_CENTER);
 
-        //setting the name entry title
-        title.setText("Please Enter Your Name");
-        title.setAlignment(Pos.CENTER);
-
-        //name entry box
-        nameEntry.setAlignment(Pos.CENTER);
-
-        //max number of characters user can enter
-        nameEntry.setMaxLength(5);
-
         //start button
         startButton.setId("startButton");
 
@@ -135,8 +119,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
         tokenO.setToggleGroup(tokenGroup);
 
         /*========================Action Events START=========================*/
-        nameEntry.setOnKeyPressed(this::onNameEntered);
-
         startButton.setOnMouseClicked(this::onStartButtonClick);
         startButton.setOnMouseEntered(this::onStartButtonEnter);
         startButton.setOnMouseExited(this::onStartButtonExit);
@@ -145,19 +127,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
         /*========================Action Events END=========================*/
-    }
-
-    /**
-     * When the name of the user is entered and all the options are chosen this method will start the game
-     *
-     * @param keyEvent : press of a key
-     * @author Utsav Parajuli
-     */
-    public void onNameEntered(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            EventSounds.getInstance().playButtonSound4();
-            startGame();
-        }
     }
 
     /**
@@ -183,11 +152,11 @@ public class SinglePlayerController extends AbstractController implements ISubje
         String userName;
         IPlayerType artificialBrain;
 
-        if (nameEntry.getText().isEmpty()) {
+        if (AppController.getUserName().equals("")) {
             userName = "Guest";
         }
         else {
-            userName = nameEntry.getText();
+            userName = AppController.getUserName();
         }
 
         if (tokenO.isSelected()) {
@@ -205,7 +174,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
             cpuLevel = "Pro";
             artificialBrain = new NPCHardMode(cpuToken, userToken);
         }
-        nameEntry.clear();
         easyMode.setSelected(true);
         tokenX.setSelected(true);
 
@@ -240,10 +208,9 @@ public class SinglePlayerController extends AbstractController implements ISubje
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
-        nameEntry.clear();
         easyMode.setSelected(true);
         tokenX.setSelected(true);
-        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false, false));
     }
 
     /**

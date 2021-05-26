@@ -110,7 +110,7 @@ public class AboutUsController extends AbstractController implements ISubject {
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
-        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
+        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false, false));
     }
 
     /**
