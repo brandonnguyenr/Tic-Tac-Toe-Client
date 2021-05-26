@@ -1,6 +1,6 @@
 package io.github.donut.proj.controllers;
 
-import io.github.donut.proj.common.Board;
+import io.github.coreutils.proj.enginedata.Board;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.Objects;
