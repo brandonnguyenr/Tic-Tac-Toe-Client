@@ -7,6 +7,8 @@ import io.github.coreutils.proj.messages.RoomResponse;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.MoveHistoryCallback;
 import io.github.donut.proj.callbacks.RoomHistoryCallback;
+import io.github.donut.proj.common.Board;
+import io.github.donut.proj.common.Token;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -24,13 +26,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
  /**
@@ -51,6 +49,8 @@ public class PlayerHistoryController extends AbstractController implements Initi
     private ObservableList<RoomResponse> tvOList;
 
     private List<MoveData> roomMoves;
+
+    private Board board;
 
     /**
      * Sets all action events and loads the table view object
@@ -165,47 +165,58 @@ public class PlayerHistoryController extends AbstractController implements Initi
         tvOList = FXCollections.observableArrayList();
     }
 
-    public void setAndDisplayRoomMoves(List<MoveData> roomMoves) {
+    public void createBoardObject(List<MoveData> roomMoves) {
         this.roomMoves = roomMoves;
-        showMoves();
-    }
+        this.board = new Board();
 
-    private void showMoves() {
-        StringBuilder movesSB = new StringBuilder();
+        String id = roomMoves.get(0).getPlayerID();
 
-        DateFormat df = new SimpleDateFormat();
-        Date tempDate;
+        Token x = Token.X;
+        Token o = Token.O;
 
         for (MoveData m : roomMoves) {
-            tempDate = new Date(m.getTime());
-            movesSB.append("[" + m.getX() + ", " + m.getY() + "] -> " + df.format(tempDate) + "\n");
+            board.updateToken(m.getX(), m.getY(), (m.getPlayerID().equals(id)) ? x : o );
         }
-//
-//        System.out.println(movesSB);
-//
-//        Dialog<String> dialog = new Dialog<String>();
-////        dialog.getDialogPane().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-////        dialog.getDialogPane().getStyleClass().add("myDialog");
-//
-//        ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
-//
-////        dialog.getDialogPane().getButtonTypes().add(closeButton);
-//        dialog.getDialogPane().getButtonTypes().add(closeButton);
-//
-//        dialog.setContentText(movesSB.toString());
-//
-//        dialog.show();
 
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("Confirmation Dialog");
-//        alert.setHeaderText("This is a Custom Confirmation Dialog");
-//        alert.setContentText(movesSB.toString());
-//        DialogPane dialogPane = alert.getDialogPane();
-//        dialogPane.getStylesheets().add(
-//                getClass().getResource("styles.css").toExternalForm());
-//        dialogPane.getStyleClass().add("myDialog");
-
+        stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(new MoveHistoryController(board), false));
     }
+
+//    private void showMoves() {
+//        StringBuilder movesSB = new StringBuilder();
+//
+//        DateFormat df = new SimpleDateFormat();
+//        Date tempDate;
+//
+//        for (MoveData m : roomMoves) {
+//            tempDate = new Date(m.getTime());
+//            movesSB.append("[" + m.getX() + ", " + m.getY() + "] -> " + df.format(tempDate) + "\n");
+//        }
+////
+////        System.out.println(movesSB);
+////
+////        Dialog<String> dialog = new Dialog<String>();
+//////        dialog.getDialogPane().getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+//////        dialog.getDialogPane().getStyleClass().add("myDialog");
+////
+////        ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+////
+//////        dialog.getDialogPane().getButtonTypes().add(closeButton);
+////        dialog.getDialogPane().getButtonTypes().add(closeButton);
+////
+////        dialog.setContentText(movesSB.toString());
+////
+////        dialog.show();
+//
+////        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+////        alert.setTitle("Confirmation Dialog");
+////        alert.setHeaderText("This is a Custom Confirmation Dialog");
+////        alert.setContentText(movesSB.toString());
+////        DialogPane dialogPane = alert.getDialogPane();
+////        dialogPane.getStylesheets().add(
+////                getClass().getResource("styles.css").toExternalForm());
+////        dialogPane.getStyleClass().add("myDialog");
+//
+//    }
 
     /**
      * Fills the last column in the table with a clickable button to join games.
@@ -236,7 +247,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
 
                             EventSounds.getInstance().playButtonSound4();
 //                            stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(false, false));
-                            stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(new MoveHistoryController(Integer.parseInt(data.getRoomID())), false));
                         });
 
                         btn.setPrefWidth(110);
@@ -253,7 +263,7 @@ public class PlayerHistoryController extends AbstractController implements Initi
                     // HAD TO PUT THIS METHOD IN HERE
                     private void setRoomMovesAsync(List<MoveData> moveData) {
                         Platform.runLater(() -> {
-                            setAndDisplayRoomMoves(moveData);
+                            createBoardObject(moveData);
                         });
                     }
 
