@@ -60,13 +60,27 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle, #waitingPageTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 35px;
     -fx-alignment: center;
     -fx-min-width: 600;
     -fx-min-height: 35;
+}
+
+#reactivateLabel, #waitingPageMessage, #joinMessage {
+    -fx-text-fill: #f0e68c;
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+}
+
+#popUpPage {
+    -fx-background-image: url("/io/github/donut/proj/images/common/main_04.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
 }
 
 #title {
@@ -119,7 +133,7 @@
 
 #usernameEntry, #passwordEntry, #firstNameEntry, #lastNameEntry, #passwordEntry1, #passwordEntry2, #currentUserNameTab1, #newUserNameTab1,
 #confirmUserNameTab1, #userNameTab2, #firstNameEntryTab2, #lastNameEntryTab2, #userNameEntryTab3, #currentPasswordTab3,
-#newPasswordEntryTab3, #confirmPasswordEntryTab3 {
+#newPasswordEntryTab3, #confirmPasswordEntryTab3, #userNameEntryTab4 {
     -fx-background-color: black;
     -fx-border-color: khaki;
     -fx-text-fill: white;
@@ -139,6 +153,12 @@
     -fx-font-size: 20;
 }
 
+#confirmationMessage {
+    -fx-text-fill: khaki;
+    -fx-font-size: 30px;
+    -fx-font-family: "Chalkduster";
+}
+
 #emptyMessage, #passwordMessage {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
@@ -146,7 +166,7 @@
     -fx-font-size: 15px;
 }
 
-#registrationMessage, #successfulUpdateTab1, #successfulUpdateTab3, #successfulUpdateTab2 {
+#registrationMessage, #successfulUpdateTab1, #successfulUpdateTab3, #successfulUpdateTab2, #successfulUpdateTab4, #playerName {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
     -fx-text-fill: #37c637;
@@ -159,7 +179,7 @@
     -fx-text-fill: red;
 }
 #errorMessage, #personalInfoError, #changePasswordError, #currentUsernameErrorTab1, #differentUsernameErrorTab1,
-#usernameErrorTab2, #differentPasswordErrorTab3, #usernameErrorTab3  {
+#usernameErrorTab2, #differentPasswordErrorTab3, #usernameErrorTab3, #errorTab4  {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20px;
     -fx-text-fill: red;
@@ -179,7 +199,8 @@
 #player1Label {
     -fx-font-family: "Chalkduster";
 }
-#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage, #playerHistoryPage, #updateAccountPage {
+#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage, #playerHistoryPage,
+#updateAccountPage, #waitingPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }

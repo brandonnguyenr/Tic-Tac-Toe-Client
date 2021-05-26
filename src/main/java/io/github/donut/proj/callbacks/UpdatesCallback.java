@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 /**
  * This class is the used as a callback that will have the data that is returned from the update service.
  * @author Utsav Parajuli
- * @version 0.2
+ * @version 0.3
  */
 public class UpdatesCallback implements ISubscribeCallback, ISubject {
 
@@ -59,6 +59,8 @@ public class UpdatesCallback implements ISubscribeCallback, ISubject {
                     this.resolved.accept(new RequestMsg("Personal", true));
                 } else if (response.getInfo().equalsIgnoreCase("PASSWORD")) {   //checking if update password
                     this.resolved.accept(new RequestMsg("Password", true));
+                } else if (response.getInfo().equalsIgnoreCase("DELETE")) {     //checking if delete account
+                    this.resolved.accept(new RequestMsg("Delete", true));
                 }
             } else {                                                                 //else the update was unsuccessful
                 if (response.getInfo().equalsIgnoreCase("USERNAME")) {     //checking if update username
@@ -67,6 +69,8 @@ public class UpdatesCallback implements ISubscribeCallback, ISubject {
                     this.rejected.accept(new RequestMsg("Personal", false));
                 } else if (response.getInfo().equalsIgnoreCase("PASSWORD")) {   //checking if update password
                     this.rejected.accept(new RequestMsg("Password", false));
+                } else if (response.getInfo().equalsIgnoreCase("DELETE")) {     //checking if delete account
+                    this.resolved.accept(new RequestMsg("Delete", false));
                 }
             }
         }
@@ -74,7 +78,6 @@ public class UpdatesCallback implements ISubscribeCallback, ISubject {
 
     @Override
     public void rejected(Exception e) {
-
     }
 
     /**

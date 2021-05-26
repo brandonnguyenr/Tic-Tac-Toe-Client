@@ -28,9 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Lobby Screen contains the lobby viewer table view which shows the active games.
@@ -59,6 +57,7 @@ public class LobbyController extends AbstractController implements ISubject {
 
     @FXML
     private ImageView backButton;
+
 
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
@@ -235,6 +234,10 @@ public class LobbyController extends AbstractController implements ISubject {
         createRoomDialog();
     }
 
+    /**
+     * This method will ask the player to enter the name of the room
+     * @author Kord Boniadi
+     */
     private void createRoomDialog() {
         Dialog<String> dialog = new Dialog<>();
 
@@ -266,19 +269,57 @@ public class LobbyController extends AbstractController implements ISubject {
         result.ifPresent(this::createRoomWorker);
     }
 
+    /**
+     * This is a helper method that will take the player to the waiting room from where the game will start
+     * @param data: The Room data
+     * @author Kord Boniadi
+     * @author Utsav Parajuli
+     */
     private void joinRoomWorker(RoomData data) {
+        //gets the data of the player and adds them to the room
         PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         data.addPlayer(player);
+
+        //creates an instance of the waiting room
+        WaitingRoomController waitingRoom = new WaitingRoomController();
+
+        //creates an instance of the room request callback where the room data and player is passed
         RoomRequestCallback callback = new RoomRequestCallback(data, player);
+
+        //executes after the callback was resolved
         callback.setResolved((event) -> {
+            //the message is displayed to the wait room
             Platform.runLater(() -> {
-                BoardPageController game = new BoardPageController(new BoardUI());
-                stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
-                game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
-                game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+                waitingRoom.getPlayerName().setText("");
+                waitingRoom.getPlayerName().setText(event.getPlayer1().getPlayerUserName() + " is in the room!");
+                waitingRoom.getWaitingPageMessage().setText("");
+                waitingRoom.getJoinMessage().setText("Game will start shortly...");
             });
+
+            //creating an instance of the timer
+            Timer timer = new Timer();
+            //creating a task playerJoin which will execute after the player stays in the lobby for certain time
+            TimerTask playerJoin = new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        BoardPageController game = new BoardPageController(new BoardUI());
+                        stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
+                        game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
+                        game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+
+                        waitingRoom.getJoinMessage().setText("");
+                        waitingRoom.getWaitingPageMessage().setText("Waiting for another player to join your lobby");
+                    });
+                    //freeing up the thread
+                    timer.cancel();
+                }
+            };
+            //scheduling the wait time to be 8 seconds
+            timer.schedule(playerJoin, 8000L);
         });
 
+        //executes in the case that there was error joining the room
         callback.setRejected((event) -> {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -287,22 +328,61 @@ public class LobbyController extends AbstractController implements ISubject {
             });
         });
         GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
-        // TODO: launch waiting room page here
+
+        //launching the waiting page
+        stage.setScene(AppController.getScenes().get(SceneName.WAITING_PAGE).getScene(waitingRoom, false));
+
     }
 
+    /**
+     * This is a helper method that will take create the room and take the creator to a waiting page
+     * @param title: the name of the room
+     * @author Utsav Parajuli
+     * @author Kord Boniadi
+     */
     private void createRoomWorker(String title) {
+        //gets the data of the player and adds them to the room
         PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
         RoomData room = RoomFactory.makeCreateRoom(title, player);
+
+        //creates an instance of callback
         RoomRequestCallback callback = new RoomRequestCallback(room, player);
+
+        //instance of the waiting room
+        WaitingRoomController waitingRoom = new WaitingRoomController();
+
+        //will execute after someone has joined the room
         callback.setResolved((event) -> {
+            //will alert the creator that someone has joined the room
             Platform.runLater(() -> {
-                BoardPageController game = new BoardPageController(new BoardUI());
-                stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
-                game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
-                game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+                waitingRoom.getPlayerName().setText("");
+                waitingRoom.getPlayerName().setText(event.getPlayer2().getPlayerUserName() + " has joined!");
+                waitingRoom.getWaitingPageMessage().setText("");
+                waitingRoom.getJoinMessage().setText("Game will start shortly...");
             });
+
+            //instance of a timer
+            Timer timer = new Timer();
+
+            //timer task that will execute after some wait
+            TimerTask playerCreate = new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        BoardPageController game = new BoardPageController(new BoardUI());
+                        stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game));
+                        game.getPlayerNameLeft().setText(event.getPlayer1().getPlayerUserName());
+                        game.getPlayerNameRight().setText(event.getPlayer2().getPlayerUserName());
+                    });
+                    //freeing up the thread
+                    timer.cancel();
+                }
+            };
+            //schedule the players to wait 8 seconds after join
+            timer.schedule(playerCreate, 8000L);
         });
 
+        //will run if there was problem creating a room
         callback.setRejected((event) -> {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -311,7 +391,11 @@ public class LobbyController extends AbstractController implements ISubject {
             });
         });
         GlobalAPIManager.getInstance().swapListener(callback, Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
-        // TODO: launch waiting room page here
+
+        //setting the scene for waiting room
+        stage.setScene(AppController.getScenes().get(SceneName.WAITING_PAGE).getScene(waitingRoom, false));
+        waitingRoom.getJoinMessage().setText("");
+        waitingRoom.getWaitingPageMessage().setText("Waiting for another player to join your lobby");
     }
 
     /**

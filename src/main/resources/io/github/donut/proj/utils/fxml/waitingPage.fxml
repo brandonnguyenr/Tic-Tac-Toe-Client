@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="waitingPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <Label fx:id="waitingPageTitle" text="Waiting Room" BorderPane.alignment="CENTER" />
+    </top>
+    <center>
+        <VBox alignment="CENTER" maxHeight="300.0" prefHeight="300.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="70.0" prefWidth="200.0" spacing="15.0"
+                  translateY="-70.0">
+                <Label fx:id="playerName"/>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0" spacing="15.0" translateY="-65.0">
+                <Label fx:id="waitingPageMessage"/>
+                <Label fx:id="joinMessage"/>
+            </HBox>
+            <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" translateY="-20.0">
+                <Image url="@../../images/icons/loading_5.gif"/>
+            </ImageView>
+        </VBox>
+    </center>
+</BorderPane>
