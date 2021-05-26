@@ -29,7 +29,7 @@ public class RoomHistoryCallback implements ISubscribeCallback, ISubject {
     public void status(MessagingAPI messagingAPI, MsgStatus msgStatus) {
         if (msgStatus.getCategory() == MsgStatusCategory.MsgConnectedCategory) {
             messagingAPI.publish()
-                    .message(new PlayerData("granttest1b", null))
+                    .message(AppController.getPlayer())
                     .channel(Channels.GET_ROOMS_DATA.toString())
                     .execute();
         }

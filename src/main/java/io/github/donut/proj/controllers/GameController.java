@@ -35,7 +35,6 @@ public class GameController implements ISubject, IObserver {
         public Board getUpdatedBoard() {
             return updatedBoard;
         }
-
     }
 
     /**
