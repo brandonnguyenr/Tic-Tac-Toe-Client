@@ -1,5 +1,6 @@
 package io.github.donut.proj.controllers;
 
+import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -18,11 +19,22 @@ public class MoveHistoryController  extends AbstractController implements Initia
     @FXML
     private ImageView backButton;
 
+//    private final BoardUI boardUI;
+
+    private int id;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
+    }
+
+    public MoveHistoryController() {
+    }
+
+    public MoveHistoryController(int id) {
+
     }
 
     /**
