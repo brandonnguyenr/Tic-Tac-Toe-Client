@@ -1,6 +1,7 @@
 package io.github.donut.proj.controllers;
 
 import io.github.API.MessagingAPI;
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.PlayerData;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
@@ -35,7 +36,7 @@ public class AppController {
     @Getter
     private static final Map<SceneName, FxmlInfo> scenes = new HashMap<>();
 
-    private static final PlayerData player = new PlayerData();      //player data
+    private static final PlayerData player = new PlayerData("Guest", Token.BLANK);      //player data
 
     /**
      * Constructor
@@ -110,32 +111,45 @@ public class AppController {
         Logger.log("program started..");
     }
 
+//    /**
+//     * This method will return the PlayerData
+//     * @return PlayerData
+//     */
+//    public static PlayerData getPlayer(String channel) {
+//        PlayerData result = new PlayerData(player);
+//        result.setChannel(channel);
+//        return result;
+//    }
+
     /**
-     * This method will return the playerID of player
-     * @return playerID
+     * This method will set the channel for the Player
      */
-    public static String getPlayerID() {
-        return player.getPlayerID();
+    public static void setPlayerChannel(String channel) {
+        player.setChannel(channel);
+    }
+    /**
+     * This method will set the username of player
+     * @param username: Username of the player
+     */
+    public static void setUserName(String username) {
+        player.setPlayerUserName(username);
     }
 
     /**
      * This method will return the PlayerData
      * @return PlayerData
      */
-    public static PlayerData getPlayer(String channel) {
-        PlayerData result = new PlayerData(player);
-        result.setChannel(channel);
-        return result;
+    public static PlayerData getPlayer() {
+        return new PlayerData(player);
     }
 
     /**
-     * This method will set the username of player
+     * Default player info
      */
-    public static void setUserName(String username) {
-        player.setPlayerUserName(username);
+    public static void setPlayerDefault() {
+        player.setPlayerUserName("Guest");
+        player.setPlayerToken(Token.BLANK);
     }
-
-
     /**
      * This method will return the username of player
      * @return username

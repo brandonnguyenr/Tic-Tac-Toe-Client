@@ -277,7 +277,9 @@ public class LobbyController extends AbstractController implements ISubject {
      */
     private void joinRoomWorker(RoomData data) {
         //gets the data of the player and adds them to the room
-        PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        AppController.setPlayerChannel(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+
+        PlayerData player = AppController.getPlayer();
         data.addPlayer(player);
 
         //creates an instance of the waiting room
@@ -342,7 +344,9 @@ public class LobbyController extends AbstractController implements ISubject {
      */
     private void createRoomWorker(String title) {
         //gets the data of the player and adds them to the room
-        PlayerData player = AppController.getPlayer(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        AppController.setPlayerChannel(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+        PlayerData player = AppController.getPlayer();
+
         RoomData room = RoomFactory.makeCreateRoom(title, player);
 
         //creates an instance of callback
