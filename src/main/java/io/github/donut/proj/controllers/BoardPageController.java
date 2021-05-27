@@ -230,6 +230,7 @@ public class BoardPageController extends AbstractController implements IObserver
             }
         } else if (eventType instanceof GameController.Results) {
             GameController.Results temp = (GameController.Results) eventType;
+            System.out.println("BoardPageController.233 temp =  " + temp);
 
             exitPrompt.setText("Press ENTER to return to main menu...");
             Timeline timeline = new Timeline(

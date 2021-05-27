@@ -313,31 +313,35 @@ public class GameController implements ISubject, IObserver {
                     PlayerData.PlayerType ai;
 //                    human.setPlayerUserName((player1.getPlayerType() instanceof Human) ? player1.getPlayerName() : player2.getPlayerName());
 
+                    // used to determine if player won/lost/tied the AI
                     SinglePlayerRoomData.PlayerResult playerResult;
-                    if (board.isBoardFull() && hasWon(board).equals(BLANK)) {
-                        playerResult = SinglePlayerRoomData.PlayerResult.TIE;
-                    }
 
                     if (player1.getPlayerType() instanceof Human) {
                         // set human to be player 1, and AI to be player 2
                         human.setPlayerUserName(player1.getPlayerName().substring(0, player1.getPlayerName().length()-4));
-                        System.out.println("DEBUG: HUMAN PLAYER NAME IS: " + human.getPlayerUserName());
                         ai = (player2.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
-                        // if player 1 is the winner, then set enum to win. otherwise set to loss (already checked tie)
-                        if (player1.equals(whoWon(board, player1, player2)))
+
+                        // tie logic
+                        if (board.isBoardFull() && hasWon(board).equals(BLANK))     // the game is a tie
+                            playerResult = SinglePlayerRoomData.PlayerResult.TIE;
+                        else if (player1.equals(whoWon(board, player1, player2)))   // player 1 (human) is winner
                             playerResult = SinglePlayerRoomData.PlayerResult.WIN;
                         else
-                            playerResult = SinglePlayerRoomData.PlayerResult.LOSS;
+                            playerResult = SinglePlayerRoomData.PlayerResult.LOSS;  // player 1 (human) is loser
 
                     }
                     else {
                         // set human to be player 2, and ai to be player 1
                         human.setPlayerUserName(player2.getPlayerName().substring(0, player1.getPlayerName().length()-4));
                         ai = (player1.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
-                        if (player2.equals(whoWon(board, player1, player2)))
+
+                        // tie logic
+                        if (board.isBoardFull() && hasWon(board).equals(BLANK))     // the game is a tie
+                            playerResult = SinglePlayerRoomData.PlayerResult.TIE;
+                        else if (player2.equals(whoWon(board, player1, player2)))   // player 2 (human) is winner
                             playerResult = SinglePlayerRoomData.PlayerResult.WIN;
                         else
-                            playerResult = SinglePlayerRoomData.PlayerResult.LOSS;
+                            playerResult = SinglePlayerRoomData.PlayerResult.LOSS;  // player 2 (human) is loser
                     }
 
 
