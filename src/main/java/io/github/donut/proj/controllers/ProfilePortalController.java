@@ -98,6 +98,8 @@ public class ProfilePortalController extends AbstractController implements Initi
 
     public void onStatsButtonClick(MouseEvent mouseEvent) {
         // TODO - Handle stats here
+        EventSounds.getInstance().playButtonSound4();
+        stage.setScene(AppController.getScenes().get(SceneName.STATS_PAGE).getScene(false, false));
     }
 
     /**
