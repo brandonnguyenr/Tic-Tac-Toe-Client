@@ -1,5 +1,8 @@
 package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.OnlineState;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -210,6 +213,7 @@ public class MainController extends AbstractController implements ISubject {
         EventSounds.getInstance().playButtonSound4();
         stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE)));
 
+        GlobalAPIManager.getInstance().send(new OnlineState(AppController.getUserName(), false), Channels.OFFLINE_STATE.toString());
         //have to clear all the cache for controllers
         AppController.clearAllScenes();
         //setting the player info back to default

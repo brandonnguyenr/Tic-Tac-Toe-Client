@@ -110,6 +110,11 @@ public class AppController {
     public static void setPlayerChannel(String channel) {
         player.setChannel(channel);
     }
+
+    public static void setPlayerToken(Token token) {
+        player.setPlayerToken(token);
+    }
+
     /**
      * This method will set the username of player
      * @param username: Username of the player

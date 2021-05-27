@@ -12,6 +12,7 @@ import io.github.donut.proj.callbacks.RoomRequestCallback;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
+import io.github.donut.proj.utils.Logger;
 import io.github.donut.sounds.EventSounds;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -34,8 +35,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.Duration;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 
@@ -214,10 +213,15 @@ public class LobbyController extends AbstractController implements ISubject {
 
         addJoinButtonToTable();
 
-        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyListAsync),
+        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyListAsync, (onlineStates) -> {
+            onlineStates.forEach((onlineState -> {
+                System.out.println(onlineState.getUsername() + " " + onlineState.isOnline());
+            }));
+                }),
                 Channels.REQUEST + Channels.ROOM_LIST.toString(),
-                Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
-
+                Channels.REQUEST_STATE.toString(),
+                Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid(),
+                Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid() + Channels.BUILDER + Channels.REQUEST_STATE);
         /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
@@ -345,21 +349,21 @@ public class LobbyController extends AbstractController implements ISubject {
             return null;
         });
         Optional<String> result = dialog.showAndWait();
-
         result.ifPresent(this::createRoomWorker);
     }
 
     private void matchWorker(RoomData room, PlayerData player) {
         BoardPageController game = new BoardPageController(new BoardUI(), room);
+        Logger.log("BoardPageController created");
         Platform.runLater(() -> {
             stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game, false));
             game.getPlayerNameLeft().setText(room.getPlayer1().getPlayerUserName());
             game.getPlayerNameRight().setText(room.getPlayer2().getPlayerUserName());
         });
 
-        GameCallback gameCallback = new GameCallback(room);
-        GlobalAPIManager.getInstance().swapListener(gameCallback, room.getRoomChannel());
+        GameCallback gameCallback = new GameCallback(room, game.getBoard());
         gameCallback.setBoardHandler((moveRequestData) -> {
+            System.out.println("board updated");
             game.updatedBoard(moveRequestData.getBoard());
             if (moveRequestData.getCurrentPlayer() == null) {
                 String results;
@@ -435,7 +439,10 @@ public class LobbyController extends AbstractController implements ISubject {
                     });
                 }
             }
+            gameCallback.setRoom(moveRequestData.getRoomData());
+            gameCallback.setBoard(moveRequestData.getBoard());
         });
+        GlobalAPIManager.getInstance().swapListener(gameCallback, room.getRoomChannel(), "CLOSE");
     }
 
     /**
@@ -473,6 +480,7 @@ public class LobbyController extends AbstractController implements ISubject {
             TimerTask playerJoin = new TimerTask() {
                 @Override
                 public void run() {
+                    Logger.log("matchWorker1 called");
                     matchWorker(roomData, player);
                     Platform.runLater(() -> {
                         waitingRoom.getJoinMessage().setText("");
@@ -513,7 +521,6 @@ public class LobbyController extends AbstractController implements ISubject {
         PlayerData player = AppController.getPlayer();
 
         RoomData room = RoomFactory.makeCreateRoom(title, player);
-
         //creates an instance of callback
         RoomRequestCallback callback = new RoomRequestCallback(room, player);
 
@@ -537,6 +544,7 @@ public class LobbyController extends AbstractController implements ISubject {
             TimerTask playerCreate = new TimerTask() {
                 @Override
                 public void run() {
+                    Logger.log("matchWorker2 called");
                     matchWorker(roomData, player);
                     //freeing up the thread
                     timer.cancel();

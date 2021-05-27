@@ -6,26 +6,33 @@ import io.github.API.messagedata.MsgResultAPI;
 import io.github.API.messagedata.MsgStatus;
 import io.github.API.messagedata.MsgStatusCategory;
 import io.github.API.utils.GsonWrapper;
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.MoveRequestData;
+import io.github.coreutils.proj.messages.PlayerData;
 import io.github.coreutils.proj.messages.RoomData;
+import io.github.donut.proj.utils.Logger;
 import lombok.Setter;
 
 import java.util.function.Consumer;
 
+@Setter
 public class GameCallback implements ISubscribeCallback {
     private RoomData room;
-    @Setter
+    private Board board;
     private Consumer<MoveRequestData> boardHandler;
 
-    public GameCallback(RoomData room) {
+    public GameCallback(RoomData room, Board board) {
         this.room = room;
+        this.board = board;
     }
 
 
     @Override
     public void status(MessagingAPI mAPI, MsgStatus status) {
         if (status.getCategory().equals(MsgStatusCategory.MsgConnectedCategory)) {
+            Logger.log(mAPI.getUuid() + "REQUEST_MOVE sent");
             mAPI.publish()
                     .message(room)
                     .channel(Channels.REQUEST_MOVE.toString())
@@ -52,6 +59,11 @@ public class GameCallback implements ISubscribeCallback {
 //                boardHandler.accept(data.getBoard());
 //                System.out.println("turn switched");
 //            }
+        } else if (message.getChannel().equals("CLOSE")) {
+            System.out.println("test");
+            PlayerData data = GsonWrapper.fromJson(message.getMessage(), PlayerData.class);
+            System.out.println(data.getPlayerToken());
+            boardHandler.accept(new MoveRequestData(this.board, room, null, (data.getPlayerToken() == Token.X) ? Token.O : Token.X));
         }
     }
 

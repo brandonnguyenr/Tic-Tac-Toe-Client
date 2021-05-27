@@ -29,6 +29,7 @@ public class RoomRequestCallback implements ISubscribeCallback {
     @Override
     public void status(MessagingAPI mApi, MsgStatus status) {
         if (status.getCategory() == MsgStatusCategory.MsgConnectedCategory) {
+            System.out.println(mApi.getUuid() + "ROOM_REQUEST");
             mApi.publish()
                     .channel(Channels.ROOM_REQUEST.toString())
                     .message(room)
@@ -39,6 +40,7 @@ public class RoomRequestCallback implements ISubscribeCallback {
     @Override
     public void resolved(MessagingAPI mApi, MsgResultAPI message) {
         if (message.getChannel().equals(Channels.PRIVATE + mApi.getUuid())) {
+            System.out.println(message.getPublisherUuid() + "RoomRequestCallback");
             RoomData response = GsonWrapper.fromJson(message.getMessage(), RoomData.class);
 
             if (response.getRequestType().equals(RoomData.RequestType.NORMAL) && resolved != null) {
