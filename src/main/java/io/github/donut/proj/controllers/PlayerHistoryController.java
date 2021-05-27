@@ -298,5 +298,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
         stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false));
+        AppController.getScenes().get(SceneName.HISTORY_PAGE).clearCache();
     }
 }

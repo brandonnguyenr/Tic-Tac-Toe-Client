@@ -96,5 +96,6 @@ public class MoveHistoryController  extends AbstractController implements Initia
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
         stage.setScene(AppController.getScenes().get(SceneName.HISTORY_PAGE).getScene(false));
+        AppController.getScenes().get(SceneName.HISTORY_PAGE).clearCache();
     }
 }
