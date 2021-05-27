@@ -10,17 +10,25 @@
          <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
             <Image url="@../../images/common/back_arrow.png" />
          </ImageView>
+         <Label prefHeight="18.0" prefWidth="74.0" text="Player Portal" />
       </HBox>
    </top>
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Label" />
-            <HBox prefHeight="100.0" prefWidth="200.0" />
-            <Label prefHeight="0.0" prefWidth="36.0" text="Label" />
-            <HBox prefHeight="100.0" prefWidth="200.0" />
-            <Label text="Label" />
+            <Label text="STATS PAGE" />
          </children></VBox>
    </center>
+   <bottom>
+      <HBox prefHeight="335.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="335.0" prefWidth="270.0">
+               <children>
+                  <Label layoutX="116.0" layoutY="25.0" text="Label" />
+               </children>
+            </Pane>
+            <Pane prefHeight="335.0" prefWidth="270.0" />
+            <Pane prefHeight="335.0" prefWidth="270.0" />
+         </children></HBox>
+   </bottom>
 </BorderPane>
-2

@@ -40,14 +40,44 @@ public class StatsPageController extends AbstractController implements Initializ
     @FXML
     private ImageView backButton;
 
+    public static class getData {
+
+        public int getWins(int wins) {
+            return wins;
+        }
+
+        public int getLosses(int losses) {
+            return losses;
+        }
+
+        public int getTies(int ties) {
+            return ties;
+        }
+
+//        public int winPercentage(int wins, int losses) {
+//            int percentage;
+//
+//            percentage = wins / losses;
+//            double roundoff = Math.round();
+//            return percentage;
+//        }
+    }
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        statsPageTitle.setText       ("MY STATS");
-        winsLabel.setText            ("WINS");
-        lossesLabel.setText          ("LOSSES");
-        tiesLabel.setText            ("TIES");
-        winLossRatioLabel.setText    ("WIN PERCENTAGE");
-        totalGamesPlayedLabel.setText("TOTAL GAMES");
+        getData connect = new getData();
+//        int wins = connect.getWins();
+//        int losses = connect.getLosses();
+//        int ties = connect.getTies();
+//        int winPercentage= connect.winPercentage();
+
+//        statsPageTitle.setText       ("MY STATS");
+//        winsLabel.setUserData        (wins);
+//        lossesLabel.setUserData      (losses);
+//        tiesLabel.setUserData        (ties);
+//        winLossRatioLabel.setText    (winPercentage + "%");
+//        totalGamesPlayedLabel.setText("TOTAL GAMES");
 
         /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
@@ -55,6 +85,8 @@ public class StatsPageController extends AbstractController implements Initializ
         backButton.setOnMouseExited(this::onBackButtonExit);
         /*========================Action Events END=========================*/
     }
+
+
 
     /**
      * Event handler for back button idle effect
