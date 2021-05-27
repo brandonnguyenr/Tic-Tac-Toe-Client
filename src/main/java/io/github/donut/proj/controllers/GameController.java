@@ -4,7 +4,6 @@ import io.github.coreutils.proj.enginedata.Board;
 import io.github.coreutils.proj.enginedata.Token;
 import io.github.coreutils.proj.messages.*;
 import io.github.donut.proj.PlayerType.Human;
-import io.github.donut.proj.PlayerType.NPCEasyMode;
 import io.github.donut.proj.PlayerType.NPCHardMode;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.common.Player;
@@ -12,9 +11,9 @@ import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
 
-import java.nio.channels.Channel;
 import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
 import static io.github.coreutils.proj.enginedata.Token.*;
 
@@ -142,6 +141,7 @@ public class GameController implements ISubject, IObserver {
         this.board = board;
         this.player1 = player1;
         this.player2 = player2;
+        singlePlayerRoomID = (new Random()).nextInt();
     }
 
     /**
@@ -283,19 +283,23 @@ public class GameController implements ISubject, IObserver {
                 board.updateToken(info.getX(), info.getY(), info.getPlayerInstance().getPlayerToken());
                 gameOver = gameOver();
 
+                //** ======== WRITING MOVE ======== **//
+                MoveData move = new MoveData(singlePlayerRoomID,
+                        (swap.getPlayerType() instanceof Human) ? AppController.getUserName() : "Computer",
+                        info.getX(),
+                        info.getY(),
+                        System.currentTimeMillis());
+
+                System.out.println("CLIENT:: sending a move message: " + move + "\n");
+                GlobalAPIManager.getInstance().send(move, Channels.ROOM_MOVE_SINGLEPLAYER.toString());
+
+
                 swap = (gameOver) ? null : (swap == player1) ? player2 : player1;
 
                 EventManager.notify(this, new DrawInfo(this.board));
 
-                // get an id here
-                // send a move data with that id somehow
-                System.out.println("CLIENT:: sending a move message");
-                MoveData move = new MoveData(8, "granttest1b", info.getX(), info.getY(), System.currentTimeMillis());
-                GlobalAPIManager.getInstance().getApi().publish()
-                        .message(move)
-                        .channel(Channels.ROOM_MOVE_SINGLEPLAYER.toString())
-                        .execute();
 
+                // GAME OVER LOGIC
                 if (!gameOver) {
                     if (player2.getPlayerType() instanceof Human)
                         EventManager.notify(this, swap);
@@ -309,7 +313,7 @@ public class GameController implements ISubject, IObserver {
                     PlayerData.PlayerType ai;
 //                    human.setPlayerUserName((player1.getPlayerType() instanceof Human) ? player1.getPlayerName() : player2.getPlayerName());
                     if (player1.getPlayerType() instanceof Human) {
-                        human.setPlayerUserName(player1.getPlayerName());
+                        human.setPlayerUserName(player1.getPlayerName().substring(0, player1.getPlayerName().length()-4));
 
                         System.out.println("DEBUG: HUMAN PLAYER NAME IS: " + human.getPlayerUserName());
 
@@ -317,10 +321,9 @@ public class GameController implements ISubject, IObserver {
                         ai = (player2.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
                     }
                     else {
-                        human.setPlayerUserName(player2.getPlayerName());
+                        human.setPlayerUserName(player2.getPlayerName().substring(0, player1.getPlayerName().length()-4));
                         ai = (player1.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
                     }
-
                     SinglePlayerRoomData room = new SinglePlayerRoomData(
                             singlePlayerRoomID,
                             human,
@@ -333,10 +336,7 @@ public class GameController implements ISubject, IObserver {
                         );
 
                     System.out.println("Publishing SPR data to ROOM_SINGLE_PLAYER");
-                    GlobalAPIManager.getInstance().getApi().publish()
-                            .message(room)
-                            .channel(Channels.ROOM_SINGLE_PLAYER.toString())
-                            .execute();
+                    GlobalAPIManager.getInstance().send(room, Channels.ROOM_SINGLE_PLAYER.toString());
                     }
             }
         }
