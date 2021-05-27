@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -54,21 +55,31 @@ public class MainController extends AbstractController implements ISubject {
     public void initialize() {
         initializeMenu();
 
+        //checking if the user logged in a guest
+        if (AppController.getUserName().equals("")) {
+            multiPlayerButton.setDisable(true);
+            ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setBrightness(-0.7);
+            multiPlayerButton.setEffect(colorAdjust);
+            playerInfo.setDisable(true);
+        } else {        //not guest login
+            multiPlayerButton.setOnMouseClicked(this::onMultiPlayerButtonClick);
+            playerInfo.setOnAction(this::onProfileClicked);
+            multiPlayerButton.setOnMouseEntered(this::onMultiPlayerButtonHover);
+            multiPlayerButton.setOnMouseExited(this::onMultiPlayerButtonExit);
+        }
+
         /*========================Action Events START=========================*/
         singlePlayerButton.setOnMouseClicked(this::onSinglePlayerButtonClick);
         singlePlayerButton.setOnMouseEntered(this::onSinglePlayerButtonHover);
         singlePlayerButton.setOnMouseExited(this::onSinglePlayerButtonExit);
 
-        multiPlayerButton.setOnMouseClicked(this::onMultiPlayerButtonClick);
-        multiPlayerButton.setOnMouseEntered(this::onMultiPlayerButtonHover);
-        multiPlayerButton.setOnMouseExited(this::onMultiPlayerButtonExit);
 
         aboutUsRect.setOnMouseClicked(this::onAboutButtonClicked);
         aboutUsRect.setOnMouseEntered(this::onAboutRectEnter);
         aboutUsRect.setOnMouseExited(this::onAboutRectExit);
 
-        playerInfo.setOnAction(this::onProfileClicked);
-        signOut.setOnAction(this::onSignoutClicked);
+        signOut.setOnAction(this::onSignOutClicked);
         /*========================Action Events END=========================*/
     }
 
@@ -181,14 +192,29 @@ public class MainController extends AbstractController implements ISubject {
 
     }
 
+    /**
+     * Handles the event on profile button clicked
+     * @param mouseEvent event
+     */
     public void onProfileClicked (ActionEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
         stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false, true));
     }
 
-    public void onSignoutClicked(ActionEvent mouseEvent) {
+    /**
+     * Handles the event on sign out button clicked
+     * @param mouseEvent mouse event
+     * @author Utsav Parajuli
+     */
+    public void onSignOutClicked(ActionEvent mouseEvent) {
         EventSounds.getInstance().playButtonSound4();
-        // TODO - Add sign out code here
+        stage.setScene(AppController.getScenes().get(SceneName.LOGIN_PAGE).getScene(ControllerFactory.getController(SceneName.LOGIN_PAGE)));
+
+        //have to clear all the cache for controllers
+        AppController.clearAllScenes();
+        //setting the player info back to default
+        AppController.setPlayerDefault();
+
     }
 
 

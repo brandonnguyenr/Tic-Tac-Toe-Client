@@ -12,6 +12,9 @@ import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.proj.utils.RestrictiveTextField;
 import io.github.donut.sounds.EventSounds;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -22,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 import java.util.Objects;
 
@@ -39,10 +43,7 @@ public class SinglePlayerController extends AbstractController implements ISubje
     public Label singlePlayerTitle;
 
     @FXML
-    public Label title;
-
-    @FXML
-    public RestrictiveTextField nameEntry;
+    public Label playerNameLoop;
 
     @FXML
     public ImageView startButton;
@@ -67,6 +68,8 @@ public class SinglePlayerController extends AbstractController implements ISubje
 
     @FXML
     private RadioButton hardMode;
+
+    private String userName;
 
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
@@ -99,22 +102,23 @@ public class SinglePlayerController extends AbstractController implements ISubje
     @FXML
     public void initialize() {
 
+        this.userName = AppController.getUserName();
+        if (userName.equals(""))
+            userName = "Guest";
         //title screen
         singlePlayerTitle.setText("Single Player Mode");
         singlePlayerTitle.setAlignment(Pos.TOP_CENTER);
 
-        //setting the name entry title
-        title.setText("Please Enter Your Name");
-        title.setAlignment(Pos.CENTER);
-
-        //name entry box
-        nameEntry.setAlignment(Pos.CENTER);
-
-        //max number of characters user can enter
-        nameEntry.setMaxLength(5);
-
         //start button
         startButton.setId("startButton");
+
+        playerNameLoop.setText("WELCOME BACK " + userName + "!!");
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.6), evt -> playerNameLoop.setVisible(false)),
+                new KeyFrame(Duration.seconds(1.2), evt -> playerNameLoop.setVisible(true))
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
 
         //difficulty level option
         difficultyLevelTitle.setText("Difficulty: ");
@@ -135,8 +139,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
         tokenO.setToggleGroup(tokenGroup);
 
         /*========================Action Events START=========================*/
-        nameEntry.setOnKeyPressed(this::onNameEntered);
-
         startButton.setOnMouseClicked(this::onStartButtonClick);
         startButton.setOnMouseEntered(this::onStartButtonEnter);
         startButton.setOnMouseExited(this::onStartButtonExit);
@@ -145,19 +147,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
         /*========================Action Events END=========================*/
-    }
-
-    /**
-     * When the name of the user is entered and all the options are chosen this method will start the game
-     *
-     * @param keyEvent : press of a key
-     * @author Utsav Parajuli
-     */
-    public void onNameEntered(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            EventSounds.getInstance().playButtonSound4();
-            startGame();
-        }
     }
 
     /**
@@ -183,11 +172,11 @@ public class SinglePlayerController extends AbstractController implements ISubje
         String userName;
         IPlayerType artificialBrain;
 
-        if (nameEntry.getText().isEmpty()) {
+        if (AppController.getUserName().equals("")) {
             userName = "Guest";
         }
         else {
-            userName = nameEntry.getText();
+            userName = AppController.getUserName();
         }
 
         if (tokenO.isSelected()) {
@@ -205,7 +194,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
             cpuLevel = "Pro";
             artificialBrain = new NPCHardMode(cpuToken, userToken);
         }
-        nameEntry.clear();
         easyMode.setSelected(true);
         tokenX.setSelected(true);
 
@@ -240,7 +228,6 @@ public class SinglePlayerController extends AbstractController implements ISubje
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
-        nameEntry.clear();
         easyMode.setSelected(true);
         tokenX.setSelected(true);
         stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
