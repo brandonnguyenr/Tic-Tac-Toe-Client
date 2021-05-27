@@ -304,7 +304,7 @@ public class GameController implements ISubject, IObserver {
                 else {
                     EventManager.notify(this, new GameController.Results(whoWon(board, player1, player2)));
                     // send room data message
-                    PlayerData human = new PlayerData();
+                    PlayerData human = AppController.getPlayer();
                     human.setType(PlayerData.PlayerType.HUMAN);
                     PlayerData.PlayerType ai;
 //                    human.setPlayerUserName((player1.getPlayerType() instanceof Human) ? player1.getPlayerName() : player2.getPlayerName());
