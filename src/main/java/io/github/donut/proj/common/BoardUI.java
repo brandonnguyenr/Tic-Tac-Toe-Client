@@ -1,5 +1,6 @@
 package io.github.donut.proj.common;
 
+import io.github.coreutils.proj.enginedata.Board;
 import io.github.donut.proj.controllers.GameController;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
@@ -13,7 +14,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import lombok.Setter;
+
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 /**
  * BoardUI class; handles drawing board to screen in javafx
@@ -106,6 +110,8 @@ public class BoardUI extends GridPane implements ISubject, IObserver {
     private Image xImage;
     private Image oImage;
     private Image emptyImage;
+    @Setter
+    private BiConsumer<Integer, Integer> moveHandler;
 
     /**
      * Default GUI board constructor
@@ -156,6 +162,8 @@ public class BoardUI extends GridPane implements ISubject, IObserver {
                             GridPane.getRowIndex((Node) event.getSource())
                     );
                     EventManager.notify(this, eventType);
+                    if (moveHandler != null)
+                        moveHandler.accept(GridPane.getColumnIndex((Node) event.getSource()), GridPane.getRowIndex((Node) event.getSource()));
                 });
                 this.add(clickable, x, y);
             }

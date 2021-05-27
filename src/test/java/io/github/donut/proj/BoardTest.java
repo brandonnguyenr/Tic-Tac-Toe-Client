@@ -1,11 +1,11 @@
 package io.github.donut.proj;
 
-import io.github.donut.proj.common.Board;
-import io.github.donut.proj.common.Token;
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
 import org.junit.jupiter.api.Test;
 
-import static io.github.donut.proj.common.Token.O;
-import static io.github.donut.proj.common.Token.X;
+import static io.github.coreutils.proj.enginedata.Token.O;
+import static io.github.coreutils.proj.enginedata.Token.X;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {

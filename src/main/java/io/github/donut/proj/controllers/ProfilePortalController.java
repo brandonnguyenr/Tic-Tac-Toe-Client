@@ -1,16 +1,13 @@
 package io.github.donut.proj.controllers;
 
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.Objects;

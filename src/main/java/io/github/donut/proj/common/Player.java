@@ -1,7 +1,9 @@
 package io.github.donut.proj.common;
 
-import static io.github.donut.proj.common.Token.*;
+import static io.github.coreutils.proj.enginedata.Token.*;
 
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.donut.proj.PlayerType.Human;
 import io.github.donut.proj.PlayerType.IPlayerType;
 import io.github.donut.proj.listener.EventManager;

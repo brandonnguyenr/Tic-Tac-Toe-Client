@@ -1,5 +1,11 @@
 package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
+import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.MoveData;
+import io.github.coreutils.proj.messages.RoomData;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.common.BoardUI;
 import io.github.donut.proj.common.Player;
 import io.github.donut.proj.listener.EventManager;
@@ -10,6 +16,7 @@ import io.github.donut.sounds.EventSounds;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,7 +29,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Objects;
 
@@ -38,8 +44,8 @@ public class BoardPageController extends AbstractController implements IObserver
     @FXML
     private Label playerNameRight;
 
-    @FXML
-    private ImageView backButton;
+//    @FXML
+//    private ImageView backButton;
 
     @FXML
     private BorderPane borderPane;
@@ -56,24 +62,50 @@ public class BoardPageController extends AbstractController implements IObserver
     @FXML
     private Label exitPrompt;
 
-    private final BoardUI board;
-    private final GameController game;
+    private final BoardUI boardUI;
+    private Board board = null;
+    private RoomData room;
     private final boolean isMultiplayer;
-    private final Image backButtonIdle = new Image(Objects.requireNonNull(
-            getClass().
-            getClassLoader().
-            getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
-    ));
-    private final Image backButtonHover = new Image(Objects.requireNonNull(
-            getClass().
-            getClassLoader().
-            getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
-    ));
+    private boolean myTurn;
+    private Token myToken;
 
-    public BoardPageController(BoardUI board) {
-        this.board = board;
+    private final GameController game;
+
+//    private final Image backButtonIdle = new Image(Objects.requireNonNull(
+//            getClass().
+//            getClassLoader().
+//            getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
+//    ));
+//    private final Image backButtonHover = new Image(Objects.requireNonNull(
+//            getClass().
+//            getClassLoader().
+//            getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
+//    ));
+
+    public BoardPageController(BoardUI board, RoomData room) {
+        this.room = room;
+        this.boardUI = board;
+        this.board = new Board();
         this.game = null;
         this.isMultiplayer = true;
+
+        if (room.getPlayer1().getPlayerUserName().equals(AppController.getPlayer().getPlayerUserName())) {
+            myToken = Token.X;
+            myTurn = true;
+        } else {
+            myToken = Token.O;
+            myTurn = false;
+        }
+
+        this.boardUI.setMoveHandler((col, row) -> {
+            if (this.board.getToken(col, row) == Token.BLANK && myTurn) {
+                myTurn = false;
+                this.board.updateToken(col, row, myToken);
+                GlobalAPIManager.getInstance().send(new MoveData(room.getRoomID(),
+                        AppController.getPlayer().getPlayerUserName(), col, row, System.currentTimeMillis()), Channels.ROOM_MOVE.toString());
+                this.boardUI.drawBoard(this.board);
+            }
+        });
     }
 
     /**
@@ -83,7 +115,7 @@ public class BoardPageController extends AbstractController implements IObserver
      * @author Kord Boniadi
      */
     public BoardPageController(BoardUI board, GameController game) {
-        this.board = board;
+        this.boardUI = board;
         this.game = game;
         this.isMultiplayer = false;
         EventManager.register(game, this);
@@ -103,7 +135,7 @@ public class BoardPageController extends AbstractController implements IObserver
         playerNameLeft.setPrefWidth(150);
         playerNameRight.setPrefWidth(150);
 
-        ((VBox) borderPane.getCenter()).getChildren().add(board);
+        ((VBox) borderPane.getCenter()).getChildren().add(boardUI);
         BorderPane.setAlignment(playerNameLeft, Pos.TOP_CENTER);
         BorderPane.setAlignment(playerNameRight, Pos.TOP_CENTER);
 
@@ -121,45 +153,53 @@ public class BoardPageController extends AbstractController implements IObserver
         overlayPane.setVisible(false);
 
         /*========================Action Events START=========================*/
-        backButton.setOnMouseClicked(this::onBackButtonClick);
-        backButton.setOnMouseEntered(this::onBackButtonEnter);
-        backButton.setOnMouseExited(this::onBackButtonExit);
+//        backButton.setOnMouseClicked(this::onBackButtonClick);
+//        backButton.setOnMouseEntered(this::onBackButtonEnter);
+//        backButton.setOnMouseExited(this::onBackButtonExit);
         /*========================Action Events END=========================*/
     }
 
-    /**
-     * Event handler for back button
-     * @param actionEvent mouse event
-     * @author Kord Boniadi
-     */
-    public void onBackButtonClick(MouseEvent actionEvent) {
-        EventSounds.getInstance().playButtonSound1();
-        if (!isMultiplayer) {
-            EventManager.removeAllObserver(game);
-            EventManager.removeAllObserver(game.getPlayer1());
-            EventManager.removeAllObserver(game.getPlayer2());
-            EventManager.removeAllObserver(board);
-        }
-        AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
-        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
+    public void toggleTurn() {
+        myTurn = true;
     }
 
-    /**
-     * Event handler for back button hover effect
-     * @author Kord Boniadi
-     */
-    public void onBackButtonEnter(MouseEvent actionEvent) {
-        backButton.setImage(backButtonHover);
-    }
+//    /**
+//     * Event handler for back button
+//     * @param actionEvent mouse event
+//     * @author Kord Boniadi
+//     */
+//    public void onBackButtonClick(MouseEvent actionEvent) {
+//        EventSounds.getInstance().playButtonSound1();
+//        if (!isMultiplayer) {
+//            EventManager.removeAllObserver(game);
+//            EventManager.removeAllObserver(game.getPlayer1());
+//            EventManager.removeAllObserver(game.getPlayer2());
+//            EventManager.removeAllObserver(boardUI);
+//        }
+//        AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
+//        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
+//    }
 
-    /**
-     * Event handler for back button idle effect
-     * @author Kord Boniadi
-     */
-    public void onBackButtonExit(MouseEvent actionEvent) {
-        backButton.setImage(backButtonIdle);
-    }
+//    /**
+//     * Event handler for back button hover effect
+//     * @author Kord Boniadi
+//     */
+//    public void onBackButtonEnter(MouseEvent actionEvent) {
+//        backButton.setImage(backButtonHover);
+//    }
+//
+//    /**
+//     * Event handler for back button idle effect
+//     * @author Kord Boniadi
+//     */
+//    public void onBackButtonExit(MouseEvent actionEvent) {
+//        backButton.setImage(backButtonIdle);
+//    }
 
+    public void updatedBoard(Board board) {
+        this.board = board;
+        Platform.runLater(() -> this.boardUI.drawBoard(board));
+    }
     /**
      * New info is received through this method. Object decoding is needed
      *

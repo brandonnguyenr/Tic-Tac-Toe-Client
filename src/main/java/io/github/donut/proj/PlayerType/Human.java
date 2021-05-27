@@ -1,8 +1,8 @@
 package io.github.donut.proj.PlayerType;
 
-import io.github.donut.proj.common.Board;
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.donut.proj.common.BoardUI;
-import io.github.donut.proj.common.Token;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 

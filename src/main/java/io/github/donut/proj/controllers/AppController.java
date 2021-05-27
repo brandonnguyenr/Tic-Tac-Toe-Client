@@ -1,8 +1,6 @@
 package io.github.donut.proj.controllers;
 
-import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.enginedata.Token;
-import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.PlayerData;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.model.SceneName;
@@ -11,7 +9,6 @@ import io.github.donut.proj.utils.Logger;
 import io.github.donut.proj.utils.Util;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -47,15 +44,10 @@ public class AppController {
         Logger.init(PROPERTIES);
 //        Logger.init(PRODUCTION);
         this.mainStage = stage;
-        final MessagingAPI api = GlobalAPIManager.getInstance().getApi();
 
-        api.onclose(() -> {
+        GlobalAPIManager.getInstance().getApi().onclose(() -> {
             System.out.println("api is now dead.");
             Platform.runLater(mainStage::close);
-        });
-
-        this.mainStage.setOnCloseRequest((event) -> {
-            api.free();
         });
 
         scenes.put(SceneName.Main, new FxmlInfo(SceneName.Main.toString(), STYLES, SceneName.Main, mainStage));
@@ -111,16 +103,6 @@ public class AppController {
         Logger.log("program started..");
     }
 
-//    /**
-//     * This method will return the PlayerData
-//     * @return PlayerData
-//     */
-//    public static PlayerData getPlayer(String channel) {
-//        PlayerData result = new PlayerData(player);
-//        result.setChannel(channel);
-//        return result;
-//    }
-
     /**
      * This method will set the channel for the Player
      */
@@ -144,18 +126,17 @@ public class AppController {
     }
 
     /**
-     * Default player info
-     */
-    public static void setPlayerDefault() {
-        player.setPlayerUserName("");
-        player.setPlayerToken(Token.BLANK);
-    }
-    /**
      * This method will return the username of player
      * @return username
      */
     public static String getUserName() {
         return player.getPlayerUserName();
+    }
+
+
+    public static void setPlayerDefault() {
+        player.setPlayerUserName("");
+        player.setPlayerToken(Token.BLANK);
     }
 
     /**
@@ -166,5 +147,4 @@ public class AppController {
         scenes.forEach((key, value) -> {
             value.clearCache();
         });
-    }
-}
+    }}
