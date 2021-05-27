@@ -179,6 +179,7 @@
     -fx-text-fill: khaki;
     -fx-font-size: 25px;
 }
+
 #firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20;
