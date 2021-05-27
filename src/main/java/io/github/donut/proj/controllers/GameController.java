@@ -42,6 +42,7 @@ public class GameController implements ISubject, IObserver {
         public Board getUpdatedBoard() {
             return updatedBoard;
         }
+
     }
 
     /**
@@ -141,7 +142,6 @@ public class GameController implements ISubject, IObserver {
         this.board = board;
         this.player1 = player1;
         this.player2 = player2;
-        singlePlayerRoomID = (new Random()).nextInt();
     }
 
     /**
