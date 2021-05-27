@@ -44,8 +44,8 @@ public class BoardPageController extends AbstractController implements IObserver
     @FXML
     private Label playerNameRight;
 
-    @FXML
-    private ImageView backButton;
+//    @FXML
+//    private ImageView backButton;
 
     @FXML
     private BorderPane borderPane;
@@ -71,16 +71,16 @@ public class BoardPageController extends AbstractController implements IObserver
 
     private final GameController game;
 
-    private final Image backButtonIdle = new Image(Objects.requireNonNull(
-            getClass().
-            getClassLoader().
-            getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
-    ));
-    private final Image backButtonHover = new Image(Objects.requireNonNull(
-            getClass().
-            getClassLoader().
-            getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
-    ));
+//    private final Image backButtonIdle = new Image(Objects.requireNonNull(
+//            getClass().
+//            getClassLoader().
+//            getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
+//    ));
+//    private final Image backButtonHover = new Image(Objects.requireNonNull(
+//            getClass().
+//            getClassLoader().
+//            getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
+//    ));
 
     public BoardPageController(BoardUI board, RoomData room) {
         this.room = room;
@@ -153,47 +153,48 @@ public class BoardPageController extends AbstractController implements IObserver
         overlayPane.setVisible(false);
 
         /*========================Action Events START=========================*/
-        backButton.setOnMouseClicked(this::onBackButtonClick);
-        backButton.setOnMouseEntered(this::onBackButtonEnter);
-        backButton.setOnMouseExited(this::onBackButtonExit);
+//        backButton.setOnMouseClicked(this::onBackButtonClick);
+//        backButton.setOnMouseEntered(this::onBackButtonEnter);
+//        backButton.setOnMouseExited(this::onBackButtonExit);
         /*========================Action Events END=========================*/
     }
 
     public void toggleTurn() {
         myTurn = true;
     }
-    /**
-     * Event handler for back button
-     * @param actionEvent mouse event
-     * @author Kord Boniadi
-     */
-    public void onBackButtonClick(MouseEvent actionEvent) {
-        EventSounds.getInstance().playButtonSound1();
-        if (!isMultiplayer) {
-            EventManager.removeAllObserver(game);
-            EventManager.removeAllObserver(game.getPlayer1());
-            EventManager.removeAllObserver(game.getPlayer2());
-            EventManager.removeAllObserver(boardUI);
-        }
-        AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
-        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
-    }
 
-    /**
-     * Event handler for back button hover effect
-     * @author Kord Boniadi
-     */
-    public void onBackButtonEnter(MouseEvent actionEvent) {
-        backButton.setImage(backButtonHover);
-    }
+//    /**
+//     * Event handler for back button
+//     * @param actionEvent mouse event
+//     * @author Kord Boniadi
+//     */
+//    public void onBackButtonClick(MouseEvent actionEvent) {
+//        EventSounds.getInstance().playButtonSound1();
+//        if (!isMultiplayer) {
+//            EventManager.removeAllObserver(game);
+//            EventManager.removeAllObserver(game.getPlayer1());
+//            EventManager.removeAllObserver(game.getPlayer2());
+//            EventManager.removeAllObserver(boardUI);
+//        }
+//        AppController.getScenes().get(SceneName.BOARD_PAGE).clearCache();
+//        stage.setScene(AppController.getScenes().get(SceneName.Main).getScene(false));
+//    }
 
-    /**
-     * Event handler for back button idle effect
-     * @author Kord Boniadi
-     */
-    public void onBackButtonExit(MouseEvent actionEvent) {
-        backButton.setImage(backButtonIdle);
-    }
+//    /**
+//     * Event handler for back button hover effect
+//     * @author Kord Boniadi
+//     */
+//    public void onBackButtonEnter(MouseEvent actionEvent) {
+//        backButton.setImage(backButtonHover);
+//    }
+//
+//    /**
+//     * Event handler for back button idle effect
+//     * @author Kord Boniadi
+//     */
+//    public void onBackButtonExit(MouseEvent actionEvent) {
+//        backButton.setImage(backButtonIdle);
+//    }
 
     public void updatedBoard(Board board) {
         this.board = board;
