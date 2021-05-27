@@ -2,7 +2,9 @@ package io.github.donut.proj.controllers;
 
 import io.github.coreutils.proj.enginedata.Board;
 import io.github.coreutils.proj.enginedata.Token;
+import io.github.coreutils.proj.messages.MoveData;
 import io.github.donut.proj.PlayerType.Human;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.common.Player;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
@@ -276,6 +278,9 @@ public class GameController implements ISubject, IObserver {
                 swap = (gameOver) ? null : (swap == player1) ? player2 : player1;
 
                 EventManager.notify(this, new DrawInfo(this.board));
+                // get an id here
+                // send a move data with that id somehow
+
 
                 if (!gameOver) {
                     if (player2.getPlayerType() instanceof Human)
