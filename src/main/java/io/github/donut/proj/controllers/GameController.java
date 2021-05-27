@@ -341,7 +341,6 @@ public class GameController implements ISubject, IObserver {
                     }
 
 
-                    System.out.println("DEBUG: " + player1.getPlayerName() + " beat " + player2.getPlayerName() + ": " + human.getPlayerUserName().equals(whoWon(board, player1, player2).getPlayerName()));
                     SinglePlayerRoomData room = new SinglePlayerRoomData(
                             singlePlayerRoomID,
                             human,
