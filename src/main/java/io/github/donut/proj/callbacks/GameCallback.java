@@ -6,14 +6,11 @@ import io.github.API.messagedata.MsgResultAPI;
 import io.github.API.messagedata.MsgStatus;
 import io.github.API.messagedata.MsgStatusCategory;
 import io.github.API.utils.GsonWrapper;
-import io.github.coreutils.proj.enginedata.Board;
-import io.github.coreutils.proj.enginedata.Token;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.MoveRequestData;
 import io.github.coreutils.proj.messages.RoomData;
 import lombok.Setter;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class GameCallback implements ISubscribeCallback {

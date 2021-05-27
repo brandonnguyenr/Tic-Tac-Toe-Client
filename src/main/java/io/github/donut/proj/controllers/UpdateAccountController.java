@@ -1,8 +1,6 @@
 package io.github.donut.proj.controllers;
 
-import io.github.API.MessagingAPI;
 import io.github.coreutils.proj.messages.Channels;
-import io.github.coreutils.proj.messages.LoginData;
 import io.github.coreutils.proj.messages.UpdateData;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.UpdatesCallback;

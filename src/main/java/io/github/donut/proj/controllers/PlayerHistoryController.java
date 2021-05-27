@@ -1,6 +1,5 @@
 package io.github.donut.proj.controllers;
 
-import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;

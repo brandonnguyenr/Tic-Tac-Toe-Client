@@ -10,7 +10,6 @@ import io.github.donut.proj.common.Player;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
-import io.github.donut.proj.utils.RestrictiveTextField;
 import io.github.donut.sounds.EventSounds;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -22,8 +21,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
