@@ -1,8 +1,6 @@
 package io.github.donut.proj.controllers;
 
-import io.github.API.MessagingAPI;
-import io.github.donut.proj.controllers.GameController;
-import io.github.donut.proj.callbacks.AuthorizationCallback;
+
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
@@ -13,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.input.MouseEvent;
-import lombok.Setter;
+
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -23,6 +21,8 @@ public class StatsPageController extends AbstractController implements Initializ
 
     @FXML
     private Label statsPageTitle;
+    @FXML
+    private Label playerPortal;
     @FXML
     private Label winsLabel;
     @FXML
@@ -34,50 +34,68 @@ public class StatsPageController extends AbstractController implements Initializ
     @FXML
     private Label totalGamesPlayedLabel;
 
+
+    @FXML
+    private Label winsNumber;
+    @FXML
+    private Label tiesNumber;
+    @FXML
+    private Label lossesNumber;
+    @FXML
+    private Label percentage;
+    @FXML
+    private Label total;
+
+
     @FXML
     private BorderPane statsPage;
-
     @FXML
     private ImageView backButton;
 
-    public static class getData {
-
-        public int getWins(int wins) {
-            return wins;
-        }
-
-        public int getLosses(int losses) {
-            return losses;
-        }
-
-        public int getTies(int ties) {
-            return ties;
-        }
-
+//    public static class getData {
+//
+//        public int getWins(int wins) {
+//            return wins;
+//        }
+//
+//        public int getLosses(int losses) {
+//            return losses;
+//        }
+//
+//        public int getTies(int ties) {
+//            return ties;
+//        }
+//
 //        public int winPercentage(int wins, int losses) {
 //            int percentage;
 //
 //            percentage = wins / losses;
-//            double roundoff = Math.round();
 //            return percentage;
 //        }
-    }
+//    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        getData connect = new getData();
+//        getData connect = new getData();
 //        int wins = connect.getWins();
 //        int losses = connect.getLosses();
 //        int ties = connect.getTies();
 //        int winPercentage= connect.winPercentage();
 
-//        statsPageTitle.setText       ("MY STATS");
-//        winsLabel.setUserData        (wins);
-//        lossesLabel.setUserData      (losses);
-//        tiesLabel.setUserData        (ties);
-//        winLossRatioLabel.setText    (winPercentage + "%");
-//        totalGamesPlayedLabel.setText("TOTAL GAMES");
+        statsPageTitle.setText       ("MY STATS");
+        winsLabel.setText            ("WINS");
+        lossesLabel.setText          ("TIES");
+        tiesLabel.setText            ("LOSSES");
+        winLossRatioLabel.setText    ("WIN PERCENTAGE");
+        totalGamesPlayedLabel.setText("TOTAL GAMES");
+        playerPortal.setText         ("PLAYER PORTAL");
+
+        winsNumber.setUserData       (1);
+        lossesNumber.setUserData     (0);
+        tiesNumber.setUserData       (0);
+        percentage.setUserData       (100);
+        total.setUserData            (1);
 
         /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
@@ -85,9 +103,6 @@ public class StatsPageController extends AbstractController implements Initializ
         backButton.setOnMouseExited(this::onBackButtonExit);
         /*========================Action Events END=========================*/
     }
-
-
-
     /**
      * Event handler for back button idle effect
      * @author Kord Boniadi

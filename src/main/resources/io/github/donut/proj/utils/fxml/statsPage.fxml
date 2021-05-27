@@ -4,19 +4,19 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="statsPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox prefHeight="80.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
             <Image url="@../../images/common/back_arrow.png" />
          </ImageView>
-         <Label prefHeight="18.0" prefWidth="74.0" text="Player Portal" />
+         <Label fx:id="playerPortal" prefHeight="18.0" prefWidth="74.0" text="Player Portal" />
       </HBox>
    </top>
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="STATS PAGE" />
+            <Label fx:id="statsPageTitle" text="MY STATS" />
          </children></VBox>
    </center>
    <bottom>
@@ -24,11 +24,24 @@
          <children>
             <Pane prefHeight="335.0" prefWidth="270.0">
                <children>
-                  <Label layoutX="116.0" layoutY="25.0" text="Label" />
+                  <Label fx:id="winsLabel" layoutX="116.0" layoutY="25.0" text="WINS" />
+                  <Label fx:id="winsNumber" layoutX="96.0" layoutY="80.0" text="WIN NUMBER" />
+                  <Label fx:id="winLossRatioLabel" layoutX="192.0" layoutY="179.0" text="WIN PERCENTAGE" />
+                  <Label fx:id="percentage" layoutX="205.0" layoutY="215.0" text="PERCENTAGE" />
                </children>
             </Pane>
-            <Pane prefHeight="335.0" prefWidth="270.0" />
-            <Pane prefHeight="335.0" prefWidth="270.0" />
+            <Pane prefHeight="335.0" prefWidth="270.0">
+               <children>
+                  <Label fx:id="tiesLabel" layoutX="120.0" layoutY="22.0" text="TIES" />
+                  <Label fx:id="totalGamesPlayedLabel" layoutX="217.0" layoutY="177.0" text="TOTAL GAMES" />
+                  <Label fx:id="total" layoutX="238.0" layoutY="213.0" text="TOTAL" />
+                  <Label fx:id="tiesNumber" layoutX="97.0" layoutY="76.0" text="TIES NUMBER" />
+               </children></Pane>
+            <Pane prefHeight="335.0" prefWidth="270.0">
+               <children>
+                  <Label fx:id="lossesLabel" layoutX="119.0" layoutY="24.0" text="LOSSES" />
+                  <Label fx:id="lossesNumber" layoutX="93.0" layoutY="68.0" text="LOSSES NUMBER" />
+               </children></Pane>
          </children></HBox>
    </bottom>
 </BorderPane>
