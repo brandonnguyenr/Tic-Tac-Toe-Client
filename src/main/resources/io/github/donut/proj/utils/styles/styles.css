@@ -235,6 +235,15 @@
     -fx-text-fill: #75a2e1;
 }
 
+#onlineLabel {
+    -fx-font-size: 13;
+    -fx-text-fill: green;
+}
+
+#offlineLabel {
+    -fx-font-size: 13;
+    -fx-text-fill: red;
+}
 /*================================= MENU BAR CSS =================================*/
 
 * {

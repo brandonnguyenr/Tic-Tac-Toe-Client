@@ -34,6 +34,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.Duration;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
@@ -49,6 +51,12 @@ public class LobbyController extends AbstractController implements ISubject {
     public Label title;
 
     @FXML
+    private final Label onlineLabel = new Label("Online");
+
+    @FXML
+    private final Label offlineLabel = new Label("Offline");
+
+    @FXML
     private BorderPane multiplayerPage;
 
     @FXML
@@ -59,12 +67,16 @@ public class LobbyController extends AbstractController implements ISubject {
 
     private TableView<RoomData> lobbyTableView;
 
+    private TableView<OnlineState> onlinePlayerTableView;
+
     @FXML
     private ObservableList<RoomData> tvOList;
 
     @FXML
-    private ImageView backButton;
+    private ObservableList<OnlineState> onlinePlayersObservableList;
 
+    @FXML
+    private ImageView backButton;
 
     private final Image backButtonIdle = new Image(Objects.requireNonNull(
             getClass().
@@ -99,6 +111,26 @@ public class LobbyController extends AbstractController implements ISubject {
                     getResourceAsStream("io/github/donut/proj/images/icons/join_game.png")
     ));
 
+    public static class OnlineState {
+
+        public String username;
+
+        public Boolean isOnline;
+
+        public OnlineState(String username, Boolean isOnline) {
+            this.username = username;
+            this.isOnline = isOnline;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public Boolean getIsOnline() {
+            return isOnline;
+        }
+    }
+
     /**
      * Initializes a LobbyController object after its root element has been
      * completely processed. It also loads the tableview object
@@ -108,6 +140,11 @@ public class LobbyController extends AbstractController implements ISubject {
      */
     @FXML
     public void initialize() {
+
+        // ===================== LOBBY TABLE VIEW =====================
+
+        onlineLabel.setId("onlineLabel");
+        offlineLabel.setId("offlineLabel");
 
         TableColumn<RoomData, String> lobbyNameCol = new TableColumn<>("Lobby");
         lobbyNameCol.setReorderable(false);
@@ -120,7 +157,7 @@ public class LobbyController extends AbstractController implements ISubject {
         playersCol.setReorderable(false);
         playersCol.setResizable(false);
         playersCol.setSortable(false);
-        playersCol.setPrefWidth(200);
+        playersCol.setPrefWidth(160);
         playersCol.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayer1().getPlayerUserName()));
 
         TableColumn<RoomData, Integer> playerCountCol = new TableColumn<>("Count");
@@ -130,18 +167,48 @@ public class LobbyController extends AbstractController implements ISubject {
         playerCountCol.setPrefWidth(80);
         playerCountCol.setCellValueFactory(new PropertyValueFactory<>("playerCount"));
 
+        // ============================================================
+
+        // ===================== ONLINE PLAYERS TABLE VIEW =====================
+
+        TableColumn<OnlineState, String> onlinePlayerCol = new TableColumn<>("Online Players");
+        onlinePlayerCol.setReorderable(false);
+        onlinePlayerCol.setResizable(false);
+        onlinePlayerCol.setSortable(false);
+        onlinePlayerCol.setPrefWidth(100);
+        onlinePlayerCol.setCellValueFactory(new PropertyValueFactory<>("username"));
+
+        TableColumn<OnlineState, Label> isOnlineCol = new TableColumn<>("Status");
+        isOnlineCol.setReorderable(false);
+        isOnlineCol.setResizable(false);
+        isOnlineCol.setSortable(false);
+        isOnlineCol.setPrefWidth(50);
+        isOnlineCol.setCellValueFactory(param -> new SimpleObjectProperty<Label>((param.getValue().isOnline) ? onlineLabel : offlineLabel));
+
+        // =====================================================================
+
         lobbyTableView = new TableView<>();
-
         lobbyTableView.setItems(tvOList);
-
         lobbyTableView.getColumns().add(lobbyNameCol);
         lobbyTableView.getColumns().add(playersCol);
         lobbyTableView.getColumns().add(playerCountCol);
 
         multiplayerPage.setCenter(lobbyTableView);
 
-        lobbyTableView.setPadding(new Insets(0, 115, 30, 115));
+        setOnlinePlayersObservableList();
+        onlinePlayerTableView = new TableView<>(onlinePlayersObservableList);
+//        onlinePlayerTableView.setItems(onlinePlayersObservableList);
+        onlinePlayerTableView.getColumns().add(onlinePlayerCol);
+        onlinePlayerTableView.getColumns().add(isOnlineCol);
+
+        multiplayerPage.setCenter(lobbyTableView);
+
+        multiplayerPage.setRight(onlinePlayerTableView);
+
+        lobbyTableView.setPadding(new Insets(0, 0, 30, 20));
+        onlinePlayerTableView.setPadding(new Insets(0, 20, 30, 60));
         lobbyTableView.setSelectionModel(null);
+        onlinePlayerTableView.setSelectionModel(null);
         lobbyTableView.setId("lobbyTableView");
 
         addJoinButtonToTable();
@@ -160,6 +227,14 @@ public class LobbyController extends AbstractController implements ISubject {
         /*========================Action Events END=========================*/
     }
 
+    public void setOnlinePlayersObservableList() {
+        onlinePlayersObservableList = FXCollections.observableArrayList();
+
+        onlinePlayersObservableList.addAll(new OnlineState("Joe", false),
+                new OnlineState("Mama", true)
+                );
+    }
+
     public void setLobbyListAsync(List<RoomData> rooms) {
         Platform.runLater(() -> {
             setLobbyList(rooms);
@@ -169,7 +244,6 @@ public class LobbyController extends AbstractController implements ISubject {
     public void setLobbyList(List<RoomData> rooms) {
         ObservableList<RoomData> list = FXCollections.observableArrayList(rooms);
         lobbyTableView.setItems(list);
-
     }
 
     /**
