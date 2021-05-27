@@ -172,13 +172,13 @@ public class PlayerHistoryController extends AbstractController implements Initi
         if (roomMoves.size() == 0)
             return;
 
-        String id = roomMoves.get(0).getPlayerID();
+        String id = roomMoves.get(0).getPlayerUserName();
 
         Token x = Token.X;
         Token o = Token.O;
 
         for (MoveData m : roomMoves) {
-            board.updateToken(m.getX(), m.getY(), (m.getPlayerID().equals(id)) ? x : o );
+            board.updateToken(m.getX(), m.getY(), (m.getPlayerUserName().equals(id)) ? x : o );
         }
 
         stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(new MoveHistoryController(board), false));
