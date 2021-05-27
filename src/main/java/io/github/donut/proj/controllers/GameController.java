@@ -2,14 +2,17 @@ package io.github.donut.proj.controllers;
 
 import io.github.coreutils.proj.enginedata.Board;
 import io.github.coreutils.proj.enginedata.Token;
-import io.github.coreutils.proj.messages.MoveData;
+import io.github.coreutils.proj.messages.*;
 import io.github.donut.proj.PlayerType.Human;
+import io.github.donut.proj.PlayerType.NPCEasyMode;
+import io.github.donut.proj.PlayerType.NPCHardMode;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.common.Player;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
 import io.github.donut.proj.listener.ISubject;
 
+import java.nio.channels.Channel;
 import java.util.Objects;
 import java.util.Random;
 
@@ -21,6 +24,9 @@ import static io.github.coreutils.proj.enginedata.Token.*;
  * @author Brandon Nguyen
  */
 public class GameController implements ISubject, IObserver {
+
+    private int singlePlayerRoomID = 0;
+    private long startTime;
 
     /**
      * Container for data to be sent out to IObservers subscribed to this class
@@ -184,6 +190,8 @@ public class GameController implements ISubject, IObserver {
         if (player2.getPlayerType() instanceof Human)
             EventManager.notify(this, swap);
         swap.makeMove(this.board);
+
+        startTime = System.currentTimeMillis();
     }
 
     /**
@@ -278,17 +286,58 @@ public class GameController implements ISubject, IObserver {
                 swap = (gameOver) ? null : (swap == player1) ? player2 : player1;
 
                 EventManager.notify(this, new DrawInfo(this.board));
+
                 // get an id here
                 // send a move data with that id somehow
-
+                System.out.println("CLIENT:: sending a move message");
+                MoveData move = new MoveData(8, "granttest1b", info.getX(), info.getY(), System.currentTimeMillis());
+                GlobalAPIManager.getInstance().getApi().publish()
+                        .message(move)
+                        .channel(Channels.ROOM_MOVE_SINGLEPLAYER.toString())
+                        .execute();
 
                 if (!gameOver) {
                     if (player2.getPlayerType() instanceof Human)
                         EventManager.notify(this, swap);
                     swap.makeMove(this.board);
-                } else {
-                    EventManager.notify(this, new GameController.Results(whoWon(board, player1, player2)));
                 }
+                else {
+                    EventManager.notify(this, new GameController.Results(whoWon(board, player1, player2)));
+                    // send room data message
+                    PlayerData human = new PlayerData();
+                    human.setType(PlayerData.PlayerType.HUMAN);
+                    PlayerData.PlayerType ai;
+//                    human.setPlayerUserName((player1.getPlayerType() instanceof Human) ? player1.getPlayerName() : player2.getPlayerName());
+                    if (player1.getPlayerType() instanceof Human) {
+                        human.setPlayerUserName(player1.getPlayerName());
+
+                        System.out.println("DEBUG: HUMAN PLAYER NAME IS: " + human.getPlayerUserName());
+
+
+                        ai = (player2.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
+                    }
+                    else {
+                        human.setPlayerUserName(player2.getPlayerName());
+                        ai = (player1.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
+                    }
+
+                    SinglePlayerRoomData room = new SinglePlayerRoomData(
+                            singlePlayerRoomID,
+                            human,
+                            startTime,
+                            System.currentTimeMillis(),
+                            SinglePlayerRoomData.RequestType.DISCONNECT,
+                            true, // TODO dunno how to figure out which player started
+                            (human.getPlayerUserName().equals(whoWon(board, player1, player2).getPlayerName())),
+                            ai
+                        );
+
+                    System.out.println("Publishing SPR data to ROOM_SINGLE_PLAYER");
+                    GlobalAPIManager.getInstance().getApi().publish()
+                            .message(room)
+                            .channel(Channels.ROOM_SINGLE_PLAYER.toString())
+                            .execute();
+                    }
             }
         }
     }
