@@ -60,7 +60,7 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle, #waitingPageTitle, #moveHistoryTitle, #statsPageTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle, #waitingPageTitle, #statsPageTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 35px;
@@ -206,7 +206,7 @@
     -fx-font-family: "Chalkduster";
 }
 #boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage, #playerHistoryPage,
-#updateAccountPage, #waitingPage, #moveHistoryPage, #statsPage {
+#updateAccountPage, #waitingPage, #statsPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }
@@ -243,6 +243,20 @@
 #offlineLabel {
     -fx-font-size: 13;
     -fx-text-fill: red;
+}
+
+#winTitle, #tieTitle, #lossTitle {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 45;
+    -fx-text-fill: khaki;
+    -fx-alignment: center;
+}
+
+#wins, #losses, #ties {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 80;
+    -fx-text-fill: khaki;
+    -fx-alignment: center;
 }
 /*================================= MENU BAR CSS =================================*/
 
