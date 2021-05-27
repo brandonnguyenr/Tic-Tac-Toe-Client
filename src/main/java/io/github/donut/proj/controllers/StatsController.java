@@ -11,6 +11,10 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.Objects;
 
+/**
+ * This class handles the total stats for the user
+ * @author Utsav Parajuli
+ */
 public class StatsController extends AbstractController implements ISubject {
     @FXML
     private Label wins;
@@ -29,37 +33,26 @@ public class StatsController extends AbstractController implements ISubject {
     @FXML
     private ImageView backButton;
 
+    /**
+     * Initializes the stats page
+     */
     @FXML
     public void initialize() {
-        wins.setText("20");
-        ties.setText("1");
+        wins.setText  ("20");
+        ties.setText  ("1");
         losses.setText("0");
 
         /*========================Action Events START=========================*/
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
+        /*========================Action Events END===========================*/
     }
-
-    //back button idle image
-    private final Image backButtonIdle = new Image(Objects.requireNonNull(
-            getClass().
-                    getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
-    ));
-
-    //back button hover image
-    private final Image backButtonHover = new Image(Objects.requireNonNull(
-            getClass().
-                    getClassLoader().
-                    getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
-    ));
 
     /**
      * Event handler for back button
      *
      * @param actionEvent mouse event
-     * @author Kord Boniadi
      * @author Utsav Parajuli
      */
     public void onBackButtonClick(MouseEvent actionEvent) {
@@ -85,5 +78,19 @@ public class StatsController extends AbstractController implements ISubject {
         backButton.setImage(backButtonIdle);
     }
 
+
+    //back button idle image
+    private final Image backButtonIdle = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/common/back_arrow.png")
+    ));
+
+    //back button hover image
+    private final Image backButtonHover = new Image(Objects.requireNonNull(
+            getClass().
+                    getClassLoader().
+                    getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
+    ));
 
 }
