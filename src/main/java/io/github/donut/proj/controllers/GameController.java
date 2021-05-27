@@ -312,30 +312,48 @@ public class GameController implements ISubject, IObserver {
                     human.setType(PlayerData.PlayerType.HUMAN);
                     PlayerData.PlayerType ai;
 //                    human.setPlayerUserName((player1.getPlayerType() instanceof Human) ? player1.getPlayerName() : player2.getPlayerName());
+
+                    SinglePlayerRoomData.PlayerResult playerResult;
+                    if (board.isBoardFull() && hasWon(board).equals(BLANK)) {
+                        playerResult = SinglePlayerRoomData.PlayerResult.TIE;
+                    }
+
                     if (player1.getPlayerType() instanceof Human) {
+                        // set human to be player 1, and AI to be player 2
                         human.setPlayerUserName(player1.getPlayerName().substring(0, player1.getPlayerName().length()-4));
-
                         System.out.println("DEBUG: HUMAN PLAYER NAME IS: " + human.getPlayerUserName());
-
-
                         ai = (player2.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
+                        // if player 1 is the winner, then set enum to win. otherwise set to loss (already checked tie)
+                        if (player1.equals(whoWon(board, player1, player2)))
+                            playerResult = SinglePlayerRoomData.PlayerResult.WIN;
+                        else
+                            playerResult = SinglePlayerRoomData.PlayerResult.LOSS;
+
                     }
                     else {
+                        // set human to be player 2, and ai to be player 1
                         human.setPlayerUserName(player2.getPlayerName().substring(0, player1.getPlayerName().length()-4));
                         ai = (player1.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
+                        if (player2.equals(whoWon(board, player1, player2)))
+                            playerResult = SinglePlayerRoomData.PlayerResult.WIN;
+                        else
+                            playerResult = SinglePlayerRoomData.PlayerResult.LOSS;
                     }
+
+
+                    System.out.println("DEBUG: " + player1.getPlayerName() + " beat " + player2.getPlayerName() + ": " + human.getPlayerUserName().equals(whoWon(board, player1, player2).getPlayerName()));
                     SinglePlayerRoomData room = new SinglePlayerRoomData(
                             singlePlayerRoomID,
                             human,
                             startTime,
                             System.currentTimeMillis(),
                             SinglePlayerRoomData.RequestType.DISCONNECT,
-                            true, // TODO dunno how to figure out which player started
-                            (human.getPlayerUserName().equals(whoWon(board, player1, player2).getPlayerName())),
+                            true,
+                            playerResult,
                             ai
                         );
 
-                    System.out.println("Publishing SPR data to ROOM_SINGLE_PLAYER");
+                    System.out.println("DEBUG: Sending SPR from client " + room);
                     GlobalAPIManager.getInstance().send(room, Channels.ROOM_SINGLE_PLAYER.toString());
                     }
             }
