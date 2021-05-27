@@ -40,6 +40,8 @@ public class PlayerHistoryController extends AbstractController implements Initi
     @FXML
     private ImageView backButton;
 
+    private ImageView loadingGif = new ImageView();
+
     @FXML
     private BorderPane playerHistoryPage;
 
@@ -63,6 +65,10 @@ public class PlayerHistoryController extends AbstractController implements Initi
         backButton.setOnMouseClicked(this::onBackButtonClick);
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
+
+        loadingGif.setImage(loading);
+        loadingGif.setFitWidth(200);
+        loadingGif.setFitHeight(25);
 
         buildTable();
     }
@@ -123,6 +129,8 @@ public class PlayerHistoryController extends AbstractController implements Initi
 
         playerHistoryTable = new TableView<>();
 
+        playerHistoryTable.setPlaceholder(loadingGif);
+
         fillTableWithObservableData();
 
         playerHistoryTable.setItems(tvOList);
@@ -141,6 +149,8 @@ public class PlayerHistoryController extends AbstractController implements Initi
         playerHistoryPage.setCenter(playerHistoryTable);
         addMovesButtonToTable();
 
+
+
         GlobalAPIManager.getInstance().swapListener(new RoomHistoryCallback(this::setLobbyListAsync),
                 Channels.REQUEST + Channels.GET_ROOMS_DATA.toString(),
                 Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
@@ -148,6 +158,8 @@ public class PlayerHistoryController extends AbstractController implements Initi
 
     public void setLobbyListAsync(List<RoomResponse> rooms) {
         Platform.runLater(() -> {
+            if ((Bindings.isEmpty(playerHistoryTable.getItems())).get())
+                playerHistoryTable.setPlaceholder(new Label("HISTORY NOT AVAILABLE"));
             setLobbyList(rooms);
         });
     }
@@ -270,6 +282,16 @@ public class PlayerHistoryController extends AbstractController implements Initi
                     getClassLoader().
                     getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
     ));
+
+     /**
+      * Event handler for loading button hover effect
+      * @author Utsav Parajuli
+      */
+     private final Image loading = new Image(Objects.requireNonNull(
+             getClass().
+                     getClassLoader().
+                     getResourceAsStream("io/github/donut/proj/images/icons/loading_5.gif")
+     ));
 
     /**
      * Event handler for back button hover effect
