@@ -51,6 +51,12 @@ public class LobbyController extends AbstractController implements ISubject {
     public Label title;
 
     @FXML
+    private final Label onlineLabel = new Label("Online");
+
+    @FXML
+    private final Label offlineLabel = new Label("Offline");
+
+    @FXML
     private BorderPane multiplayerPage;
 
     @FXML
@@ -137,6 +143,9 @@ public class LobbyController extends AbstractController implements ISubject {
 
         // ===================== LOBBY TABLE VIEW =====================
 
+        onlineLabel.setId("onlineLabel");
+        offlineLabel.setId("offlineLabel");
+
         TableColumn<RoomData, String> lobbyNameCol = new TableColumn<>("Lobby");
         lobbyNameCol.setReorderable(false);
         lobbyNameCol.setResizable(false);
@@ -169,12 +178,12 @@ public class LobbyController extends AbstractController implements ISubject {
         onlinePlayerCol.setPrefWidth(100);
         onlinePlayerCol.setCellValueFactory(new PropertyValueFactory<>("username"));
 
-        TableColumn<OnlineState, String> isOnlineCol = new TableColumn<>("Status");
+        TableColumn<OnlineState, Label> isOnlineCol = new TableColumn<>("Status");
         isOnlineCol.setReorderable(false);
         isOnlineCol.setResizable(false);
         isOnlineCol.setSortable(false);
         isOnlineCol.setPrefWidth(50);
-        isOnlineCol.setCellValueFactory(param -> new SimpleObjectProperty<>((param.getValue().isOnline) ? "online" : "offline"));
+        isOnlineCol.setCellValueFactory(param -> new SimpleObjectProperty<Label>((param.getValue().isOnline) ? onlineLabel : offlineLabel));
 
         // =====================================================================
 
