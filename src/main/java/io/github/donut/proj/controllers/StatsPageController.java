@@ -22,8 +22,6 @@ public class StatsPageController extends AbstractController implements Initializ
     @FXML
     private Label statsPageTitle;
     @FXML
-    private Label playerPortal;
-    @FXML
     private Label winsLabel;
     @FXML
     private Label lossesLabel;
@@ -89,7 +87,6 @@ public class StatsPageController extends AbstractController implements Initializ
         tiesLabel.setText            ("LOSSES");
         winLossRatioLabel.setText    ("WIN PERCENTAGE");
         totalGamesPlayedLabel.setText("TOTAL GAMES");
-        playerPortal.setText         ("PLAYER PORTAL");
 
         winsNumber.setUserData       (1);
         lossesNumber.setUserData     (0);

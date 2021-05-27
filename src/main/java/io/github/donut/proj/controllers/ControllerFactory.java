@@ -49,9 +49,15 @@ public final class ControllerFactory {
                 yield createPlayerHistoryController();
             case UPDATE_ACCOUNT_PAGE:
                 yield createUpdateAccountController();
+            case STATS_PAGE:
+                yield createStatsPageController();
             default:
                 throw new IllegalArgumentException("A factory has not been created yet for that controller");
         };
+    }
+
+    private static StatsPageController createStatsPageController() {
+        return new StatsPageController();
     }
 
     /**

@@ -60,7 +60,7 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle, #statsPageTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 35px;
@@ -139,6 +139,12 @@
     -fx-font-size: 20;
 }
 
+#winsLabel, #lossesLabel, #tiesLabel, #winLossRatioLabel, #totalGamesPlayedLabel {
+    -fx-font-family: "Chalkduster";
+    -fx-text-fill: khaki;
+    -fx-font-size: 20;
+}
+
 #emptyMessage, #passwordMessage {
     -fx-font-family: "Chalkduster";
     -fx-alignment: center;
@@ -179,7 +185,7 @@
 #player1Label {
     -fx-font-family: "Chalkduster";
 }
-#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage, #playerHistoryPage, #updateAccountPage {
+#boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage, #playerHistoryPage, #updateAccountPage, #statsPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }
