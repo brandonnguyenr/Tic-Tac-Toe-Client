@@ -114,7 +114,6 @@ public class LobbyController extends AbstractController implements ISubject {
      */
     @FXML
     public void initialize() {
-
         // ===================== LOBBY TABLE VIEW =====================
 
         onlineLabel.setId("onlineLabel");
