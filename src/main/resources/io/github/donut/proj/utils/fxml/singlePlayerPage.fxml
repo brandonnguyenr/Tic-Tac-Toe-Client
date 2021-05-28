@@ -13,7 +13,7 @@
 <BorderPane fx:id="singlePlayerPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <center>
         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <Label fx:id="playerNameLoop" text="Label" translateY="-20.0" />
+         <Label fx:id="playerNameLoop" text="Label" />
             <HBox fx:id="midThird" alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
                 <Label fx:id="difficultyLevelTitle" alignment="CENTER" text="Label" />
                 <ToolBar fx:id="difficultyLevelBar" maxHeight="40.0" maxWidth="200.0" minHeight="40.0" minWidth="200.0" prefHeight="40.0" prefWidth="150.0">
