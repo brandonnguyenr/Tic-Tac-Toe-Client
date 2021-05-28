@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="statsPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+       <HBox minWidth="50.0" prefHeight="100.0" prefWidth="50.0" BorderPane.alignment="CENTER">
+           <ImageView fx:id="backButton" fitHeight="89.0" fitWidth="97.0" preserveRatio="true">
+               <Image url="@../../images/common/back_arrow.png" />
+           </ImageView>
+           <Label fx:id="statsPageTitle" alignment="CENTER" contentDisplay="CENTER" text="PERSONAL STATS" translateY="20" />
+       </HBox>
+   </top>
+   <center>
+       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+           <VBox alignment="CENTER" prefHeight="200.0" prefWidth="180.0" spacing="25.0">
+               <Label fx:id="winTitle" text="WINS" underline="true" />
+               <Label fx:id="wins" />
+           </VBox>
+           <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="180.0" spacing="25.0">
+               <Label fx:id="lossTitle" text="LOSSES" underline="true" />
+               <Label fx:id="losses" />
+           </VBox>
+           <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="180.0" spacing="25.0">
+               <Label fx:id="tieTitle" text="TIES" underline="true" />
+               <Label fx:id="ties" />
+           </VBox>
+           <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="180.0" spacing="25.0">
+               <Label fx:id="totalTitle" text="TOTAL" underline="true" />
+               <Label fx:id="total" />
+           </VBox>
+       </HBox>
+   </center>
+   <bottom>
+       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+           <Label fx:id="winPercentageTitle" contentDisplay="CENTER" textAlignment="CENTER" />
+       </HBox>
+   </bottom>
+</BorderPane>

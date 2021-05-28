@@ -60,7 +60,7 @@
     -fx-background-position: center center;
 }
 
-#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle, #waitingPageTitle, #moveHistoryTitle {
+#singlePlayerTitle, #multiplayerTitle, #createAccountTitle, #historyTitle, #updateAccountTitle, #waitingPageTitle, #statsPageTitle, #moveHistoryTitle {
     -fx-text-fill: #f0e68c;
     -fx-font-family: "Chalkduster";
     -fx-font-size: 35px;
@@ -178,7 +178,12 @@
     -fx-alignment: center;
     -fx-text-fill: khaki;
     -fx-font-size: 25px;
+    -fx-min-height: 70;
+    -fx-max-height:70;
+    -fx-min-width: 500;
+    -fx-max-width: 500;
 }
+
 #firstNameError, #lastNameError, #usernameError, #password1Error, #password2Error {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 20;
@@ -206,7 +211,7 @@
     -fx-font-family: "Chalkduster";
 }
 #boardPage, #singlePlayerPage, #aboutUsPage, #multiplayerPage, #loginPage, #createAccountPage, #playerHistoryPage,
-#updateAccountPage, #waitingPage, #moveHistoryPage {
+#updateAccountPage, #waitingPage, #statsPage, #moveHistoryPage {
     -fx-background-image: url("/io/github/donut/proj/images/common/main_03.png");
     -fx-background-size: 800 450;
 }
@@ -243,6 +248,34 @@
 #offlineLabel {
     -fx-font-size: 13;
     -fx-text-fill: red;
+}
+
+#winTitle, #tieTitle, #lossTitle, #totalTitle {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 35;
+    -fx-text-fill: khaki;
+    -fx-alignment: center;
+}
+
+#winPercentageTitle {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 30;
+    -fx-text-fill: khaki;
+    -fx-alignment: center;
+}
+
+#winPercentage {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 25;
+    -fx-text-fill: khaki;
+    -fx-alignment: center;
+
+}
+#wins, #losses, #ties, #total {
+    -fx-font-family: "Helvetica Neue";
+    -fx-font-size: 80;
+    -fx-text-fill: khaki;
+    -fx-alignment: center;
 }
 /*================================= MENU BAR CSS =================================*/
 

@@ -44,7 +44,7 @@ import java.util.*;
  */
 public class LobbyController extends AbstractController implements ISubject {
     @FXML
-    public Label title;
+    private Label title;
 
     @FXML
     private final Label onlineLabel = new Label("Online");
@@ -56,10 +56,7 @@ public class LobbyController extends AbstractController implements ISubject {
     private BorderPane multiplayerPage;
 
     @FXML
-    public ImageView createLobbyButton;
-
-    @FXML
-    public ScrollPane lobbyPage;
+    private ImageView createLobbyButton;
 
     private TableView<RoomData> lobbyTableView;
 
@@ -67,6 +64,7 @@ public class LobbyController extends AbstractController implements ISubject {
 
     @FXML
     private ObservableList<RoomData> tvOList;
+
 
     @FXML
     private ObservableList<OnlineState> onlinePlayersObservableList;
@@ -116,7 +114,6 @@ public class LobbyController extends AbstractController implements ISubject {
      */
     @FXML
     public void initialize() {
-
         // ===================== LOBBY TABLE VIEW =====================
 
         onlineLabel.setId("onlineLabel");

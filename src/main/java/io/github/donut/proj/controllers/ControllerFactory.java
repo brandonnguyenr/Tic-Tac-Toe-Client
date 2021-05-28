@@ -57,6 +57,8 @@ public final class ControllerFactory {
                 yield createReactivateController();
             case WAITING_PAGE:
                 yield createWaitingRoomController();
+            case STATS_PAGE:
+                yield createStatsController();
             case MOVE_HISTORY_PAGE:
                 yield createMoveHistoryController();
             default:
@@ -360,6 +362,10 @@ public final class ControllerFactory {
             });
         }));
         return controller;
+    }
+
+    private static StatsController createStatsController() {
+        return new StatsController();
     }
 
     private static MoveHistoryController createMoveHistoryController() {
