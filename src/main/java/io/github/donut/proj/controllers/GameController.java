@@ -290,7 +290,7 @@ public class GameController implements ISubject, IObserver {
                         info.getY(),
                         System.currentTimeMillis());
 
-                System.out.println("CLIENT:: sending a move message: " + move + "\n");
+//                System.out.println("CLIENT:: sending a move message: " + move + "\n");
                 GlobalAPIManager.getInstance().send(move, Channels.ROOM_MOVE_SINGLEPLAYER.toString());
 
 
@@ -356,7 +356,7 @@ public class GameController implements ISubject, IObserver {
                             ai
                         );
 
-                    System.out.println("DEBUG: Sending SPR from client " + room);
+//                    System.out.println("DEBUG: Sending SPR from client " + room);
                     GlobalAPIManager.getInstance().send(room, Channels.ROOM_SINGLE_PLAYER.toString());
                     }
             }

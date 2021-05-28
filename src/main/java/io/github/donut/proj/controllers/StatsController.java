@@ -24,6 +24,8 @@ import java.util.Objects;
 /**
  * This class handles the total stats for the user
  * @author Utsav Parajuli
+ * @author Joey Campbell
+ * @author Brandon Ngyuen
  */
 public class StatsController extends AbstractController implements ISubject {
     @FXML
@@ -39,16 +41,9 @@ public class StatsController extends AbstractController implements ISubject {
     private Label total;
 
     @FXML
-    private Label wins1;
-    @FXML
-    private Label ties1;
-    @FXML
-    private Label losses1;
-
-    @FXML
     private ImageView backButton;
 
-    private List<RoomResponse> rooms;
+    private List<RoomResponse> rooms;       //list of rooms
 
     /**
      * Initializes the stats page
@@ -67,19 +62,30 @@ public class StatsController extends AbstractController implements ISubject {
         /*========================Action Events END===========================*/
     }
 
+    /**
+     * Sets the rooms list
+     * @param rooms: list of room response data
+     */
     public void setRoomsListAsync(List<RoomResponse> rooms) {
         Platform.runLater(() -> {
             getStats(rooms);
         });
     }
 
+    /**
+     * Gets the stats of the room
+     * @param rooms: list of rooms
+     */
     public void getStats(List<RoomResponse> rooms) {
+        //set of rooms
         this.rooms = rooms;
 
+        //sets the win counts
         int winCount = 0;
         int lossCount = 0;
         int tieCount = 0;
 
+        //loops through to find counts of stats
         for(RoomResponse room : rooms) {
             switch(room.getResult()) {
                 case "WIN":
@@ -93,15 +99,15 @@ public class StatsController extends AbstractController implements ISubject {
             }
         }
 
+        //sets the W-L-T
         wins.setText("" + winCount);
         ties.setText("" + tieCount);
         losses.setText("" + lossCount);
-
+        //calculate the total games
         int totalGames = winCount + tieCount + lossCount;
-
-        System.out.println(totalGames);
         total.setText("" + totalGames);
 
+        //calculate the percentage
         if (totalGames == 0) {
             winPercentageTitle.setText("Win Percentage: 0.00 %");
         } else {
