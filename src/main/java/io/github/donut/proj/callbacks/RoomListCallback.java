@@ -36,7 +36,6 @@ public class RoomListCallback implements ISubscribeCallback {
         List<RoomData> list = Arrays.asList(GsonWrapper.fromJson(message.getMessage(), RoomData[].class));
         if (updateHandler != null)
             updateHandler.accept(list);
-
     }
 
     @Override

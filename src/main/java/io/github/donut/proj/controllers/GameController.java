@@ -2,7 +2,10 @@ package io.github.donut.proj.controllers;
 
 import io.github.coreutils.proj.enginedata.Board;
 import io.github.coreutils.proj.enginedata.Token;
+import io.github.coreutils.proj.messages.*;
 import io.github.donut.proj.PlayerType.Human;
+import io.github.donut.proj.PlayerType.NPCHardMode;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.common.Player;
 import io.github.donut.proj.listener.EventManager;
 import io.github.donut.proj.listener.IObserver;
@@ -10,6 +13,7 @@ import io.github.donut.proj.listener.ISubject;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
 import static io.github.coreutils.proj.enginedata.Token.*;
 
@@ -19,6 +23,9 @@ import static io.github.coreutils.proj.enginedata.Token.*;
  * @author Brandon Nguyen
  */
 public class GameController implements ISubject, IObserver {
+
+    private int singlePlayerRoomID = 0;
+    private long startTime;
 
     /**
      * Container for data to be sent out to IObservers subscribed to this class
@@ -183,6 +190,8 @@ public class GameController implements ISubject, IObserver {
         if (player2.getPlayerType() instanceof Human)
             EventManager.notify(this, swap);
         swap.makeMove(this.board);
+
+        startTime = System.currentTimeMillis();
     }
 
     /**
@@ -274,17 +283,82 @@ public class GameController implements ISubject, IObserver {
                 board.updateToken(info.getX(), info.getY(), info.getPlayerInstance().getPlayerToken());
                 gameOver = gameOver();
 
+                //** ======== WRITING MOVE ======== **//
+                MoveData move = new MoveData(singlePlayerRoomID,
+                        (swap.getPlayerType() instanceof Human) ? AppController.getUserName() : "Computer",
+                        info.getX(),
+                        info.getY(),
+                        System.currentTimeMillis());
+
+                System.out.println("CLIENT:: sending a move message: " + move + "\n");
+                GlobalAPIManager.getInstance().send(move, Channels.ROOM_MOVE_SINGLEPLAYER.toString());
+
+
                 swap = (gameOver) ? null : (swap == player1) ? player2 : player1;
 
                 EventManager.notify(this, new DrawInfo(this.board));
 
+
+                // GAME OVER LOGIC
                 if (!gameOver) {
                     if (player2.getPlayerType() instanceof Human)
                         EventManager.notify(this, swap);
                     swap.makeMove(this.board);
-                } else {
-                    EventManager.notify(this, new GameController.Results(whoWon(board, player1, player2)));
                 }
+                else {
+                    EventManager.notify(this, new GameController.Results(whoWon(board, player1, player2)));
+                    // send room data message
+                    PlayerData human = AppController.getPlayer();
+                    human.setType(PlayerData.PlayerType.HUMAN);
+                    PlayerData.PlayerType ai;
+//                    human.setPlayerUserName((player1.getPlayerType() instanceof Human) ? player1.getPlayerName() : player2.getPlayerName());
+
+                    // used to determine if player won/lost/tied the AI
+                    SinglePlayerRoomData.PlayerResult playerResult;
+
+                    if (player1.getPlayerType() instanceof Human) {
+                        // set human to be player 1, and AI to be player 2
+                        human.setPlayerUserName(player1.getPlayerName().substring(0, player1.getPlayerName().length()-4));
+                        ai = (player2.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
+
+                        // tie logic
+                        if (board.isBoardFull() && hasWon(board).equals(BLANK))     // the game is a tie
+                            playerResult = SinglePlayerRoomData.PlayerResult.TIE;
+                        else if (player1.equals(whoWon(board, player1, player2)))   // player 1 (human) is winner
+                            playerResult = SinglePlayerRoomData.PlayerResult.WIN;
+                        else
+                            playerResult = SinglePlayerRoomData.PlayerResult.LOSS;  // player 1 (human) is loser
+
+                    }
+                    else {
+                        // set human to be player 2, and ai to be player 1
+                        human.setPlayerUserName(player2.getPlayerName().substring(0, player1.getPlayerName().length()-4));
+                        ai = (player1.getPlayerType() instanceof NPCHardMode) ? PlayerData.PlayerType.AI_HARD : PlayerData.PlayerType.AI_EASY;
+
+                        // tie logic
+                        if (board.isBoardFull() && hasWon(board).equals(BLANK))     // the game is a tie
+                            playerResult = SinglePlayerRoomData.PlayerResult.TIE;
+                        else if (player2.equals(whoWon(board, player1, player2)))   // player 2 (human) is winner
+                            playerResult = SinglePlayerRoomData.PlayerResult.WIN;
+                        else
+                            playerResult = SinglePlayerRoomData.PlayerResult.LOSS;  // player 2 (human) is loser
+                    }
+
+
+                    SinglePlayerRoomData room = new SinglePlayerRoomData(
+                            singlePlayerRoomID,
+                            human,
+                            startTime,
+                            System.currentTimeMillis(),
+                            SinglePlayerRoomData.RequestType.DISCONNECT,
+                            true,
+                            playerResult,
+                            ai
+                        );
+
+                    System.out.println("DEBUG: Sending SPR from client " + room);
+                    GlobalAPIManager.getInstance().send(room, Channels.ROOM_SINGLE_PLAYER.toString());
+                    }
             }
         }
     }

@@ -1,8 +1,18 @@
-package io.github.donut.proj.controllers;
+ package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
+import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.MoveData;
+import io.github.coreutils.proj.messages.RoomData;
+import io.github.coreutils.proj.messages.RoomResponse;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
+import io.github.donut.proj.callbacks.MoveHistoryCallback;
+import io.github.donut.proj.callbacks.RoomHistoryCallback;
 import io.github.donut.proj.listener.ISubject;
 import io.github.donut.proj.model.SceneName;
 import io.github.donut.sounds.EventSounds;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,41 +20,39 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
-/**
- * PlayerHistoryController contains the table view object for the player to see their past games.
- * @author Joey Campbell
- * @version 0.1
- */
+ /**
+  * PlayerHistoryController contains the table view object for the player to see their past games.
+  * @author Joey Campbell
+  * @version 0.1
+  */
 public class PlayerHistoryController extends AbstractController implements Initializable, ISubject {
     @FXML
     private ImageView backButton;
 
+    private ImageView loadingGif = new ImageView();
+
     @FXML
     private BorderPane playerHistoryPage;
 
-    private TableView<RoomHistoryData> playerHistoryTable;
+    private TableView<RoomResponse> playerHistoryTable;
 
     @FXML
-    private ObservableList<RoomHistoryData> tvOList;
+    private ObservableList<RoomResponse> tvOList;
+
+    private List<MoveData> roomMoves;
+
+    private Board board;
 
     /**
      * Sets all action events and loads the table view object
@@ -58,6 +66,10 @@ public class PlayerHistoryController extends AbstractController implements Initi
         backButton.setOnMouseEntered(this::onBackButtonEnter);
         backButton.setOnMouseExited(this::onBackButtonExit);
 
+        loadingGif.setImage(loading);
+        loadingGif.setFitWidth(200);
+        loadingGif.setFitHeight(25);
+
         buildTable();
     }
 
@@ -66,42 +78,49 @@ public class PlayerHistoryController extends AbstractController implements Initi
      * @author Joey Campbell
      */
     private void buildTable() {
-        TableColumn<RoomHistoryData, String> roomIdCol      = new TableColumn<>("ID");
+        TableColumn<RoomResponse, String> roomIdCol      = new TableColumn<>("ID");
         roomIdCol.setReorderable(false);
         roomIdCol.setResizable(false);
         roomIdCol.setSortable(false);
         roomIdCol.setPrefWidth(50);
-        roomIdCol.setCellValueFactory(new PropertyValueFactory<>("roomId"));
+        roomIdCol.setCellValueFactory(new PropertyValueFactory<>("roomID"));
 
-        TableColumn<RoomHistoryData, String> winLossTieCol  = new TableColumn<>("W L T");
-        winLossTieCol.setReorderable(false);
-        winLossTieCol.setResizable(false);
-        winLossTieCol.setSortable(false);
-        winLossTieCol.setPrefWidth(50);
-        winLossTieCol.setCellValueFactory(new PropertyValueFactory<>("winLossTie"));
+        TableColumn<RoomResponse, String> resultCol  = new TableColumn<>("W L T");
+        resultCol.setReorderable(false);
+        resultCol.setResizable(false);
+        resultCol.setSortable(false);
+        resultCol.setPrefWidth(50);
+        resultCol.setCellValueFactory(new PropertyValueFactory<>("result"));
 
-        TableColumn<RoomHistoryData, String> playersCol     = new TableColumn<>("Players");
-        playersCol.setReorderable(false);
-        playersCol.setResizable(false);
-        playersCol.setSortable(false);
-        playersCol.setPrefWidth(200);
-        playersCol.setCellValueFactory(new PropertyValueFactory<>("playersInvolved"));
+        TableColumn<RoomResponse, String> player1Col     = new TableColumn<>("Me");
+        player1Col.setReorderable(false);
+        player1Col.setResizable(false);
+        player1Col.setSortable(false);
+        player1Col.setPrefWidth(100);
+        player1Col.setCellValueFactory(new PropertyValueFactory<>("perspectivePlayer"));
 
-        TableColumn<RoomHistoryData, String> startTimeCol   = new TableColumn<>("Start Time");
+        TableColumn<RoomResponse, String> player2Col     = new TableColumn<>("Other");
+        player2Col.setReorderable(false);
+        player2Col.setResizable(false);
+        player2Col.setSortable(false);
+        player2Col.setPrefWidth(100);
+        player2Col.setCellValueFactory(new PropertyValueFactory<>("otherPlayer"));
+
+        TableColumn<RoomResponse, String> startTimeCol   = new TableColumn<>("Start Time");
         startTimeCol.setReorderable(false);
         startTimeCol.setResizable(false);
         startTimeCol.setSortable(false);
         startTimeCol.setPrefWidth(75);
         startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
 
-        TableColumn<RoomHistoryData, String> endTimeCol     = new TableColumn<>("End Time");
+        TableColumn<RoomResponse, String> endTimeCol     = new TableColumn<>("End Time");
         endTimeCol.setReorderable(false);
         endTimeCol.setResizable(false);
         endTimeCol.setSortable(false);
         endTimeCol.setPrefWidth(75);
         endTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
 
-        TableColumn<RoomHistoryData, String> roomCreatorCol = new TableColumn<>("Room Creator");
+        TableColumn<RoomResponse, String> roomCreatorCol = new TableColumn<>("Room Creator");
         roomCreatorCol.setReorderable(false);
         roomCreatorCol.setResizable(false);
         roomCreatorCol.setSortable(false);
@@ -109,6 +128,8 @@ public class PlayerHistoryController extends AbstractController implements Initi
         roomCreatorCol.setCellValueFactory(new PropertyValueFactory<>("startingPlayer"));
 
         playerHistoryTable = new TableView<>();
+
+        playerHistoryTable.setPlaceholder(loadingGif);
 
         fillTableWithObservableData();
 
@@ -118,91 +139,34 @@ public class PlayerHistoryController extends AbstractController implements Initi
         playerHistoryTable.setSelectionModel(null);
 
         playerHistoryTable.getColumns().add(roomIdCol);
-        playerHistoryTable.getColumns().add(winLossTieCol);
-        playerHistoryTable.getColumns().add(playersCol);
+        playerHistoryTable.getColumns().add(resultCol);
+        playerHistoryTable.getColumns().add(player1Col);
+        playerHistoryTable.getColumns().add(player2Col);
         playerHistoryTable.getColumns().add(startTimeCol);
         playerHistoryTable.getColumns().add(endTimeCol);
         playerHistoryTable.getColumns().add(roomCreatorCol);
 
         playerHistoryPage.setCenter(playerHistoryTable);
-
         addMovesButtonToTable();
+
+
+
+        GlobalAPIManager.getInstance().swapListener(new RoomHistoryCallback(this::setLobbyListAsync),
+                Channels.REQUEST + Channels.GET_ROOMS_DATA.toString(),
+                Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
     }
 
-    /**
-     * Static data object for populating the table view.
-     * @author Joey Campbell
-     */
-    @Getter
-    @Setter
-    @ToString
-    public static class RoomHistoryData {
-        private String roomId;
-        private String playerId;
-        private String winLossTie;
-        private String playersInvolved;
-        private String startTime;
-        private String endTime;
-        private String startingPlayer;
-        private String[] moves;
-        private Image movesImage;
+    public void setLobbyListAsync(List<RoomResponse> rooms) {
+        Platform.runLater(() -> {
+            if ((Bindings.isEmpty(playerHistoryTable.getItems())).get())
+                playerHistoryTable.setPlaceholder(new Label("HISTORY NOT AVAILABLE"));
+            setLobbyList(rooms);
+        });
+    }
 
-
-        public RoomHistoryData()
-        {
-            this.roomId = "10";
-            this.winLossTie = "TIE";
-            this.playersInvolved = "JOEY" + " - " + "UTS";
-            this.startTime = "8:30 AM";
-            this.endTime = "8:35 AM";
-            this.startingPlayer = "JOEY";
-            this.moves = new String[] {"(1,1),(2,2),(3,3)"};
-        }
-
-        public RoomHistoryData(String roomId, String winnerId, String player1Id, String player1Name, String player2Id,
-                               String player2Name, String startTime, String endTime, String startingPlayer,
-                               String[] moves) {
-            this.roomId = roomId;
-            this.winLossTie = "TIE"; // TODO - determine if the client's result for the game is a win or not
-            this.playersInvolved = player1Name + " - " + player2Name;
-            this.startTime = startTime; // TODO - convert time from millis to actual time
-            this.endTime = endTime; // TODO - convert time from millis to actual time
-            this.startingPlayer = startingPlayer;
-            this.moves = new String[] {"(1,1),(2,2),(3,3)"}; // TODO - get moves as an actual array (have to query)
-        }
-
-
-        public String getRoomId() {
-            return roomId;
-        }
-
-        public String getPlayerId() {
-            return playerId;
-        }
-
-        public String getWinLossTie() {
-            return winLossTie;
-        }
-
-        public String getPlayersInvolved() {
-            return playersInvolved;
-        }
-
-        public String getStartTime() {
-            return startTime;
-        }
-
-        public String getEndTime() {
-            return endTime;
-        }
-
-        public String getStartingPlayer() {
-            return startingPlayer;
-        }
-
-        public String[] getMoves() {
-            return moves;
-        }
+    public void setLobbyList(List<RoomResponse> rooms) {
+        ObservableList<RoomResponse> list = FXCollections.observableArrayList(rooms);
+        playerHistoryTable.setItems(list);
     }
 
     /**
@@ -211,23 +175,25 @@ public class PlayerHistoryController extends AbstractController implements Initi
      */
     private void fillTableWithObservableData() {
         tvOList = FXCollections.observableArrayList();
+    }
 
-        tvOList.addAll(new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData(),
-                new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}),
-                new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}),
-                new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}),
-                new RoomHistoryData("test", "test", "test", "test", "test", "test", "test", "test", "test", new String[] {"test"}));
+    public void createBoardObject(List<MoveData> roomMoves) {
+        this.roomMoves = roomMoves;
+        this.board = new Board();
+
+        if (roomMoves.size() == 0)
+            return;
+
+        String id = roomMoves.get(0).getPlayerUserName();
+
+        Token x = Token.X;
+        Token o = Token.O;
+
+        for (MoveData m : roomMoves) {
+            board.updateToken(m.getX(), m.getY(), (m.getPlayerUserName().equals(id)) ? x : o );
+        }
+
+        stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(new MoveHistoryController(board), false));
     }
 
     /**
@@ -235,23 +201,30 @@ public class PlayerHistoryController extends AbstractController implements Initi
      * @author Joey Campbell
      */
     private void addMovesButtonToTable() {
-        TableColumn<RoomHistoryData, Void> movesCol = new TableColumn<>("Moves");
+        TableColumn<RoomResponse, Void> movesCol = new TableColumn<>("Moves");
         movesCol.setResizable(false);
         movesCol.setReorderable(false);
         movesCol.setSortable(false);
         movesCol.setPrefWidth(110);
-        Callback<TableColumn<RoomHistoryData, Void>, TableCell<RoomHistoryData, Void>> cellFactory =
-                new Callback<TableColumn<RoomHistoryData, Void>, TableCell<RoomHistoryData, Void>>() {
+        Callback<TableColumn<RoomResponse, Void>, TableCell<RoomResponse, Void>> cellFactory =
+                new Callback<TableColumn<RoomResponse, Void>, TableCell<RoomResponse, Void>>() {
 
             @Override
-            public TableCell<RoomHistoryData, Void> call(final TableColumn<RoomHistoryData, Void> param) {
-                final TableCell<RoomHistoryData, Void> cell = new TableCell<RoomHistoryData, Void>() {
+            public TableCell<RoomResponse, Void> call(final TableColumn<RoomResponse, Void> param) {
+                final TableCell<RoomResponse, Void> cell = new TableCell<RoomResponse, Void>() {
 
                     private final Button btn = new Button("See Moves");
                     {
                         btn.setOnAction((ActionEvent event) -> {
-                            RoomHistoryData data = getTableView().getItems().get(getIndex());
-                            System.out.println(Arrays.toString(data.getMoves()));
+                            RoomResponse data = getTableView().getItems().get(getIndex());
+                            RoomData tempData = new RoomData();
+                            tempData.setRoomID(Integer.parseInt(data.getRoomID()));
+                            GlobalAPIManager.getInstance().swapListener(new MoveHistoryCallback(this::setRoomMovesAsync, tempData),
+                                    Channels.REQUEST + Channels.GET_MOVES_DATA.toString(),
+                                    Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid());
+
+                            EventSounds.getInstance().playButtonSound4();
+//                            stage.setScene(AppController.getScenes().get(SceneName.MOVE_HISTORY_PAGE).getScene(false, false));
                         });
 
                         btn.setPrefWidth(110);
@@ -263,6 +236,13 @@ public class PlayerHistoryController extends AbstractController implements Initi
                                 .otherwise("-fx-background-color: black; " +
                                         "-fx-text-fill: khaki;" +
                                         "-fx-font-weight: bold"));
+                    }
+
+                    // HAD TO PUT THIS METHOD IN HERE
+                    private void setRoomMovesAsync(List<MoveData> moveData) {
+                        Platform.runLater(() -> {
+                            createBoardObject(moveData);
+                        });
                     }
 
                     @Override
@@ -303,6 +283,16 @@ public class PlayerHistoryController extends AbstractController implements Initi
                     getResourceAsStream("io/github/donut/proj/images/common/back_arrow_hover.png")
     ));
 
+     /**
+      * Event handler for loading button hover effect
+      * @author Utsav Parajuli
+      */
+     private final Image loading = new Image(Objects.requireNonNull(
+             getClass().
+                     getClassLoader().
+                     getResourceAsStream("io/github/donut/proj/images/icons/loading_5.gif")
+     ));
+
     /**
      * Event handler for back button hover effect
      *
@@ -330,5 +320,6 @@ public class PlayerHistoryController extends AbstractController implements Initi
     public void onBackButtonClick(MouseEvent actionEvent) {
         EventSounds.getInstance().playButtonSound1();
         stage.setScene(AppController.getScenes().get(SceneName.PORTAL_PAGE).getScene(false));
+        AppController.getScenes().get(SceneName.HISTORY_PAGE).clearCache();
     }
 }
