@@ -1,6 +1,9 @@
 package io.github.donut.proj.controllers;
 
+import io.github.coreutils.proj.messages.Channels;
+import io.github.coreutils.proj.messages.OnlineState;
 import io.github.donut.proj.callbacks.AuthorizationCallback;
+import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.UpdatesCallback;
 import io.github.donut.proj.model.SceneName;
 import javafx.application.Platform;
@@ -285,7 +288,7 @@ public final class ControllerFactory {
                     controller.stage.setScene(scene);
 
                     //showing confirmation
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Account was deleted");
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Account was deleted");
                     alert.setHeaderText("Confirmation");
                     alert.show();
 

@@ -21,16 +21,11 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import lombok.Getter;
-
-import java.util.Objects;
 
 /**
  * This class handles the game board page UI
@@ -91,9 +86,11 @@ public class BoardPageController extends AbstractController implements IObserver
 
         if (room.getPlayer1().getPlayerUserName().equals(AppController.getPlayer().getPlayerUserName())) {
             myToken = Token.X;
+            AppController.setPlayerToken(myToken);
             myTurn = true;
         } else {
             myToken = Token.O;
+            AppController.setPlayerToken(myToken);
             myTurn = false;
         }
 

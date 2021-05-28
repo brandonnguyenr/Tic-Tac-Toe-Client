@@ -6,26 +6,33 @@ import io.github.API.messagedata.MsgResultAPI;
 import io.github.API.messagedata.MsgStatus;
 import io.github.API.messagedata.MsgStatusCategory;
 import io.github.API.utils.GsonWrapper;
+import io.github.coreutils.proj.enginedata.Board;
+import io.github.coreutils.proj.enginedata.Token;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.MoveRequestData;
+import io.github.coreutils.proj.messages.PlayerData;
 import io.github.coreutils.proj.messages.RoomData;
+import io.github.donut.proj.utils.Logger;
 import lombok.Setter;
 
 import java.util.function.Consumer;
 
+@Setter
 public class GameCallback implements ISubscribeCallback {
     private RoomData room;
-    @Setter
+    private Board board;
     private Consumer<MoveRequestData> boardHandler;
 
-    public GameCallback(RoomData room) {
+    public GameCallback(RoomData room, Board board) {
         this.room = room;
+        this.board = board;
     }
 
 
     @Override
     public void status(MessagingAPI mAPI, MsgStatus status) {
         if (status.getCategory().equals(MsgStatusCategory.MsgConnectedCategory)) {
+            Logger.log(mAPI.getUuid() + "REQUEST_MOVE sent");
             mAPI.publish()
                     .message(room)
                     .channel(Channels.REQUEST_MOVE.toString())
@@ -38,20 +45,9 @@ public class GameCallback implements ISubscribeCallback {
         if (message.getChannel().equals(room.getRoomChannel())) {
             MoveRequestData data = GsonWrapper.fromJson(message.getMessage(), MoveRequestData.class);
             boardHandler.accept(data);
-//            if (data.getCurrentPlayer() == null) {
-//                if (boardHandler != null)
-//                    boardHandler.accept(data.getBoard());
-//                if (data.getWinningToken() == Token.X) {
-//                    System.out.println(Token.X + " Player: " + data.getRoomData().getPlayer1().getPlayerUserName() + " has won");
-//                } else if (data.getWinningToken() == Token.O) {
-//                    System.out.println(Token.O + " Player: " + data.getRoomData().getPlayer2().getPlayerUserName() + " has won");
-//                } else {
-//                    System.out.println("Tie Game");
-//                }
-//            } else if (data.getCurrentPlayer().equals(userName)) {
-//                boardHandler.accept(data.getBoard());
-//                System.out.println("turn switched");
-//            }
+        } else if (message.getChannel().equals("CLOSE")) {
+            PlayerData data = GsonWrapper.fromJson(message.getMessage(), PlayerData.class);
+            boardHandler.accept(new MoveRequestData(this.board, room, null, (data.getPlayerToken() == Token.X) ? Token.O : Token.X));
         }
     }
 

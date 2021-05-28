@@ -23,7 +23,7 @@
       </HBox>
    </top>
    <bottom>
-      <ImageView fx:id="createLobbyButton" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="createLobbyButton" fitHeight="150.0" fitWidth="200.0" translateX="-110" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <Image url="@../../images/icons/create_lobby_button.png" />
          <BorderPane.margin>
             <Insets bottom="20.0" />

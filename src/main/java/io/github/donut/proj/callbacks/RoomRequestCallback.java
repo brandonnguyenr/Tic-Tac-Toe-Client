@@ -9,6 +9,7 @@ import io.github.API.utils.GsonWrapper;
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.PlayerData;
 import io.github.coreutils.proj.messages.RoomData;
+import io.github.coreutils.proj.messages.RoomFactory;
 import lombok.Setter;
 
 import java.util.function.Consumer;
