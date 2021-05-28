@@ -41,8 +41,8 @@ public class AppController {
      * @author Kord Boniadi
      */
     public AppController(Stage stage) {
-        Logger.init(PROPERTIES);
-//        Logger.init(PRODUCTION);
+//        Logger.init(PROPERTIES);
+        Logger.init(PRODUCTION);
         this.mainStage = stage;
 
         GlobalAPIManager.getInstance().getApi().onclose(() -> {
