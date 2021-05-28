@@ -23,13 +23,23 @@
                <Label fx:id="wins" />
            </VBox>
            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" spacing="25.0">
+               <Label fx:id="lossTitle" text="LOSSES" underline="true" />
+               <Label fx:id="losses" />
+           </VBox>
+           <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" spacing="25.0">
                <Label fx:id="tieTitle" text="TIES" underline="true" />
                <Label fx:id="ties" />
            </VBox>
            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" spacing="25.0">
-               <Label fx:id="lossTitle" text="LOSSES" underline="true" />
-               <Label fx:id="losses" />
+               <Label fx:id="totalTitle" text="TOTAL" underline="true" />
+               <Label fx:id="total" />
            </VBox>
        </HBox>
    </center>
+   <bottom>
+       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+           <Label fx:id="winPercentageTitle" text="Win Percentage:"/>
+           <Label fx:id="winPercentage" layoutX="10.0" layoutY="10.0"/>
+       </HBox>
+   </bottom>
 </BorderPane>

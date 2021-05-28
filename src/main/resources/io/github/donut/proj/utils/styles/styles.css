@@ -250,15 +250,28 @@
     -fx-text-fill: red;
 }
 
-#winTitle, #tieTitle, #lossTitle {
+#winTitle, #tieTitle, #lossTitle, #totalTitle {
     -fx-font-family: "Chalkduster";
     -fx-font-size: 45;
     -fx-text-fill: khaki;
     -fx-alignment: center;
 }
 
-#wins, #losses, #ties {
+#winPercentageTitle {
     -fx-font-family: "Chalkduster";
+    -fx-font-size: 30;
+    -fx-text-fill: khaki;
+    -fx-alignment: center;
+}
+
+#winPercentage {
+    -fx-font-family: "Chalkduster";
+    -fx-font-size: 25;
+    -fx-text-fill: khaki;
+    -fx-alignment: center;
+}
+#wins, #losses, #ties, #total {
+    -fx-font-family: "Helvetica Neue";
     -fx-font-size: 80;
     -fx-text-fill: khaki;
     -fx-alignment: center;
