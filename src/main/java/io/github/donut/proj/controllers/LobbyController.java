@@ -210,6 +210,7 @@ public class LobbyController extends AbstractController implements ISubject {
         lobbyTableView.setSelectionModel(null);
         onlinePlayerTableView.setSelectionModel(null);
         lobbyTableView.setId("lobbyTableView");
+        lobbyTableView.setPlaceholder(new Label("No Games Online"));
 
         addJoinButtonToTable();
 
