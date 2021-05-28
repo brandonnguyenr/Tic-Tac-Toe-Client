@@ -41,8 +41,8 @@ public class AppController {
      * @author Kord Boniadi
      */
     public AppController(Stage stage) {
-        Logger.init(PROPERTIES);
-//        Logger.init(PRODUCTION);
+//        Logger.init(PROPERTIES);
+        Logger.init(PRODUCTION);
         this.mainStage = stage;
 
         GlobalAPIManager.getInstance().getApi().onclose(() -> {
@@ -78,15 +78,6 @@ public class AppController {
         reactivatePopUp.setTitle("Re-activate Account");
         reactivatePopUp.setResizable(false);
     }
-
-//    /**
-//     * @author Kord Boniadi
-//     * @param sceneName name of scene (enum)
-//     * @param info fxml info bundle
-//     */
-//    public static void updateScenes(SceneName sceneName, FxmlInfo info) {
-//        scenes.put(sceneName, info);
-//    }
 
     /**
      * Initializes starting page for app

@@ -12,7 +12,6 @@ import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.MoveRequestData;
 import io.github.coreutils.proj.messages.PlayerData;
 import io.github.coreutils.proj.messages.RoomData;
-import io.github.donut.proj.utils.Logger;
 import lombok.Setter;
 
 import java.util.function.Consumer;
@@ -32,7 +31,6 @@ public class GameCallback implements ISubscribeCallback {
     @Override
     public void status(MessagingAPI mAPI, MsgStatus status) {
         if (status.getCategory().equals(MsgStatusCategory.MsgConnectedCategory)) {
-            Logger.log(mAPI.getUuid() + "REQUEST_MOVE sent");
             mAPI.publish()
                     .message(room)
                     .channel(Channels.REQUEST_MOVE.toString())
