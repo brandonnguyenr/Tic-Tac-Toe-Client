@@ -46,9 +46,6 @@ public class StatsController extends AbstractController implements ISubject {
     private Label losses1;
 
     @FXML
-    private Label winPercentage;
-
-    @FXML
     private ImageView backButton;
 
     private List<RoomResponse> rooms;
@@ -106,11 +103,10 @@ public class StatsController extends AbstractController implements ISubject {
         total.setText("" + totalGames);
 
         if (totalGames == 0) {
-            winPercentage.setText("N/A");
+            winPercentageTitle.setText("Win Percentage: 0.00 %");
         } else {
-            double percentage = (winCount + (tieCount * 0.5 )) / totalGames;
-            System.out.println(percentage);
-            winPercentage.setText("" + String.format("%.2f", percentage));
+            double percentage = ((winCount + (tieCount * 0.5 )) / totalGames) * 100;
+            winPercentageTitle.setText("Win Percentage: " + String.format("%.2f", percentage) + " %");
         }
     }
     /**
