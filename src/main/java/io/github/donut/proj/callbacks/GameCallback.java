@@ -45,24 +45,8 @@ public class GameCallback implements ISubscribeCallback {
         if (message.getChannel().equals(room.getRoomChannel())) {
             MoveRequestData data = GsonWrapper.fromJson(message.getMessage(), MoveRequestData.class);
             boardHandler.accept(data);
-//            if (data.getCurrentPlayer() == null) {
-//                if (boardHandler != null)
-//                    boardHandler.accept(data.getBoard());
-//                if (data.getWinningToken() == Token.X) {
-//                    System.out.println(Token.X + " Player: " + data.getRoomData().getPlayer1().getPlayerUserName() + " has won");
-//                } else if (data.getWinningToken() == Token.O) {
-//                    System.out.println(Token.O + " Player: " + data.getRoomData().getPlayer2().getPlayerUserName() + " has won");
-//                } else {
-//                    System.out.println("Tie Game");
-//                }
-//            } else if (data.getCurrentPlayer().equals(userName)) {
-//                boardHandler.accept(data.getBoard());
-//                System.out.println("turn switched");
-//            }
         } else if (message.getChannel().equals("CLOSE")) {
-            System.out.println("test");
             PlayerData data = GsonWrapper.fromJson(message.getMessage(), PlayerData.class);
-            System.out.println(data.getPlayerToken());
             boardHandler.accept(new MoveRequestData(this.board, room, null, (data.getPlayerToken() == Token.X) ? Token.O : Token.X));
         }
     }

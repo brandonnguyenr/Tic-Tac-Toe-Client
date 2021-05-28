@@ -2,6 +2,7 @@ package io.github.donut.proj;
 
 import io.github.coreutils.proj.messages.Channels;
 import io.github.coreutils.proj.messages.OnlineState;
+import io.github.coreutils.proj.messages.RoomFactory;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.controllers.AppController;
 import javafx.application.Application;
@@ -47,6 +48,7 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         GlobalAPIManager.getInstance().send(AppController.getPlayer(), "CLOSE");
+        GlobalAPIManager.getInstance().send(RoomFactory.makeDisconnectRoom(AppController.getPlayer()), Channels.ROOM_REQUEST.toString());
         GlobalAPIManager.getInstance().send(new OnlineState(AppController.getUserName(), false), Channels.OFFLINE_STATE.toString());
         super.stop();
         if (GlobalAPIManager.getInstance().getApi().isAlive())

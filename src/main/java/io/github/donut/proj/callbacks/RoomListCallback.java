@@ -50,7 +50,6 @@ public class RoomListCallback implements ISubscribeCallback {
 
         if (message.getChannel().equals(Channels.REQUEST + Channels.ROOM_LIST.toString()) ||
                 message.getChannel().equals(Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid())) {
-            System.out.println(message.getMessage());
             List<RoomData> list = Arrays.asList(GsonWrapper.fromJson(message.getMessage(), RoomData[].class));
             if (updateLobbyHandler != null)
                 updateLobbyHandler.accept(list);

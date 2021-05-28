@@ -1,10 +1,7 @@
 package io.github.donut.proj.controllers;
 
 import io.github.coreutils.proj.enginedata.Token;
-import io.github.coreutils.proj.messages.Channels;
-import io.github.coreutils.proj.messages.PlayerData;
-import io.github.coreutils.proj.messages.RoomData;
-import io.github.coreutils.proj.messages.RoomFactory;
+import io.github.coreutils.proj.messages.*;
 import io.github.donut.proj.callbacks.GameCallback;
 import io.github.donut.proj.callbacks.GlobalAPIManager;
 import io.github.donut.proj.callbacks.RoomListCallback;
@@ -110,26 +107,6 @@ public class LobbyController extends AbstractController implements ISubject {
                     getResourceAsStream("io/github/donut/proj/images/icons/join_game.png")
     ));
 
-    public static class OnlineState {
-
-        public String username;
-
-        public Boolean isOnline;
-
-        public OnlineState(String username, Boolean isOnline) {
-            this.username = username;
-            this.isOnline = isOnline;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public Boolean getIsOnline() {
-            return isOnline;
-        }
-    }
-
     /**
      * Initializes a LobbyController object after its root element has been
      * completely processed. It also loads the tableview object
@@ -174,7 +151,7 @@ public class LobbyController extends AbstractController implements ISubject {
         onlinePlayerCol.setReorderable(false);
         onlinePlayerCol.setResizable(false);
         onlinePlayerCol.setSortable(false);
-        onlinePlayerCol.setPrefWidth(100);
+        onlinePlayerCol.setPrefWidth(125);
         onlinePlayerCol.setCellValueFactory(new PropertyValueFactory<>("username"));
 
         TableColumn<OnlineState, Label> isOnlineCol = new TableColumn<>("Status");
@@ -182,21 +159,28 @@ public class LobbyController extends AbstractController implements ISubject {
         isOnlineCol.setResizable(false);
         isOnlineCol.setSortable(false);
         isOnlineCol.setPrefWidth(50);
-        isOnlineCol.setCellValueFactory(param -> new SimpleObjectProperty<Label>((param.getValue().isOnline) ? onlineLabel : offlineLabel));
+        isOnlineCol.setCellValueFactory(param -> {
+            Label temp = new Label();
+            if (param.getValue().isOnline()) {
+                temp.setText("Online");
+                temp.setStyle("-fx-text-fill: green; -fx-font-size: 10; -fx-font-weight: bold");
+            } else {
+                temp.setText("Offline");
+                temp.setStyle("-fx-text-fill: red; -fx-font-size: 10; -fx-font-weight: bold");
+            }
+            return new SimpleObjectProperty<>(temp);
+        });
 
         // =====================================================================
 
         lobbyTableView = new TableView<>();
-        lobbyTableView.setItems(tvOList);
         lobbyTableView.getColumns().add(lobbyNameCol);
         lobbyTableView.getColumns().add(playersCol);
         lobbyTableView.getColumns().add(playerCountCol);
 
         multiplayerPage.setCenter(lobbyTableView);
 
-        setOnlinePlayersObservableList();
-        onlinePlayerTableView = new TableView<>(onlinePlayersObservableList);
-//        onlinePlayerTableView.setItems(onlinePlayersObservableList);
+        onlinePlayerTableView = new TableView<>();
         onlinePlayerTableView.getColumns().add(onlinePlayerCol);
         onlinePlayerTableView.getColumns().add(isOnlineCol);
 
@@ -205,7 +189,7 @@ public class LobbyController extends AbstractController implements ISubject {
         multiplayerPage.setRight(onlinePlayerTableView);
 
         lobbyTableView.setPadding(new Insets(0, 0, 30, 20));
-        onlinePlayerTableView.setPadding(new Insets(0, 20, 30, 60));
+        onlinePlayerTableView.setPadding(new Insets(0, 20, 30, 34));
         lobbyTableView.setSelectionModel(null);
         onlinePlayerTableView.setSelectionModel(null);
         lobbyTableView.setId("lobbyTableView");
@@ -213,11 +197,7 @@ public class LobbyController extends AbstractController implements ISubject {
 
         addJoinButtonToTable();
 
-        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyListAsync, (onlineStates) -> {
-            onlineStates.forEach((onlineState -> {
-                System.out.println(onlineState.getUsername() + " " + onlineState.isOnline());
-            }));
-                }),
+        GlobalAPIManager.getInstance().swapListener(new RoomListCallback(this::setLobbyListAsync, this::setOnlineListAsync),
                 Channels.REQUEST + Channels.ROOM_LIST.toString(),
                 Channels.REQUEST_STATE.toString(),
                 Channels.PRIVATE + GlobalAPIManager.getInstance().getApi().getUuid(),
@@ -233,14 +213,16 @@ public class LobbyController extends AbstractController implements ISubject {
         /*========================Action Events END=========================*/
     }
 
-    public void setOnlinePlayersObservableList() {
-        onlinePlayersObservableList = FXCollections.observableArrayList();
-
-        onlinePlayersObservableList.addAll(new OnlineState("Joe", false),
-                new OnlineState("Mama", true)
-                );
+    public void setOnlineListAsync(List<OnlineState> people) {
+        Platform.runLater(() -> {
+            setOnlineList(people);
+        });
     }
 
+    public void setOnlineList(List<OnlineState> people) {
+        ObservableList<OnlineState> list = FXCollections.observableArrayList(people);
+        onlinePlayerTableView.setItems(list);
+    }
     public void setLobbyListAsync(List<RoomData> rooms) {
         Platform.runLater(() -> {
             setLobbyList(rooms);
@@ -354,7 +336,6 @@ public class LobbyController extends AbstractController implements ISubject {
 
     private void matchWorker(RoomData room, PlayerData player) {
         BoardPageController game = new BoardPageController(new BoardUI(), room);
-        Logger.log("BoardPageController created");
         Platform.runLater(() -> {
             stage.setScene(AppController.getScenes().get(SceneName.BOARD_PAGE).getScene(game, false));
             game.getPlayerNameLeft().setText(room.getPlayer1().getPlayerUserName());
@@ -363,7 +344,6 @@ public class LobbyController extends AbstractController implements ISubject {
 
         GameCallback gameCallback = new GameCallback(room, game.getBoard());
         gameCallback.setBoardHandler((moveRequestData) -> {
-            System.out.println("board updated");
             game.updatedBoard(moveRequestData.getBoard());
             if (moveRequestData.getCurrentPlayer() == null) {
                 String results;
@@ -376,6 +356,7 @@ public class LobbyController extends AbstractController implements ISubject {
                 }
 
                 GlobalAPIManager.getInstance().send(RoomFactory.makeDisconnectRoom(room.getPlayer1()), Channels.ROOM_REQUEST.toString());
+//                AppController.setPlayerToken(Token.BLANK);
                 Platform.runLater(() -> {
                     game.getExitPrompt().setText("Press ENTER to return to main menu...");
                     Timeline timeline = new Timeline(
@@ -473,14 +454,12 @@ public class LobbyController extends AbstractController implements ISubject {
                 waitingRoom.getWaitingPageMessage().setText("");
                 waitingRoom.getJoinMessage().setText("Game will start shortly...");
             });
-
             //creating an instance of the timer
             Timer timer = new Timer();
             //creating a task playerJoin which will execute after the player stays in the lobby for certain time
             TimerTask playerJoin = new TimerTask() {
                 @Override
                 public void run() {
-                    Logger.log("matchWorker1 called");
                     matchWorker(roomData, player);
                     Platform.runLater(() -> {
                         waitingRoom.getJoinMessage().setText("");
@@ -536,7 +515,6 @@ public class LobbyController extends AbstractController implements ISubject {
                 waitingRoom.getWaitingPageMessage().setText("");
                 waitingRoom.getJoinMessage().setText("Game will start shortly...");
             });
-
             //instance of a timer
             Timer timer = new Timer();
 
@@ -544,7 +522,6 @@ public class LobbyController extends AbstractController implements ISubject {
             TimerTask playerCreate = new TimerTask() {
                 @Override
                 public void run() {
-                    Logger.log("matchWorker2 called");
                     matchWorker(roomData, player);
                     //freeing up the thread
                     timer.cancel();
